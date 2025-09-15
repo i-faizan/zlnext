@@ -146,7 +146,6 @@ export default function HeroHome({ faqs }: FaqProps) {
                                         src={exp.img}
                                         alt={exp.title}
                                         fill
-                                        priority
                                         className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 md:group-hover:scale-110"
                                     />
 

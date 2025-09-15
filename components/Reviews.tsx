@@ -107,7 +107,6 @@ export default function Review() {
                                                     width={500}
                                                     height={281}
                                                     className="rounded-t-2xl object-cover w-full h-full"
-                                                    priority
                                                 />
                                             </div>
                                         )}
