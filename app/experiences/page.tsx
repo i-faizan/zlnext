@@ -73,7 +73,7 @@ const experienceJsonLd =
             "thumbnailUrl": ["https://zlwebster.com/experience.webp"],
             "contentUrl": "https://zlwebster.com/experience.mp4",
             "embedUrl": "https://zlwebster.com/experiences#video",
-            "uploadDate": "2025-09-13",
+            "uploadDate": "2025-09-13T14:00:00Z",
             "duration": "PT1M",
             "inLanguage": "en",
             "publisher": { "@id": "https://zlwebster.com/#localbusiness" }
