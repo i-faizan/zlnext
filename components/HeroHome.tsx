@@ -43,7 +43,22 @@ export default function HeroHome({ faqs }: FaqProps) {
             <section id="hero"
                 className="relative h-screen flex items-center justify-center bg-cover bg-center"
             >
-                <Image src="/Webster_Houston.webp" alt="4 Players standing in Zero Latency Webster VR arena in Greater Houston" fill priority className="object-cover" />
+                <Image
+                    src="/hero_img.jpeg"
+                    alt="4 Players standing in Zero Latency Webster VR arena in Greater Houston"
+                    fill
+                    priority
+                    className="object-cover hidden md:block"
+                />
+
+                {/* Mobile Image */}
+                <Image
+                    src="/hero_img_mobile.jpeg"
+                    alt="4 Players standing in Zero Latency Webster VR arena in Greater Houston"
+                    fill
+                    priority
+                    className="object-cover block md:hidden"
+                />
                 <div className="absolute inset-0 bg-black opacity-70"></div> {/* This adds a dark overlay for better text readability */}
                 <div className="relative z-20 text-center px-4">
                     <h1 className="text-3xl font-montserrat text-white font-black drop-shadow-lg sm:text-6xl md:text-5xl">
