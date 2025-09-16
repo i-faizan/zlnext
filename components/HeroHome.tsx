@@ -44,7 +44,7 @@ export default function HeroHome({ faqs }: FaqProps) {
                 className="relative h-screen flex items-center justify-center bg-cover bg-center"
             >
                 <Image
-                    src="/hero_img.jpeg"
+                    src="/hero_img.webp"
                     alt="4 Players standing in Zero Latency Webster VR arena in Greater Houston"
                     fill
                     priority
@@ -53,7 +53,7 @@ export default function HeroHome({ faqs }: FaqProps) {
 
                 {/* Mobile Image */}
                 <Image
-                    src="/hero_img_mobile.jpeg"
+                    src="/hero_img_mobile.webp"
                     alt="4 Players standing in Zero Latency Webster VR arena in Greater Houston"
                     fill
                     priority
