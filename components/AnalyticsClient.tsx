@@ -4,6 +4,7 @@ import { usePathname, useSearchParams } from 'next/navigation';
 import { useEffect } from 'react';
 import { pageview, track } from '@/lib/ga';
 import { buildEnvParams, enrichWithClientHints } from '@/lib/env';
+import { fbqTrack } from '@/lib/meta';
 
 export default function AnalyticsClient() {
   const pathname = usePathname();
@@ -23,6 +24,7 @@ export default function AnalyticsClient() {
     // Enriched page_view
     const env = buildEnvParams(url, ref);
     track('page_view_enriched', env);
+    fbqTrack('PageView', env);
 
     // Optional client hints update
     enrichWithClientHints(env).then((updates) => {
