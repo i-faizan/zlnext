@@ -166,7 +166,7 @@ export default function PrivateEventsPage() {
                                 </div>
                             </div>
                             <div className="rounded-lg overflow-hidden border border-gray-800">
-                                <Image src="/venue-dining_cafe.jpeg" alt="The on-site café at Zero Latency, showing pizzas and drinks." width={800} height={600} className="object-cover" priority/>
+                                <Image src="/venue-dining-cafe.webp" alt="The on-site café at Zero Latency, showing pizzas and drinks." width={800} height={600} className="object-cover" priority/>
                                 <div className="p-6 bg-gray-900">
                                     <h3 className="text-xl font-bold font-poppins">On-Site Dining & Café</h3>
                                     <p className="mt-2 text-sm text-gray-400">Refuel between games with Fries, burgers, wraps, soft drinks, and more at our convenient café.</p>
