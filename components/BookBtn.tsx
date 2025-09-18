@@ -2,6 +2,7 @@
 
 import { BOOKING_URL } from "@/lib/navData";
 import { track } from "@/lib/ga";
+import { fbqTrack } from "@/lib/meta";
 
 export default function BookGameButton({
   className = "",
@@ -17,8 +18,8 @@ export default function BookGameButton({
   function handleClick() {
     try {
       track?.("cta_click", { source, label });
+      fbqTrack('Book Now Clicked', { value: 0, currency: 'USD' });
     } catch {}
-    window.open(link == BOOKING_URL ? BOOKING_URL : link, "_blank", "noopener,noreferrer");
   }
 
   return (

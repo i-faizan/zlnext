@@ -3,6 +3,7 @@ import Image from "next/image";
 import { CheckCircle, Ticket, LogIn, Headset, Gamepad2, Trophy, UserCheck } from "lucide-react";
 import BookGameButton from "@/components/BookBtn";
 import InteractiveVideoPlayer from "@/components/InteractiveVideoPlayer";
+import { BOOKING_URL } from "@/lib/navData";
 
 // SEO Metadata for the page
 export const metadata: Metadata = {
@@ -34,7 +35,7 @@ const timelineSteps = [
         title: "Booking & Preparation",
         description: "Your epic journey begins before you even step through our doors. A little preparation ensures you can dive straight into the action.",
         details: [
-            "<strong>Book Your Session:</strong> Secure your spot <a href='YOUR_BOOKING_URL' target='_blank' rel='noopener noreferrer' class='text-cyan-400 hover:underline'>online</a> in advance.",
+            "<strong>Book Your Session:</strong> Secure your spot <a href='https://booking.zerolatencyvr.com/en/book-now/webster' target='_blank' rel='noopener noreferrer' class='text-cyan-400 hover:underline'>online</a> in advance.",
             "<strong>Sign the Waiver:</strong> Save time by <a href='/waiver' class='text-cyan-400 hover:underline'>signing it online</a> before you arrive.",
             "<strong>Dress for Adventure:</strong> Wear comfortable, closed-toe shoes (sneakers are perfect).",
             "<strong>Arrive Early:</strong> Please arrive 15 minutes before your scheduled time.",
