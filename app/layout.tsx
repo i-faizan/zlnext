@@ -7,10 +7,9 @@ import HeaderV3 from "@/components/HeaderV3";
 import Footer from "@/components/Footer";
 import AnalyticsClient from "@/components/AnalyticsClient";
 import { Suspense } from "react";
-import { ThirdPartyScripts } from "@/components/ThirdPartyScripts";
-import { Partytown } from "@qwik.dev/partytown/react";
+import { fbqTrack } from "@/lib/meta";
 
-// const GA_ID = process.env.NEXT_PUBLIC_GA_ID
+const GA_ID = process.env.NEXT_PUBLIC_GA_ID
 // const META_PIXEL_ID = process.env.NEXT_PUBLIC_META_PIXEL_ID
 
 const siteUrl = "https://zlwebster.com";
@@ -118,33 +117,58 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
   return (
     <html lang="en">
       <head>
         <meta name="msvalidate.01" content="999B6B7BDDC8D9C46D790CCA519C9266" />
-        <Partytown
-          debug={false}
-          forward={['dataLayer.push', 'fbq']}
-          resolveUrl={(url: URL, location: Location, _type) => {
-            const h = url.hostname;
-            if (
-              h === 'connect.facebook.net' ||
-              h === 'www.googletagmanager.com' ||
-              h === 'www.google-analytics.com'
-            ) {
-              return new URL(
-                `/api/partytown-proxy?url=${encodeURIComponent(url.href)}`,
-                location.href
-              );
-            }
-            return url;
+        <Script
+          id="meta-pixel"
+          strategy="lazyOnload"
+          dangerouslySetInnerHTML={{
+            __html: `
+      !function(f,b,e,v,n,t,s)
+      {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+      n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+      if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+      n.queue=[];t=b.createElement(e);t.async=!0;
+      t.src=v;s=b.getElementsByTagName(e)[0];
+      s.parentNode.insertBefore(t,s)}(window,document,'script',
+      'https://connect.facebook.net/en_US/fbevents.js');
+      fbq('init', '1446504206776301');
+      fbq('track', 'PageView');
+    `,
           }}
         />
+
+        <noscript>
+          <img height="1" width="1"
+            src="https://www.facebook.com/tr?id=1446504206776301&ev=PageView
+&noscript=1"/>
+        </noscript>
+
+        {GA_ID && (
+          <>
+            <Script
+              id="ga4"
+              src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}
+              strategy="afterInteractive"
+            />
+            <Script id="ga4-init" strategy="afterInteractive">
+              {`
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', '${GA_ID}', { send_page_view: false });
+              `}
+            </Script>
+          </>
+        )}
       </head>
       <body className={`${poppins.variable} ${montserrat.variable} antialiased`}>
         <a href="#main-content" className="sr-only focus:not-sr-only">Skip to content</a>
         <Suspense><AnalyticsClient /></Suspense>
-        <ThirdPartyScripts />
+
         <HeaderV3 />
         <Script id="nav-schema-ld-json" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(navSchema) }} />
         <main id="main-content" role="main">{children}</main>
