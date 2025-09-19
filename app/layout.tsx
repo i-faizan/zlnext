@@ -124,7 +124,7 @@ export default function RootLayout({
         <meta name="msvalidate.01" content="999B6B7BDDC8D9C46D790CCA519C9266" />
         <Script
           id="meta-pixel"
-          strategy="afterInteractive"
+          strategy="beforeInteractive"
           dangerouslySetInnerHTML={{
             __html: `
       !function(f,b,e,v,n,t,s)
@@ -141,11 +141,11 @@ export default function RootLayout({
           }}
         />
 
-        <noscript>
+        {/* <noscript>
           <img height="1" width="1"
             src="https://www.facebook.com/tr?id=1446504206776301&ev=PageView
 &noscript=1"/>
-        </noscript>
+        </noscript> */}
 
         {GA_ID && (
           <>
