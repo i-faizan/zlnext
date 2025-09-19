@@ -7,6 +7,7 @@ import HeaderV3 from "@/components/HeaderV3";
 import Footer from "@/components/Footer";
 import AnalyticsClient from "@/components/AnalyticsClient";
 import { Suspense } from "react";
+import { fbqTrack } from "@/lib/meta";
 
 const GA_ID = process.env.NEXT_PUBLIC_GA_ID
 // const META_PIXEL_ID = process.env.NEXT_PUBLIC_META_PIXEL_ID
@@ -116,6 +117,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  fbqTrack('PageView')
   return (
     <html lang="en">
       <head>
