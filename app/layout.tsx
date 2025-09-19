@@ -117,13 +117,14 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
   return (
     <html lang="en">
       <head>
         <meta name="msvalidate.01" content="999B6B7BDDC8D9C46D790CCA519C9266" />
         <Script
           id="meta-pixel"
-          strategy="afterInteractive"
+          strategy="lazyOnload"
           dangerouslySetInnerHTML={{
             __html: `
       !function(f,b,e,v,n,t,s)
@@ -135,7 +136,7 @@ export default function RootLayout({
       s.parentNode.insertBefore(t,s)}(window,document,'script',
       'https://connect.facebook.net/en_US/fbevents.js');
       fbq('init', '1446504206776301');
-      fbq('track', 'Prospect Landed');
+      fbq('track', 'PageView');
     `,
           }}
         />
