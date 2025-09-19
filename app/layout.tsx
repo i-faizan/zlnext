@@ -117,9 +117,6 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  fbqTrack('PageView');
-  fbqTrack('Prospect Landed');
-  console.log("Page View Tracked")
   return (
     <html lang="en">
       <head>
