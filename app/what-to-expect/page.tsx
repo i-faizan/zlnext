@@ -3,7 +3,6 @@ import Image from "next/image";
 import { CheckCircle, Ticket, LogIn, Headset, Gamepad2, Trophy, UserCheck } from "lucide-react";
 import BookGameButton from "@/components/BookBtn";
 import InteractiveVideoPlayer from "@/components/InteractiveVideoPlayer";
-import { BOOKING_URL } from "@/lib/navData";
 
 // SEO Metadata for the page
 export const metadata: Metadata = {

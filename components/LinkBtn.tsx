@@ -1,7 +1,5 @@
 "use client";
 
-import { BOOKING_URL } from "@/lib/navData";
-import { track } from "@/lib/ga";
 import Link from "next/link";
 
 export default function LinkButton({
@@ -15,13 +13,13 @@ export default function LinkButton({
   source?: string; // where the CTA lives (header/hero/footer)
   route?: string;
 }) {
-  function handleClick() {
-    try {
-      track?.("cta_click", { source, label });
-    } catch {}
-    window.open(BOOKING_URL, "_blank", "noopener,noreferrer");
-  }
-
+  // function handleClick() {
+  //   try {
+  //     track?.("cta_click", { source, label });
+  //   } catch {}
+  //   window.open(BOOKING_URL, "_blank", "noopener,noreferrer");
+  // }
+  console.log(source)
   return (
     <Link
       href={route}

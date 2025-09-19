@@ -2,8 +2,8 @@
 
 import type { Metadata } from "next";
 import Image from "next/image";
-import Link from "next/link";
-import { MapPin, Clock, Phone, Facebook, Twitter, Instagram, Youtube } from "lucide-react";
+// import Link from "next/link";
+import { MapPin, Clock, Phone, Facebook, Instagram, Youtube } from "lucide-react";
 
 export const metadata: Metadata = {
     title: "Contact Us - Location, Hours & Booking Info | Zero Latency VR Houston, Webster",
