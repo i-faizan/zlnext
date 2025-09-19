@@ -117,7 +117,8 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  fbqTrack('PageView')
+  fbqTrack('PageView');
+  fbqTrack('Prospect Landed');
   return (
     <html lang="en">
       <head>
@@ -136,7 +137,7 @@ export default function RootLayout({
       s.parentNode.insertBefore(t,s)}(window,document,'script',
       'https://connect.facebook.net/en_US/fbevents.js');
       fbq('init', '1446504206776301');
-      fbq('track', 'PageView');
+      fbq('track', 'Prospect Landed');
     `,
           }}
         />
