@@ -14,5 +14,6 @@ declare global {
 
 export const fbqTrack = (name: string, params: FbqParams = {}): void => {
   if (!META_PIXEL_ID || typeof window === 'undefined' || !window.fbq) return;
+  console.log('FBQ Track:', name, params);
   window.fbq('track', name, params);
 };

@@ -119,6 +119,7 @@ export default function RootLayout({
 }>) {
   fbqTrack('PageView');
   fbqTrack('Prospect Landed');
+  console.log("Page View Tracked")
   return (
     <html lang="en">
       <head>
