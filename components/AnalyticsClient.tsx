@@ -19,12 +19,13 @@ export default function AnalyticsClient() {
     // Fire the GA4 pageview
     track('zlwebster', { page_location: url });
     pageview(url);
+    fbqTrack('PageView');
     
 
     // Enriched page_view
     const env = buildEnvParams(url, ref);
     track('page_view_enriched', env);
-    fbqTrack('PageView', env);
+    
 
     // Optional client hints update
     enrichWithClientHints(env).then((updates) => {
