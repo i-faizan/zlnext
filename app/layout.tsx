@@ -7,8 +7,6 @@ import HeaderV3 from "@/components/HeaderV3";
 import Footer from "@/components/Footer";
 import AnalyticsClient from "@/components/AnalyticsClient";
 import { Suspense } from "react";
-import { fbqTrack } from "@/lib/meta";
-import HeaderV4 from "@/components/HeaderV4";
 
 const GA_ID = process.env.NEXT_PUBLIC_GA_ID
 // const META_PIXEL_ID = process.env.NEXT_PUBLIC_META_PIXEL_ID
@@ -164,7 +162,7 @@ export default function RootLayout({
         <a href="#main-content" className="sr-only focus:not-sr-only">Skip to content</a>
         <Suspense><AnalyticsClient /></Suspense>
 
-        <HeaderV4 />
+        <HeaderV3 />
         <Script id="nav-schema-ld-json" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(navSchema) }} />
         <main id="main-content" role="main">{children}</main>
         <Footer />
