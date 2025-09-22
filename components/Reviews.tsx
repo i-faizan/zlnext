@@ -69,7 +69,7 @@ export default function Review() {
                                 <span className="bg-cyan-600/30 text-cyan-200 px-3 py-1 rounded-full text-xs font-semibold">
                                     TOP EXPERIENCE
                                 </span>
-                                <a href="#" className="flex items-center text-cyan-400 hover:underline">
+                                <a href="https://maps.app.goo.gl/o2nYH1U37WsHWHiw6" className="flex items-center text-cyan-400 hover:underline">
                                     Read reviews <ArrowRight size={16} className="ml-1" />
                                 </a>
                             </div>
@@ -86,7 +86,7 @@ export default function Review() {
                             <div className="flex items-center gap-3">
                                 <div className="text-2xl font-bold text-white">5.0</div>
                                 <div className="flex text-yellow-400">{Array(5).fill(0).map((_, i) => <Star key={i} size={16} fill="currentColor" />)}</div>
-                                <span className="text-gray-400 text-sm">69 reviews</span>
+                                <span className="text-gray-400 text-sm">118 reviews</span>
                             </div>
                             <Image src="/Google.svg" alt="TripAdvisor" width={100} height={20} className="ml-auto mt-4" priority/>
                         </div>

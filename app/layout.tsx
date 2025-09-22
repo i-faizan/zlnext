@@ -123,7 +123,7 @@ export default function RootLayout({
         <meta name="msvalidate.01" content="999B6B7BDDC8D9C46D790CCA519C9266" />
         <Script
           id="meta-pixel"
-          strategy="afterInteractive"
+          strategy="lazyOnload"
           dangerouslySetInnerHTML={{
             __html: `
       !function(f,b,e,v,n,t,s)
