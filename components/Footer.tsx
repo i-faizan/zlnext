@@ -72,9 +72,9 @@ export default function Footer() {
 
             {/* Visit / Hours */}
             <div className="md:col-span-4">
-              <h4 className="mb-4 text-xs font-semibold uppercase tracking-wide text-gray-400">
+              <h2 className="mb-4 text-xs font-semibold uppercase tracking-wide text-gray-400">
                 Visit Us
-              </h4>
+              </h2>
               <ul className="space-y-2 text-sm text-gray-300">
                 <li>
                   <span className="font-medium text-white">Address:</span>{' '}
