@@ -101,7 +101,7 @@ export default function HeaderV3() {
               href={BOOKING_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="bg-cyan-500 text-white font-semibold px-5 py-2 rounded-full hover:bg-cyan-600 transition-colors duration-300"
+              className="bg-cyan-600 text-white font-semibold px-5 py-2 rounded-full hover:bg-cyan-600 transition-colors duration-300"
             >
               Book Now
             </a>
@@ -175,7 +175,7 @@ export default function HeaderV3() {
               href={BOOKING_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="block w-full text-center bg-cyan-500 text-white font-semibold px-5 py-3 rounded-full hover:bg-cyan-600 transition-colors duration-300"
+              className="block w-full text-center bg-cyan-600 text-white font-semibold px-5 py-3 rounded-full hover:bg-cyan-600 transition-colors duration-300"
               onClick={toggleMobileMenu}
             >
               Book Now
