@@ -42,7 +42,7 @@ export default function HeaderV4() {
       {/* --- 1. NEW PROMOTIONAL BANNER --- */}
       {/* This banner is fixed to the top, full-width, and only visible on mobile (md:hidden) */}
       <div className="fixed top-0 w-full bg-red-600 text-white text-center text-sm font-medium py-2 px-4 z-50 md:hidden">
-        This Weekend, use <span className="font-bold">ZEROSPECIAL25</span> for Flat 25% off
+        On Weekdays, use <span className="font-bold">ZEROWEEK15</span> for Flat 15% off
       </div>
 
       {/* --- 2. MODIFIED HEADER --- */}
