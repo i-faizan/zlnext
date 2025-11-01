@@ -5,6 +5,9 @@ import Image from "next/image";
 import Link from "next/link";
 import BookGameButton from "@/components/BookBtn";
 import { Flag, Trophy, UserCog, Zap } from "lucide-react";
+import Script from "next/script";
+import { generateBreadcrumbSchema } from "@/lib/breadcrumbs";
+import InteractiveVideoPlayer from "@/components/InteractiveVideoPlayer";
 export const metadata: Metadata = {
   title: "Sol Raiders - Team PvP VR Battle | Zero Latency VR Houston, Webster",
   description:
@@ -20,12 +23,22 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: "https://zlwebster.com/OG.jpg", // replace with your OG image
+        url: "https://zlwebster.com/game-sol-raiders.webp",
         width: 1200,
         height: 630,
         alt: "Sol Raiders PvP teams clash in a futuristic VR arena.",
       },
     ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Sol Raiders - Team PvP VR Battle | Zero Latency VR Houston, Webster",
+    description: "Two squads. One objective. Compete in an esports-style PvP VR arena for up to 8 players.",
+    images: ["https://zlwebster.com/game-sol-raiders.webp"],
+  },
+  robots: {
+    index: true,
+    follow: true,
   },
 };
 
@@ -63,8 +76,58 @@ const VisualFeatureCard = ({
 );
 
 export default function SolRaidersPage() {
+  const breadcrumbSchema = generateBreadcrumbSchema([
+    { name: "Home", url: "https://zlwebster.com/" },
+    { name: "Games", url: "https://zlwebster.com/games" },
+    { name: "Sol Raiders", url: "https://zlwebster.com/games/sol-raiders" },
+  ]);
+
+  const gameSchema = {
+    "@context": "https://schema.org",
+    "@type": "VideoGame",
+    "@id": "https://zlwebster.com/games/sol-raiders#game",
+    "name": "Sol Raiders",
+    "description": "Compete in Sol Raiders, a team-vs-team VR shootout. Two squads of up to 4 each battle across futuristic arenas in a quest for a precious energy source in this esports-style free-roam VR game.",
+    "url": "https://zlwebster.com/games/sol-raiders",
+    "image": "https://zlwebster.com/game-sol-raiders.webp",
+    "gameLocation": {
+      "@type": "Place",
+      "name": "Zero Latency VR Houston, Webster",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "BayWay Village Shopping Center, 20801 Gulf Fwy suite 5",
+        "addressLocality": "Webster",
+        "addressRegion": "TX",
+        "postalCode": "77598",
+        "addressCountry": "US"
+      }
+    },
+    "applicationCategory": "Game",
+    "operatingSystem": "VR Platform",
+    "offers": {
+      "@type": "Offer",
+      "availability": "https://schema.org/InStock",
+      "priceCurrency": "USD",
+      "url": "https://booking.zerolatencyvr.com/en/book-now/webster"
+    },
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "5",
+      "ratingCount": "142"
+    },
+    "genre": ["PvP", "Competitive", "Shooter", "eSports"],
+    "numberOfPlayers": "2-8",
+    "playMode": "Multiplayer",
+    "gameItem": "VR Experience"
+  };
+
   return (
-    <main id="main-content">
+    <>
+      <Script id="breadcrumb-schema" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+      <Script id="game-schema" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(gameSchema) }} />
+      <article itemScope itemType="https://schema.org/VideoGame">
+        <meta itemProp="name" content="Sol Raiders" />
+        <main id="main-content">
       <div className="bg-[#000F13] text-gray-200 font-montserrat overflow-x-hidden">
         {/* HERO */}
         <section className="relative min-h-[90vh] flex items-center justify-center text-center py-20 lg:py-0">
@@ -119,6 +182,16 @@ export default function SolRaidersPage() {
             </div>
           </div>
         </section>
+
+        <section className="py-16 md:py-24">
+                        <div className="mx-auto max-w-6xl px-4 sm:px-6">
+                            <InteractiveVideoPlayer
+                                videoSrc="/sol-raiders-trailer.mp4"
+                                thumbnailSrc="/sol-raiders-trailer-thumbnail.webp"
+                                thumbnailAlt="Sol Raiders trailer"
+                            />
+                        </div>
+                    </section>
 
         {/* INTRO / CONCEPT */}
         <section className="py-20 sm:py-24">
@@ -325,5 +398,7 @@ export default function SolRaidersPage() {
         </section>
       </div>
     </main>
+    </article>
+    </>
   );
 }

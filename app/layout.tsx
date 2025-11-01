@@ -25,16 +25,12 @@ export const metadata: Metadata = {
   generator: "Next.js",
   metadataBase: new URL("https://zlwebster.com/"),
   referrer: "origin-when-cross-origin",
-  alternates: {
-    languages: {
-      "en-US": "https://zlwebster.com/",
-    },
-  },
   openGraph: {
-    title: "Virtual Reality Gaming Arena in Greater Houston | Zero Latency VR Houston, Webste",
+    title: "Virtual Reality Gaming Arena in Greater Houston | Zero Latency VR Houston, Webster",
     description:
       "Experience the world's most advanced VR Adventure in Webster serving Greater Houston. Up to 8 players. Zombie survival, sci-fi missions, PvP esports, and family-friendly worlds.",
     siteName: "Zero Latency VR Webster",
+    url: "https://zlwebster.com/",
     images: [
       {
         url: "https://zlwebster.com/OG.jpg",
@@ -46,6 +42,82 @@ export const metadata: Metadata = {
     locale: "en_US",
     type: "website",
   },
+  twitter: {
+    card: "summary_large_image",
+    title: "Virtual Reality Gaming Arena in Greater Houston | Zero Latency VR Houston, Webster",
+    description: "Experience the world's most advanced VR Adventure in Webster serving Greater Houston. Up to 8 players. Zombie survival, sci-fi missions, PvP esports, and family-friendly worlds.",
+    images: ["https://zlwebster.com/OG.jpg"],
+    creator: "@zlwebster",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+  alternates: {
+    canonical: "https://zlwebster.com/",
+    languages: {
+      "en-US": "https://zlwebster.com/",
+    },
+  },
+};
+
+const organizationSchema = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "@id": "https://zlwebster.com/#organization",
+  "name": "Zero Latency VR Houston, Webster",
+  "legalName": "Zero Latency VR Houston, Webster",
+  "url": "https://zlwebster.com/",
+  "logo": "https://zlwebster.com/ZL-W.png",
+  "foundingDate": "2025",
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "telephone": "+14694049149",
+    "contactType": "Customer Service",
+    "email": "zero@zlwebster.com",
+    "areaServed": "US",
+    "availableLanguage": "en"
+  },
+  "sameAs": [
+    "https://www.facebook.com/zerolatencywebstr",
+    "https://www.instagram.com/zerolatencywebstr",
+    "https://www.tiktok.com/@zerolatencywebstr",
+    "https://www.youtube.com/@ZeroLatencyWebster",
+    "https://www.twitter.com/@zlwebster"
+  ],
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "BayWay Village Shopping Center, 20801 Gulf Fwy suite 5",
+    "addressLocality": "Webster",
+    "addressRegion": "TX",
+    "postalCode": "77598",
+    "addressCountry": "US"
+  }
+};
+
+const websiteSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "@id": "https://zlwebster.com/#website",
+  "url": "https://zlwebster.com/",
+  "name": "Zero Latency VR Houston, Webster",
+  "description": "Experience the world's most advanced VR Adventure in Webster serving Greater Houston. Up to 8 players. Zombie survival, sci-fi missions, PvP esports, and family-friendly worlds.",
+  "publisher": { "@id": "https://zlwebster.com/#organization" },
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": {
+      "@type": "EntryPoint",
+      "urlTemplate": "https://zlwebster.com/?s={search_term_string}"
+    },
+    "query-input": "required name=search_term_string"
+  }
 };
 
 const navSchema = {
@@ -163,6 +235,8 @@ export default function RootLayout({
         <Suspense><AnalyticsClient /></Suspense>
 
         <HeaderV4 />
+        <Script id="organization-schema-ld-json" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }} />
+        <Script id="website-schema-ld-json" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }} />
         <Script id="nav-schema-ld-json" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(navSchema) }} />
         <main id="main-content" role="main">{children}</main>
         <Footer />

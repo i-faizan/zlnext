@@ -3,6 +3,8 @@ import Image from "next/image";
 import { CheckCircle, Ticket, LogIn, Headset, Gamepad2, Trophy, UserCheck } from "lucide-react";
 import BookGameButton from "@/components/BookBtn";
 import InteractiveVideoPlayer from "@/components/InteractiveVideoPlayer";
+import Script from "next/script";
+import { generateBreadcrumbSchema } from "@/lib/breadcrumbs";
 
 // SEO Metadata for the page
 export const metadata: Metadata = {
@@ -18,12 +20,22 @@ export const metadata: Metadata = {
         type: "article",
         images: [
             {
-                url: "https://zlwebster.com/og-what-to-expect.webp",
+                url: "https://zlwebster.com/what-to-expect-thumbnail.webp",
                 width: 1200,
                 height: 630,
                 alt: "A player wearing a VR headset and holding a controller at Zero Latency Webster.",
             },
         ],
+    },
+    twitter: {
+        card: "summary_large_image",
+        title: "What to Expect | Zero Latency VR Houston, Webster",
+        description: "From check-in to the final scoreboard, here's everything you need to know about your free-roam VR adventure at Zero Latency Webster.",
+        images: ["https://zlwebster.com/what-to-expect-thumbnail.webp"],
+    },
+    robots: {
+        index: true,
+        follow: true,
     },
 };
 
@@ -80,8 +92,17 @@ const timelineSteps = [
 ];
 
 export default function WhatToExpectPage() {
+    const breadcrumbSchema = generateBreadcrumbSchema([
+        { name: "Home", url: "https://zlwebster.com/" },
+        { name: "What to Expect", url: "https://zlwebster.com/what-to-expect" },
+    ]);
+
     return (
-        <main id="main-content">
+        <>
+            <Script id="breadcrumb-schema" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+            <article itemScope itemType="https://schema.org/Article">
+                <meta itemProp="headline" content="What to Expect | Zero Latency VR Houston, Webster" />
+                <main id="main-content">
             <div className="bg-[#000F13] text-gray-200 font-montserrat">
                 {/* HERO SECTION */}
                 <section className="relative h-[60vh] flex items-center justify-center text-center">
@@ -221,5 +242,7 @@ export default function WhatToExpectPage() {
                 </section>
             </div>
         </main>
+        </article>
+        </>
     );
 }

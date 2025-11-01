@@ -5,6 +5,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { BrainCircuit, Shield, Sparkles, Swords, Orbit } from "lucide-react";
 import BookGameButton from "@/components/BookBtn";
+import Script from "next/script";
+import { generateBreadcrumbSchema } from "@/lib/breadcrumbs";
+import InteractiveVideoPlayer from "@/components/InteractiveVideoPlayer";
 
 export const metadata: Metadata = {
     title: "Singularity - Battle Robots & AI in VR Space Station | Zero Latency VR Houston, Webster",
@@ -19,12 +22,22 @@ export const metadata: Metadata = {
         type: "website",
         images: [
             {
-                url: "https://zlwebster.com/OG.jpg", // Replace with actual game OG image
+                url: "https://zlwebster.com/game-singularity.webp",
                 width: 1200,
                 height: 630,
                 alt: "A team of players in futuristic gear battles robots inside a high-tech space station.",
             },
         ],
+    },
+    twitter: {
+        card: "summary_large_image",
+        title: "Singularity - Battle Robots & AI in VR Space Station | Zero Latency VR Houston, Webster",
+        description: "Your team must investigate a military space station that's gone dark. But you're not alone. A rogue AI is in control.",
+        images: ["https://zlwebster.com/game-singularity.webp"],
+    },
+    robots: {
+        index: true,
+        follow: true,
     },
 };
 
@@ -55,8 +68,58 @@ const VisualFeatureCard = ({ imgSrc, imgAlt, title, children }: { imgSrc: string
 
 
 export default function SingularityPage() {
+    const breadcrumbSchema = generateBreadcrumbSchema([
+        { name: "Home", url: "https://zlwebster.com/" },
+        { name: "Games", url: "https://zlwebster.com/games" },
+        { name: "Singularity", url: "https://zlwebster.com/games/singularity" },
+    ]);
+
+    const gameSchema = {
+        "@context": "https://schema.org",
+        "@type": "VideoGame",
+        "@id": "https://zlwebster.com/games/singularity#game",
+        "name": "Singularity",
+        "description": "Investigate a secret research facility in Singularity, a futuristic VR shooter. Up to 8 players explore a space station overrun by rogue robots and AI defenses.",
+        "url": "https://zlwebster.com/games/singularity",
+        "image": "https://zlwebster.com/game-singularity.webp",
+        "gameLocation": {
+            "@type": "Place",
+            "name": "Zero Latency VR Houston, Webster",
+            "address": {
+                "@type": "PostalAddress",
+                "streetAddress": "BayWay Village Shopping Center, 20801 Gulf Fwy suite 5",
+                "addressLocality": "Webster",
+                "addressRegion": "TX",
+                "postalCode": "77598",
+                "addressCountry": "US"
+            }
+        },
+        "applicationCategory": "Game",
+        "operatingSystem": "VR Platform",
+        "offers": {
+            "@type": "Offer",
+            "availability": "https://schema.org/InStock",
+            "priceCurrency": "USD",
+            "url": "https://booking.zerolatencyvr.com/en/book-now/webster"
+        },
+        "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "5",
+            "ratingCount": "165"
+        },
+        "genre": ["Sci-Fi", "Shooter", "Action"],
+        "numberOfPlayers": "1-8",
+        "playMode": "Multiplayer",
+        "gameItem": "VR Experience"
+    };
+
     return (
-        <main id="main-content">
+        <>
+            <Script id="breadcrumb-schema" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+            <Script id="game-schema" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(gameSchema) }} />
+            <article itemScope itemType="https://schema.org/VideoGame">
+                <meta itemProp="name" content="Singularity" />
+                <main id="main-content">
             <div className="bg-[#000F13] text-gray-200 font-montserrat overflow-x-hidden">
 
                 {/* HERO SECTION */}
@@ -110,6 +173,16 @@ export default function SingularityPage() {
                         </div>
                     </div>
                 </section>
+
+                <section className="py-16 md:py-24">
+                        <div className="mx-auto max-w-6xl px-4 sm:px-6">
+                            <InteractiveVideoPlayer
+                                videoSrc="/singularity-trailer.mp4"
+                                thumbnailSrc="/singularity-trailer-thumbnail.jpg"
+                                thumbnailAlt="Singularity trailer"
+                            />
+                        </div>
+                    </section>
 
                 {/* STORY SETUP SECTION */}
                 <section className="py-20 sm:py-24">
@@ -220,5 +293,7 @@ export default function SingularityPage() {
                 </section>
             </div>
         </main>
+        </article>
+        </>
     );
 }

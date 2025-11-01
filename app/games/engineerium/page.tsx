@@ -5,6 +5,8 @@ import Image from "next/image";
 import Link from "next/link";
 import BookGameButton from "@/components/BookBtn";
 import { Eye, Puzzle, Recycle, Users } from "lucide-react";
+import Script from "next/script";
+import { generateBreadcrumbSchema } from "@/lib/breadcrumbs";
 
 export const metadata: Metadata = {
   title: "Engineerium – Surreal Puzzle VR Adventure | Zero Latency VR Houston, Webster",
@@ -21,13 +23,23 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: "https://zlwebster.com/OG.jpg", // replace with your OG image
+        url: "https://zlwebster.com/game-engineerium.webp",
         width: 1200,
         height: 630,
         alt:
           "Engineerium VR: floating islands and ancient machinery in a vibrant alien sky.",
       },
     ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Engineerium – Surreal Puzzle VR Adventure in Houston | Zero Latency",
+    description: "A serene, gravity-defying VR puzzle world for all ages. Explore floating islands and solve mind-bending challenges.",
+    images: ["https://zlwebster.com/game-engineerium.webp"],
+  },
+  robots: {
+    index: true,
+    follow: true,
   },
 };
 
@@ -65,8 +77,58 @@ const VisualFeatureCard = ({
 );
 
 export default function EngineeriumPage() {
+  const breadcrumbSchema = generateBreadcrumbSchema([
+    { name: "Home", url: "https://zlwebster.com/" },
+    { name: "Games", url: "https://zlwebster.com/games" },
+    { name: "Engineerium", url: "https://zlwebster.com/games/engineerium" },
+  ]);
+
+  const gameSchema = {
+    "@context": "https://schema.org",
+    "@type": "VideoGame",
+    "@id": "https://zlwebster.com/games/engineerium#game",
+    "name": "Engineerium",
+    "description": "Enter the magical world of Engineerium, a family-friendly VR experience. Walk among floating islands and solve mind-bending puzzles in a beautiful alien realm – all in free-roam VR with no guns or gore.",
+    "url": "https://zlwebster.com/games/engineerium",
+    "image": "https://zlwebster.com/game-engineerium.webp",
+    "gameLocation": {
+      "@type": "Place",
+      "name": "Zero Latency VR Houston, Webster",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "BayWay Village Shopping Center, 20801 Gulf Fwy suite 5",
+        "addressLocality": "Webster",
+        "addressRegion": "TX",
+        "postalCode": "77598",
+        "addressCountry": "US"
+      }
+    },
+    "applicationCategory": "Game",
+    "operatingSystem": "VR Platform",
+    "offers": {
+      "@type": "Offer",
+      "availability": "https://schema.org/InStock",
+      "priceCurrency": "USD",
+      "url": "https://booking.zerolatencyvr.com/en/book-now/webster"
+    },
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "5",
+      "ratingCount": "175"
+    },
+    "genre": ["Puzzle", "Adventure", "Family-Friendly", "Exploration"],
+    "numberOfPlayers": "1-8",
+    "playMode": "Multiplayer",
+    "gameItem": "VR Experience"
+  };
+
   return (
-    <main id="main-content">
+    <>
+      <Script id="breadcrumb-schema" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+      <Script id="game-schema" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(gameSchema) }} />
+      <article itemScope itemType="https://schema.org/VideoGame">
+        <meta itemProp="name" content="Engineerium" />
+        <main id="main-content">
       <div className="bg-[#000F13] text-gray-200 font-montserrat overflow-x-hidden">
         {/* HERO */}
         <section className="relative min-h-[90vh] flex items-center justify-center text-center py-20 lg:py-0">
@@ -291,5 +353,7 @@ export default function EngineeriumPage() {
         </section>
       </div>
     </main>
+    </article>
+    </>
   );
 }

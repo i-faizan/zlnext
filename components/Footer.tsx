@@ -75,37 +75,37 @@ export default function Footer() {
               <h2 className="mb-4 text-xs font-semibold uppercase tracking-wide text-gray-400">
                 Visit Us
               </h2>
-              <ul className="space-y-2 text-sm text-gray-300">
+              <ul className="space-y-2 text-sm text-gray-300" itemScope itemType="https://schema.org/PostalAddress">
                 <li>
                   <span className="font-medium text-white">Address:</span>{' '}
-                  20801 Gulf Fwy suite 5, Webster, TX 77598, United States
+                  <span itemProp="streetAddress">BayWay Village Shopping Center, 20801 Gulf Fwy suite 5</span>, <span itemProp="addressLocality">Webster</span>, <span itemProp="addressRegion">TX</span> <span itemProp="postalCode">77598</span>, <span itemProp="addressCountry">United States</span>
                 </li>
                 <li>
                   <span className="font-medium text-white">Phone:</span>{' '}
-                  <a href="tel:+14694049149" className="hover:underline">
+                  <a href="tel:+14694049149" className="hover:underline" itemProp="telephone">
                     (469) 404-9149
                   </a>
                 </li>
                 <li>
                   <span className="font-medium text-white">Email:</span>{' '}
-                  <a href="mailto:hello@zlwebster.com" className="hover:underline">
+                  <a href="mailto:zero@zlwebster.com" className="hover:underline" itemProp="email">
                     zero@zlwebster.com
                   </a>
                 </li>
               </ul>
 
-              <div className="mt-4 rounded-xl border border-white/10 bg-white/5 p-4">
+              <div className="mt-4 rounded-xl border border-white/10 bg-white/5 p-4" itemScope itemType="https://schema.org/OpeningHoursSpecification">
                 <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-gray-400">
                   Hours
                 </p>
                 <dl className="grid grid-cols-2 gap-y-1 text-sm text-gray-300">
-                  <dt>Monday</dt><dd className="text-right">04:00pm – 09:30pm</dd>
-                  <dt>Tuesday</dt><dd className="text-right">04:00pm – 09:30pm</dd>
-                  <dt>Wednesday</dt><dd className="text-right">02:00pm – 09:30pm</dd>
-                  <dt>Thursday</dt><dd className="text-right">02:00pm – 09:30pm</dd>
-                  <dt>Friday</dt><dd className="text-right">11:00am – 11:00pm</dd>
-                  <dt>Saturday</dt><dd className="text-right">11:00am – 11:00pm</dd>
-                  <dt>Sunday</dt><dd className="text-right">11:00am – 11:00pm</dd>
+                  <dt>Monday</dt><dd className="text-right"><time dateTime="16:00">04:00pm</time> - <time dateTime="21:30">09:30pm</time></dd>
+                  <dt>Tuesday</dt><dd className="text-right"><time dateTime="16:00">04:00pm</time> - <time dateTime="21:30">09:30pm</time></dd>
+                  <dt>Wednesday</dt><dd className="text-right"><time dateTime="14:00">02:00pm</time> - <time dateTime="21:30">09:30pm</time></dd>
+                  <dt>Thursday</dt><dd className="text-right"><time dateTime="14:00">02:00pm</time> - <time dateTime="21:30">09:30pm</time></dd>
+                  <dt>Friday</dt><dd className="text-right"><time dateTime="11:00">11:00am</time> - <time dateTime="23:00">11:00pm</time></dd>
+                  <dt>Saturday</dt><dd className="text-right"><time dateTime="11:00">11:00am</time> - <time dateTime="23:00">11:00pm</time></dd>
+                  <dt>Sunday</dt><dd className="text-right"><time dateTime="11:00">11:00am</time> - <time dateTime="23:00">11:00pm</time></dd>
                 </dl>
               </div>
             </div>

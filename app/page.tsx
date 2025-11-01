@@ -22,10 +22,15 @@ export const metadata: Metadata = {
       images: ["https://zlwebster.com/OG.jpg"]
     },
   alternates: {
+    canonical: "https://zlwebster.com/",
     languages: {
       "en-US": "https://zlwebster.com/",
     },
-  }
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 const faqs = [

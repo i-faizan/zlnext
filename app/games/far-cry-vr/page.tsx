@@ -5,6 +5,9 @@ import Image from "next/image";
 import Link from "next/link";
 import BookGameButton from "@/components/BookBtn";
 import { Drama, Flame, Palmtree, Users } from "lucide-react";
+import Script from "next/script";
+import { generateBreadcrumbSchema } from "@/lib/breadcrumbs";
+import InteractiveVideoPlayer from "@/components/InteractiveVideoPlayer";
 
 export const metadata: Metadata = {
   title: "Far Cry VR: Dive Into Insanity | Zero Latency VR Houston, Webster",
@@ -16,18 +19,28 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Far Cry VR: Dive Into Insanity | Zero Latency VR Houston, Webster",
     description:
-      "Team up and fight your way off Vaas’s island in a 30-minute Far Cry® 3 free-roam VR adventure for up to 8 players.",
+      "Team up and fight your way off Vaas's island in a 30-minute Far Cry® 3 free-roam VR adventure for up to 8 players.",
     url: "https://zlwebster.com/games/far-cry-vr",
     type: "website",
     images: [
       {
-        url: "https://zlwebster.com/OG.jpg", // replace with your OG image
+        url: "https://zlwebster.com/game-far-cry-vr.webp",
         width: 1200,
         height: 630,
         alt:
           "Far Cry VR: Dive Into Insanity — players on a tropical island facing pirates with VR rifles.",
       },
     ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Far Cry VR: Dive Into Insanity | Zero Latency VR Houston, Webster",
+    description: "Team up and fight your way off Vaas's island in a 30-minute Far Cry® 3 free-roam VR adventure.",
+    images: ["https://zlwebster.com/game-far-cry-vr.webp"],
+  },
+  robots: {
+    index: true,
+    follow: true,
   },
 };
 
@@ -65,8 +78,58 @@ const VisualFeatureCard = ({
 );
 
 export default function FarCryVRPage() {
+  const breadcrumbSchema = generateBreadcrumbSchema([
+    { name: "Home", url: "https://zlwebster.com/" },
+    { name: "Games", url: "https://zlwebster.com/games" },
+    { name: "Far Cry VR", url: "https://zlwebster.com/games/far-cry-vr" },
+  ]);
+
+  const gameSchema = {
+    "@context": "https://schema.org",
+    "@type": "VideoGame",
+    "@id": "https://zlwebster.com/games/far-cry-vr#game",
+    "name": "Far Cry VR: Dive Into Insanity",
+    "description": "Enter the world of Far Cry® 3 in an exclusive VR adventure. Fight your way off Vaas's island in a 30-minute free-roam VR shooter for up to 8 players.",
+    "url": "https://zlwebster.com/games/far-cry-vr",
+    "image": "https://zlwebster.com/game-far-cry-vr.webp",
+    "gameLocation": {
+      "@type": "Place",
+      "name": "Zero Latency VR Houston, Webster",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "BayWay Village Shopping Center, 20801 Gulf Fwy suite 5",
+        "addressLocality": "Webster",
+        "addressRegion": "TX",
+        "postalCode": "77598",
+        "addressCountry": "US"
+      }
+    },
+    "applicationCategory": "Game",
+    "operatingSystem": "VR Platform",
+    "offers": {
+      "@type": "Offer",
+      "availability": "https://schema.org/InStock",
+      "priceCurrency": "USD",
+      "url": "https://booking.zerolatencyvr.com/en/book-now/webster"
+    },
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "5",
+      "ratingCount": "195"
+    },
+    "genre": ["Action", "Adventure", "Shooter"],
+    "numberOfPlayers": "1-8",
+    "playMode": "Multiplayer",
+    "gameItem": "VR Experience"
+  };
+
   return (
-    <main id="main-content">
+    <>
+      <Script id="breadcrumb-schema" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+      <Script id="game-schema" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(gameSchema) }} />
+      <article itemScope itemType="https://schema.org/VideoGame">
+        <meta itemProp="name" content="Far Cry VR: Dive Into Insanity" />
+        <main id="main-content">
       <div className="bg-[#000F13] text-gray-200 font-montserrat overflow-x-hidden">
         {/* HERO */}
         <section className="relative min-h-[90vh] flex items-center justify-center text-center py-20 lg:py-0">
@@ -120,6 +183,16 @@ export default function FarCryVRPage() {
             </div>
           </div>
         </section>
+
+        <section className="py-16 md:py-24">
+                        <div className="mx-auto max-w-6xl px-4 sm:px-6">
+                            <InteractiveVideoPlayer
+                                videoSrc="/far-cry-trailer.mp4"
+                                thumbnailSrc="/far-cry-trailer-thumbnail.jpg"
+                                thumbnailAlt="Far Cry VR trailer"
+                            />
+                        </div>
+                    </section>
 
         {/* INTRO / STORY */}
         <section className="py-20 sm:py-24">
@@ -331,5 +404,7 @@ export default function FarCryVRPage() {
         </section>
       </div>
     </main>
+    </article>
+    </>
   );
 }

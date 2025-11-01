@@ -5,6 +5,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { Users, Biohazard, Crosshair, Rocket } from "lucide-react";
 import BookGameButton from "@/components/BookBtn";
+import Script from "next/script";
+import { generateBreadcrumbSchema } from "@/lib/breadcrumbs";
+import InteractiveVideoPlayer from "@/components/InteractiveVideoPlayer";
 
 export const metadata: Metadata = {
     title: "Outbreak - Zombie Survival VR | Zero Latency VR Houston, Webster",
@@ -19,12 +22,22 @@ export const metadata: Metadata = {
         type: "website",
         images: [
             {
-                url: "https://zlwebster.com/OG.jpg", // Replace with actual game OG image
+                url: "https://zlwebster.com/game-outbreak.webp",
                 width: 1200,
                 height: 630,
                 alt: "A squad of players stands back-to-back against a zombie horde in the Outbreak VR game.",
             },
         ],
+    },
+    twitter: {
+        card: "summary_large_image",
+        title: "Outbreak - Zombie Survival VR | Zero Latency VR Houston, Webster",
+        description: "Team up to fight hordes of the undead in a hyper-realistic free-roam VR experience.",
+        images: ["https://zlwebster.com/game-outbreak.webp"],
+    },
+    robots: {
+        index: true,
+        follow: true,
     },
 };
 
@@ -55,8 +68,58 @@ const VisualFeatureCard = ({ imgSrc, imgAlt, title, children }: { imgSrc: string
 
 
 export default function OutbreakPage() {
+    const breadcrumbSchema = generateBreadcrumbSchema([
+        { name: "Home", url: "https://zlwebster.com/" },
+        { name: "Games", url: "https://zlwebster.com/games" },
+        { name: "Outbreak", url: "https://zlwebster.com/games/outbreak" },
+    ]);
+
+    const gameSchema = {
+        "@context": "https://schema.org",
+        "@type": "VideoGame",
+        "@id": "https://zlwebster.com/games/outbreak#game",
+        "name": "Outbreak",
+        "description": "Survive a zombie apocalypse in Outbreak, a heart-pounding free-roam VR game. Team up with up to 8 survivors, fight through undead-infested streets, and uncover the source of the outbreak.",
+        "url": "https://zlwebster.com/games/outbreak",
+        "image": "https://zlwebster.com/game-outbreak.webp",
+        "gameLocation": {
+            "@type": "Place",
+            "name": "Zero Latency VR Houston, Webster",
+            "address": {
+                "@type": "PostalAddress",
+                "streetAddress": "BayWay Village Shopping Center, 20801 Gulf Fwy suite 5",
+                "addressLocality": "Webster",
+                "addressRegion": "TX",
+                "postalCode": "77598",
+                "addressCountry": "US"
+            }
+        },
+        "applicationCategory": "Game",
+        "operatingSystem": "VR Platform",
+        "offers": {
+            "@type": "Offer",
+            "availability": "https://schema.org/InStock",
+            "priceCurrency": "USD",
+            "url": "https://booking.zerolatencyvr.com/en/book-now/webster"
+        },
+        "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "5",
+            "ratingCount": "228"
+        },
+        "genre": ["Horror", "Survival", "Shooter", "Zombie"],
+        "numberOfPlayers": "1-8",
+        "playMode": "Multiplayer",
+        "gameItem": "VR Experience"
+    };
+
     return (
-        <main id="main-content">
+        <>
+            <Script id="breadcrumb-schema" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+            <Script id="game-schema" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(gameSchema) }} />
+            <article itemScope itemType="https://schema.org/VideoGame">
+                <meta itemProp="name" content="Outbreak" />
+                <main id="main-content">
             <div className="bg-[#000F13] text-gray-200 font-montserrat overflow-x-hidden">
 
                 {/* HERO SECTION */}
@@ -110,6 +173,16 @@ export default function OutbreakPage() {
                         </div>
                     </div>
                 </section>
+
+                <section className="py-16 md:py-24">
+                        <div className="mx-auto max-w-6xl px-4 sm:px-6">
+                            <InteractiveVideoPlayer
+                                videoSrc="/outbreak-trailer.mp4"
+                                thumbnailSrc="/outbreak-trailer-thumbnail.jpg"
+                                thumbnailAlt="Outbreak trailer"
+                            />
+                        </div>
+                    </section>
 
                 {/* INTRODUCTION SECTION */}
                 <section className="py-20 sm:py-24">
@@ -247,5 +320,7 @@ export default function OutbreakPage() {
                 </section>
             </div>
         </main>
+        </article>
+        </>
     );
 }

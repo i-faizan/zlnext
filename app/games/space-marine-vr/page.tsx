@@ -4,12 +4,39 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { Users, ShieldAlert, Rocket, BrainCircuit } from "lucide-react";
 import BookGameButton from "@/components/BookBtn";
+import Script from "next/script";
+import { generateBreadcrumbSchema } from "@/lib/breadcrumbs";
+import InteractiveVideoPlayer from "@/components/InteractiveVideoPlayer";
 
 // Metadata remains the same
 export const metadata: Metadata = {
     title: "Space Marine VR – Warhammer 40,000 Experience | Zero Latency VR Houston, Webster",
     description: "See what it&apos;s like to battle Tyranid swarms in the Hive City of Fervastium. This image-rich guide shows you the weapons, tactics, and worlds of our most intense free-roam VR game.",
-    // ... other metadata fields
+    alternates: {
+        canonical: "https://zlwebster.com/games/space-marine-vr",
+    },
+    openGraph: {
+        title: "Space Marine VR - Warhammer 40,000 Experience | Zero Latency VR Houston, Webster",
+        description: "See what it&apos;s like to battle Tyranid swarms in the Hive City of Fervastium. This image-rich guide shows you the weapons, tactics, and worlds of our most intense free-roam VR game.",
+        url: "https://zlwebster.com/games/space-marine-vr",
+        type: "website",
+        images: [{
+            url: "https://zlwebster.com/game-space-marine.webp",
+            width: 1200,
+            height: 630,
+            alt: "Space Marine VR gameplay at Zero Latency",
+        }],
+    },
+    twitter: {
+        card: "summary_large_image",
+        title: "Space Marine VR - Warhammer 40,000 Experience | Zero Latency VR Houston, Webster",
+        description: "See what it&apos;s like to battle Tyranid swarms in the Hive City of Fervastium.",
+        images: ["https://zlwebster.com/game-space-marine.webp"],
+    },
+    robots: {
+        index: true,
+        follow: true,
+    },
 };
 
 // Card component with a square 1:1 aspect ratio for maximum image size
@@ -47,8 +74,58 @@ const VisualFeatureCard = ({ imgSrc, imgAlt, title, children }: { imgSrc: string
 
 
 export default function SpaceMarinePage() {
+    const breadcrumbSchema = generateBreadcrumbSchema([
+        { name: "Home", url: "https://zlwebster.com/" },
+        { name: "Games", url: "https://zlwebster.com/games" },
+        { name: "Space Marine VR", url: "https://zlwebster.com/games/space-marine-vr" },
+    ]);
+
+    const gameSchema = {
+        "@context": "https://schema.org",
+        "@type": "VideoGame",
+        "@id": "https://zlwebster.com/games/space-marine-vr#game",
+        "name": "Space Marine VR",
+        "description": "Step into the ceramite boots of an elite Space Marine and face relentless Tyranid hordes in a battle for humanity's survival. A Warhammer 40,000 free-roam VR experience.",
+        "url": "https://zlwebster.com/games/space-marine-vr",
+        "image": "https://zlwebster.com/game-space-marine.webp",
+        "gameLocation": {
+            "@type": "Place",
+            "name": "Zero Latency VR Houston, Webster",
+            "address": {
+                "@type": "PostalAddress",
+                "streetAddress": "BayWay Village Shopping Center, 20801 Gulf Fwy suite 5",
+                "addressLocality": "Webster",
+                "addressRegion": "TX",
+                "postalCode": "77598",
+                "addressCountry": "US"
+            }
+        },
+        "applicationCategory": "Game",
+        "operatingSystem": "VR Platform",
+        "offers": {
+            "@type": "Offer",
+            "availability": "https://schema.org/InStock",
+            "priceCurrency": "USD",
+            "url": "https://booking.zerolatencyvr.com/en/book-now/webster"
+        },
+        "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "5",
+            "ratingCount": "228"
+        },
+        "genre": ["Action", "Sci-Fi", "Shooter"],
+        "numberOfPlayers": "1-8",
+        "playMode": "Multiplayer",
+        "gameItem": "VR Experience"
+    };
+
     return (
-        <main id="main-content">
+        <>
+            <Script id="breadcrumb-schema" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+            <Script id="game-schema" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(gameSchema) }} />
+            <article itemScope itemType="https://schema.org/VideoGame">
+                <meta itemProp="name" content="Space Marine VR" />
+                <main id="main-content">
             <div className="bg-[#000F13] text-gray-200 font-montserrat overflow-x-hidden">
 
                 {/* HERO SECTION - REVISED WITH CENTERED CONTENT */}
@@ -102,6 +179,16 @@ export default function SpaceMarinePage() {
                         </div>
                     </div>
                 </section>
+
+                <section className="py-16 md:py-24">
+                        <div className="mx-auto max-w-6xl px-4 sm:px-6">
+                            <InteractiveVideoPlayer
+                                videoSrc="/space-marine-trailer.mp4"
+                                thumbnailSrc="/become-a-marine.webp"
+                                thumbnailAlt="Space Marine VR trailer"
+                            />
+                        </div>
+                    </section>
 
                 {/* VISUAL INTRODUCTION SECTION */}
                 <section className="py-20 sm:py-24">
@@ -220,5 +307,7 @@ export default function SpaceMarinePage() {
                 </section>
             </div>
         </main>
+        </article>
+        </>
     );
 }

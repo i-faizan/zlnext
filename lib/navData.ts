@@ -6,6 +6,7 @@ export const GAMES = [
 { name: 'Singularity', href: '/games/singularity' },
 { name: 'Sol Raiders', href: '/games/sol-raiders' },
 { name: 'Engineerium', href: '/games/engineerium' },
+{ name: 'Haunted', href: '/games/haunted' },
 ]
 
 export const PRIVATE_EVENTS = [

@@ -4,6 +4,8 @@ import type { Metadata } from "next";
 import Image from "next/image";
 // import Link from "next/link";
 import { MapPin, Clock, Phone, Facebook, Instagram, Youtube } from "lucide-react";
+import Script from "next/script";
+import { generateBreadcrumbSchema } from "@/lib/breadcrumbs";
 
 export const metadata: Metadata = {
     title: "Contact Us - Location, Hours & Booking Info | Zero Latency VR Houston, Webster",
@@ -12,15 +14,39 @@ export const metadata: Metadata = {
         canonical: "https://zlwebster.com/contact-us",
     },
     openGraph: {
-        title: "Contact Us - Zero Latency Houston",
+        title: "Contact Us - Location, Hours & Booking Info | Zero Latency VR Houston, Webster",
         description: "Get directions, hours, and contact info for the ultimate free-roam VR experience in Houston.",
         url: "https://zlwebster.com/contact-us",
+        type: "website",
+        images: [{
+            url: "https://zlwebster.com/OG.jpg",
+            width: 1200,
+            height: 630,
+            alt: "Contact Zero Latency VR Houston, Webster",
+        }],
+    },
+    twitter: {
+        card: "summary_large_image",
+        title: "Contact Us - Location, Hours & Booking Info | Zero Latency VR Houston, Webster",
+        description: "Get directions, hours, and contact info for the ultimate free-roam VR experience in Houston.",
+        images: ["https://zlwebster.com/OG.jpg"],
+    },
+    robots: {
+        index: true,
+        follow: true,
     },
 };
 
 export default function ContactPage() {
+    const breadcrumbSchema = generateBreadcrumbSchema([
+        { name: "Home", url: "https://zlwebster.com/" },
+        { name: "Contact Us", url: "https://zlwebster.com/contact-us" },
+    ]);
+
     return (
-        <main id="main-content">
+        <>
+            <Script id="breadcrumb-schema" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+            <main id="main-content">
             <div className="bg-[#000F13] text-gray-200 font-montserrat overflow-x-hidden">
 
                 {/* HERO SECTION */}
@@ -156,5 +182,6 @@ export default function ContactPage() {
 
             </div>
         </main>
+        </>
     );
 }

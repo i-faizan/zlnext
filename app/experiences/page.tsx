@@ -6,6 +6,8 @@ import Link from "next/link";
 import { Move3d, BrainCircuit, Users } from "lucide-react";
 import BookGameButton from "@/components/BookBtn"; // Assuming this is the path to your button
 import InteractiveVideoPlayer from "@/components/InteractiveVideoPlayer";
+import Script from "next/script";
+import { generateBreadcrumbSchema } from "@/lib/breadcrumbs";
 
 
 const experienceJsonLd =
@@ -94,12 +96,22 @@ export const metadata: Metadata = {
         type: "website",
         images: [
             {
-                url: "https://zlwebster.com/experiences.jpg",
+                url: "https://zlwebster.com/experience.jpg",
                 width: 1200,
                 height: 630,
                 alt: "A collage of different VR experiences at Zero Latency Webster.",
             },
         ],
+    },
+    twitter: {
+        card: "summary_large_image",
+        title: "VR Experiences & Immersive Adventures for Every Group | Zero Latency VR Houston, Webster",
+        description: "Explore the thrilling VR experiences at Zero Latency Webster, from zombie survival to competitive PvP esports.",
+        images: ["https://zlwebster.com/experience.jpg"],
+    },
+    robots: {
+        index: true,
+        follow: true,
     },
 };
 
@@ -153,9 +165,114 @@ const experienceCategories = [
 ];
 
 export default function ExperiencesPage() {
+    const breadcrumbSchema = generateBreadcrumbSchema([
+        { name: "Home", url: "https://zlwebster.com/" },
+        { name: "Experiences", url: "https://zlwebster.com/experiences" },
+    ]);
+
+    const serviceSchema = {
+        "@context": "https://schema.org",
+        "@type": "Service",
+        "serviceType": "Free-Roam Virtual Reality Experiences",
+        "provider": {
+            "@id": "https://zlwebster.com/#organization"
+        },
+        "areaServed": {
+            "@type": "GeoCircle",
+            "geoMidpoint": {
+                "@type": "GeoCoordinates",
+                "latitude": 29.5377,
+                "longitude": -95.1183
+            },
+            "geoRadius": {
+                "@type": "Distance",
+                "name": "80 km"
+            }
+        },
+        "hasOfferCatalog": {
+            "@type": "OfferCatalog",
+            "name": "VR Experiences",
+            "itemListElement": [
+                {
+                    "@type": "OfferCatalog",
+                    "name": "Zombie Apocalypse Adventures",
+                    "itemListElement": [
+                        {
+                            "@type": "Offer",
+                            "itemOffered": {
+                                "@type": "Service",
+                                "name": "Outbreak VR Experience"
+                            }
+                        },
+                        {
+                            "@type": "Offer",
+                            "itemOffered": {
+                                "@type": "Service",
+                                "name": "Undead Arena VR Experience"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "@type": "OfferCatalog",
+                    "name": "Sci-Fi & Space Missions",
+                    "itemListElement": [
+                        {
+                            "@type": "Offer",
+                            "itemOffered": {
+                                "@type": "Service",
+                                "name": "Singularity VR Experience"
+                            }
+                        },
+                        {
+                            "@type": "Offer",
+                            "itemOffered": {
+                                "@type": "Service",
+                                "name": "Space Marine VR Experience"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "@type": "OfferCatalog",
+                    "name": "PvP Competitions",
+                    "itemListElement": [
+                        {
+                            "@type": "Offer",
+                            "itemOffered": {
+                                "@type": "Service",
+                                "name": "Sol Raiders VR Experience"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "@type": "OfferCatalog",
+                    "name": "Family-Friendly Fantasy",
+                    "itemListElement": [
+                        {
+                            "@type": "Offer",
+                            "itemOffered": {
+                                "@type": "Service",
+                                "name": "Engineerium VR Experience"
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        "availableChannel": {
+            "@type": "ServiceChannel",
+            "serviceUrl": "https://zlwebster.com/experiences",
+            "servicePhone": "+14694049149"
+        }
+    };
+
     return (
         <>
-            <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(experienceJsonLd) }} />
+            <Script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(experienceJsonLd) }} />
+            <Script id="breadcrumb-schema" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+            <Script id="service-schema" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }} />
             <main id="main-content" className="pt-20 sm:pt-0">
                 <div className="bg-[#000F13] text-gray-200 font-montserrat">
                     {/* HERO SECTION */}

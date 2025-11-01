@@ -13,6 +13,7 @@ const nav = [
   {
     label: 'Games',
     children: [
+      { label: 'Haunted', href: '/games/haunted' },
       { label: 'Overview', href: '/games' },
       { label: 'Space Marine VR', href: '/games/space-marine-vr' },
       { label: 'Outbreak', href: '/games/outbreak' },
@@ -21,6 +22,7 @@ const nav = [
       { label: 'Singularity', href: '/games/singularity' },
       { label: 'Sol Raiders', href: '/games/sol-raiders' },
       { label: 'Engineerium', href: '/games/engineerium' },
+      
     ],
   },
   { label: 'Private Events', href: '/private-events' },

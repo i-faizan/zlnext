@@ -4,6 +4,8 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { PartyPopper, Briefcase, UserCheck, CheckCircle } from "lucide-react";
+import Script from "next/script";
+import { generateBreadcrumbSchema } from "@/lib/breadcrumbs";
 
 export const metadata: Metadata = {
     title: "Private Events and Immersive Parties | Zero Latency VR Houston, Webster",
@@ -15,14 +17,25 @@ export const metadata: Metadata = {
         title: "Private Events and Immersive Parties | Zero Latency VR Houston, Webster",
         description: "Looking for a unique venue? Book a private VR party, team building event, or bachelor party for an experience your group will never forget.",
         url: "https://zlwebster.com/private-events",
+        type: "website",
         images: [
             {
-                url: "https://zlwebster.com/OG.jpg", // Replace with actual OG image
+                url: "https://zlwebster.com/OG.jpg",
                 width: 1200,
                 height: 630,
                 alt: "A group of people celebrating at a private VR party at Zero Latency Webster.",
             },
         ],
+    },
+    twitter: {
+        card: "summary_large_image",
+        title: "Private Events and Immersive Parties | Zero Latency VR Houston, Webster",
+        description: "Looking for a unique venue? Book a private VR party, team building event, or bachelor party for an experience your group will never forget.",
+        images: ["https://zlwebster.com/OG.jpg"],
+    },
+    robots: {
+        index: true,
+        follow: true,
     },
 };
 
@@ -35,8 +48,15 @@ const FeatureListItem = ({ children }: { children: React.ReactNode }) => (
 );
 
 export default function PrivateEventsPage() {
+    const breadcrumbSchema = generateBreadcrumbSchema([
+        { name: "Home", url: "https://zlwebster.com/" },
+        { name: "Private Events", url: "https://zlwebster.com/private-events" },
+    ]);
+
     return (
-        <main id="main-content">
+        <>
+            <Script id="breadcrumb-schema" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+            <main id="main-content">
             <div className="bg-[#000F13] text-gray-200 font-montserrat overflow-x-hidden">
 
                 {/* HERO SECTION */}
@@ -198,5 +218,6 @@ export default function PrivateEventsPage() {
                 </section>
             </div>
         </main>
+        </>
     );
 }

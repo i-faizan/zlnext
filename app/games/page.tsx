@@ -5,13 +5,37 @@ import Image from "next/image";
 import Link from "next/link";
 import { Users, Clock, Swords, Puzzle, ChevronRight } from "lucide-react";
 import BookGameButton from "@/components/BookBtn"; // Ensure this path is correct
+import Script from "next/script";
+import { generateBreadcrumbSchema } from "@/lib/breadcrumbs";
 
 // SEO Metadata for the page
 export const metadata: Metadata = {
-    title: "VR Games at Zero Latency Houston – All Free-Roam Experiences",
+    title: "VR Games at Zero Latency Houston - All Free-Roam Experiences",
     description: "Browse all the VR games available at Zero Latency Houston. From zombie survival to space adventures and PvP battles, discover our free-roam virtual reality experiences. Find game summaries, player counts, and genres – pick your next adventure and step into the game!",
     alternates: {
         canonical: "https://zlwebster.com/games",
+    },
+    openGraph: {
+        title: "VR Games at Zero Latency Houston - All Free-Roam Experiences",
+        description: "Browse all the VR games available at Zero Latency Houston. From zombie survival to space adventures and PvP battles, discover our free-roam virtual reality experiences.",
+        url: "https://zlwebster.com/games",
+        type: "website",
+        images: [{
+            url: "https://zlwebster.com/OG.jpg",
+            width: 1200,
+            height: 630,
+            alt: "Zero Latency VR Houston, Webster - Games collection page",
+        }],
+    },
+    twitter: {
+        card: "summary_large_image",
+        title: "VR Games at Zero Latency Houston - All Free-Roam Experiences",
+        description: "Browse all the VR games available at Zero Latency Houston. From zombie survival to space adventures and PvP battles.",
+        images: ["https://zlwebster.com/OG.jpg"],
+    },
+    robots: {
+        index: true,
+        follow: true,
     },
 };
 
@@ -102,9 +126,15 @@ const otherGames = gamesData.slice(1);
 
 export default function GamesPage() {
     const FeaturedGenreIcon = featuredGame.genreIcon;
+    const breadcrumbSchema = generateBreadcrumbSchema([
+        { name: "Home", url: "https://zlwebster.com/" },
+        { name: "Games", url: "https://zlwebster.com/games" },
+    ]);
 
     return (
-        <main id="main-content">
+        <>
+            <Script id="breadcrumb-schema" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+            <main id="main-content">
             <div className="bg-[#000F13] text-gray-200 font-montserrat">
                 
                 {/* HERO SECTION */}
@@ -214,5 +244,6 @@ export default function GamesPage() {
                 </section>
             </div>
         </main>
+        </>
     );
 }

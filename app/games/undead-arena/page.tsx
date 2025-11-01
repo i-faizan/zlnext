@@ -5,6 +5,9 @@ import Image from "next/image";
 import Link from "next/link";
 import BookGameButton from "@/components/BookBtn";
 import { Skull, Swords, Users, Zap } from "lucide-react";
+import Script from "next/script";
+import { generateBreadcrumbSchema } from "@/lib/breadcrumbs";
+import InteractiveVideoPlayer from "@/components/InteractiveVideoPlayer";
 
 export const metadata: Metadata = {
   title: "Undead Arena - Zombie Wave VR Shooter | Zero Latency VR Houston, Webster",
@@ -21,12 +24,22 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: "https://zlwebster.com/OG.jpg", // replace with your OG image
+        url: "https://zlwebster.com/game-undead-arena.webp",
         width: 1200,
         height: 630,
         alt: "Undead Arena contestants fighting zombies under neon spotlights.",
       },
     ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Undead Arena - Zombie Wave VR Shooter | Zero Latency VR Houston, Webster",
+    description: "Contestants wanted! Battle waves of zombies for glory in a post-apocalyptic game show. Up to 8 players.",
+    images: ["https://zlwebster.com/game-undead-arena.webp"],
+  },
+  robots: {
+    index: true,
+    follow: true,
   },
 };
 
@@ -64,8 +77,58 @@ const VisualFeatureCard = ({
 );
 
 export default function UndeadArenaPage() {
+  const breadcrumbSchema = generateBreadcrumbSchema([
+    { name: "Home", url: "https://zlwebster.com/" },
+    { name: "Games", url: "https://zlwebster.com/games" },
+    { name: "Undead Arena", url: "https://zlwebster.com/games/undead-arena" },
+  ]);
+
+  const gameSchema = {
+    "@context": "https://schema.org",
+    "@type": "VideoGame",
+    "@id": "https://zlwebster.com/games/undead-arena#game",
+    "name": "Undead Arena",
+    "description": "Step into Undead Arena, a post-apocalyptic game show where you battle zombies for fame! This free-roam VR shooter pits up to 8 players against waves of undead in an arena packed with surprises.",
+    "url": "https://zlwebster.com/games/undead-arena",
+    "image": "https://zlwebster.com/game-undead-arena.webp",
+    "gameLocation": {
+      "@type": "Place",
+      "name": "Zero Latency VR Houston, Webster",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "BayWay Village Shopping Center, 20801 Gulf Fwy suite 5",
+        "addressLocality": "Webster",
+        "addressRegion": "TX",
+        "postalCode": "77598",
+        "addressCountry": "US"
+      }
+    },
+    "applicationCategory": "Game",
+    "operatingSystem": "VR Platform",
+    "offers": {
+      "@type": "Offer",
+      "availability": "https://schema.org/InStock",
+      "priceCurrency": "USD",
+      "url": "https://booking.zerolatencyvr.com/en/book-now/webster"
+    },
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "5",
+      "ratingCount": "158"
+    },
+    "genre": ["Arcade", "Wave Shooter", "Zombie", "Horror"],
+    "numberOfPlayers": "1-8",
+    "playMode": "Multiplayer",
+    "gameItem": "VR Experience"
+  };
+
   return (
-    <main id="main-content">
+    <>
+      <Script id="breadcrumb-schema" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+      <Script id="game-schema" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(gameSchema) }} />
+      <article itemScope itemType="https://schema.org/VideoGame">
+        <meta itemProp="name" content="Undead Arena" />
+        <main id="main-content">
       <div className="bg-[#000F13] text-gray-200 font-montserrat overflow-x-hidden">
         {/* HERO */}
         <section className="relative min-h-[90vh] flex items-center justify-center text-center py-20 lg:py-0">
@@ -79,10 +142,10 @@ export default function UndeadArenaPage() {
               priority
             />
           </div>
-          <div className="relative z-10 mx-auto max-w-4xl px-4 sm:px-6">
+          <div className="relative z-10 mx-auto max-w-4xl px-8 sm:px-0">
             <h1 className="text-5xl font-poppins text-white font-black sm:text-6xl md:text-7xl mt-4 leading-tight">
               Undead Arena <br />{" "}
-              <span className="text-stroke-blue">Fight Zombies in a Post Apocalyptic Game Show</span>
+              <span className="text-stroke-blue">Fight Zombies in a Post Apocalyptic Arena</span>
             </h1>
             <p className="mt-6 text-xl md:text-2xl text-gray-200 leading-relaxed font-light">
               Welcome, contestants! Team up (up to 8 players) and survive wave after wave of zombies under
@@ -93,6 +156,16 @@ export default function UndeadArenaPage() {
             </div>
           </div>
         </section>
+
+        <section className="py-16 md:py-24">
+                        <div className="mx-auto max-w-6xl px-4 sm:px-6">
+                            <InteractiveVideoPlayer
+                                videoSrc="/far-cry-trailer.mp4"
+                                thumbnailSrc="/far-cry-trailer-thumbnail.jpg"
+                                thumbnailAlt="Far Cry VR trailer"
+                            />
+                        </div>
+                    </section>
 
         <section className="bg-gray-900/50 border-t border-b border-gray-800">
           <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
@@ -331,5 +404,7 @@ export default function UndeadArenaPage() {
         </section>
       </div>
     </main>
+    </article>
+    </>
   );
 }
