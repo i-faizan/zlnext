@@ -12,6 +12,9 @@ export const metadata: Metadata = {
   title: "Sol Raiders - Team PvP VR Battle | Zero Latency VR Houston, Webster",
   description:
     "Compete in team-vs-team PvP VR. Two squads of up to 4 battle for control of energy cores in futuristic arenas. High-adrenaline esports-style VR in Houston.",
+  authors: [{ name: "Zero Latency VR Houston, Webster" }],
+  creator: "Zero Latency VR Houston, Webster",
+  publisher: "Zero Latency VR Houston, Webster",
   alternates: {
     canonical: "https://zlwebster.com/games/sol-raiders",
   },
@@ -121,10 +124,32 @@ export default function SolRaidersPage() {
     "gameItem": "VR Experience"
   };
 
+  const videoSchema = {
+    "@context": "https://schema.org",
+    "@type": "VideoObject",
+    "name": "Sol Raiders - Team PvP VR Battle Trailer | Zero Latency VR Houston, Webster",
+    "description": "Watch the trailer for Sol Raiders, a team-vs-team PvP VR battle in futuristic arenas.",
+    "thumbnailUrl": "https://zlwebster.com/sol-raiders-trailer-thumbnail.webp",
+    "uploadDate": "2025-11-01",
+    "contentUrl": "https://zlwebster.com/sol-raiders-trailer.mp4",
+    "embedUrl": "https://zlwebster.com/games/sol-raiders#video",
+    "duration": "PT40S",
+    "publisher": {
+      "@type": "Organization",
+      "@id": "https://zlwebster.com/#organization",
+      "name": "Zero Latency VR Houston, Webster",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://zlwebster.com/ZL-W.png"
+      }
+    }
+  };
+
   return (
     <>
       <Script id="breadcrumb-schema" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <Script id="game-schema" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(gameSchema) }} />
+      <Script id="video-schema" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(videoSchema) }} />
       <article itemScope itemType="https://schema.org/VideoGame">
         <meta itemProp="name" content="Sol Raiders" />
         <main id="main-content">
@@ -183,7 +208,7 @@ export default function SolRaidersPage() {
           </div>
         </section>
 
-        <section className="py-16 md:py-24">
+        <section id="video" className="py-16 md:py-24">
                         <div className="mx-auto max-w-6xl px-4 sm:px-6">
                             <InteractiveVideoPlayer
                                 videoSrc="/sol-raiders-trailer.mp4"

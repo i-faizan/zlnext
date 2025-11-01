@@ -12,6 +12,9 @@ import InteractiveVideoPlayer from "@/components/InteractiveVideoPlayer";
 export const metadata: Metadata = {
     title: "Singularity - Battle Robots in Space VR | Zero Latency VR Houston, Webster",
     description: "Investigate a space station overrun by rogue robots in Singularity VR. Wield high-tech weapons, navigate zero-gravity, and survive AI ambushes.",
+    authors: [{ name: "Zero Latency VR Houston, Webster" }],
+    creator: "Zero Latency VR Houston, Webster",
+    publisher: "Zero Latency VR Houston, Webster",
     alternates: {
         canonical: "https://zlwebster.com/games/singularity",
     },
@@ -113,10 +116,32 @@ export default function SingularityPage() {
         "gameItem": "VR Experience"
     };
 
+    const videoSchema = {
+        "@context": "https://schema.org",
+        "@type": "VideoObject",
+        "name": "Singularity - Battle Robots in Space VR Trailer | Zero Latency VR Houston, Webster",
+        "description": "Watch the trailer for Singularity, a futuristic VR shooter where you investigate a space station overrun by rogue robots.",
+        "thumbnailUrl": "https://zlwebster.com/singularity-trailer-thumbnail.jpg",
+        "uploadDate": "2025-11-01",
+        "contentUrl": "https://zlwebster.com/singularity-trailer.mp4",
+        "embedUrl": "https://zlwebster.com/games/singularity#video",
+        "duration": "PT1M30S",
+        "publisher": {
+            "@type": "Organization",
+            "@id": "https://zlwebster.com/#organization",
+            "name": "Zero Latency VR Houston, Webster",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https://zlwebster.com/ZL-W.png"
+            }
+        }
+    };
+
     return (
         <>
             <Script id="breadcrumb-schema" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
             <Script id="game-schema" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(gameSchema) }} />
+            <Script id="video-schema" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(videoSchema) }} />
             <article itemScope itemType="https://schema.org/VideoGame">
                 <meta itemProp="name" content="Singularity" />
                 <main id="main-content">
@@ -174,7 +199,7 @@ export default function SingularityPage() {
                     </div>
                 </section>
 
-                <section className="py-16 md:py-24">
+                <section id="video" className="py-16 md:py-24">
                         <div className="mx-auto max-w-6xl px-4 sm:px-6">
                             <InteractiveVideoPlayer
                                 videoSrc="/singularity-trailer.mp4"

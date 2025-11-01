@@ -13,6 +13,9 @@ export const metadata: Metadata = {
   title: "Far Cry VR: Dive Into Insanity | Zero Latency VR Houston, Webster",
   description:
     "Enter the world of Far Cry 3 in VR. Fight your way off Vaas's tropical island in this 30-minute free-roam VR adventure for up to 8 players in Houston.",
+  authors: [{ name: "Zero Latency VR Houston, Webster" }],
+  creator: "Zero Latency VR Houston, Webster",
+  publisher: "Zero Latency VR Houston, Webster",
   alternates: {
     canonical: "https://zlwebster.com/games/far-cry-vr",
   },
@@ -123,10 +126,32 @@ export default function FarCryVRPage() {
     "gameItem": "VR Experience"
   };
 
+  const videoSchema = {
+    "@context": "https://schema.org",
+    "@type": "VideoObject",
+    "name": "Far Cry VR: Dive Into Insanity Trailer | Zero Latency VR Houston, Webster",
+    "description": "Watch the trailer for Far Cry VR, an exclusive free-roam VR adventure set in the world of Far Cry 3.",
+    "thumbnailUrl": "https://zlwebster.com/far-cry-trailer-thumbnail.jpg",
+    "uploadDate": "2025-11-01",
+    "contentUrl": "https://zlwebster.com/far-cry-trailer.mp4",
+    "embedUrl": "https://zlwebster.com/games/far-cry-vr#video",
+    "duration": "PT1M15S",
+    "publisher": {
+      "@type": "Organization",
+      "@id": "https://zlwebster.com/#organization",
+      "name": "Zero Latency VR Houston, Webster",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://zlwebster.com/ZL-W.png"
+      }
+    }
+  };
+
   return (
     <>
       <Script id="breadcrumb-schema" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <Script id="game-schema" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(gameSchema) }} />
+      <Script id="video-schema" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(videoSchema) }} />
       <article itemScope itemType="https://schema.org/VideoGame">
         <meta itemProp="name" content="Far Cry VR: Dive Into Insanity" />
         <main id="main-content">
@@ -184,7 +209,7 @@ export default function FarCryVRPage() {
           </div>
         </section>
 
-        <section className="py-16 md:py-24">
+        <section id="video" className="py-16 md:py-24">
                         <div className="mx-auto max-w-6xl px-4 sm:px-6">
                             <InteractiveVideoPlayer
                                 videoSrc="/far-cry-trailer.mp4"

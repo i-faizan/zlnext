@@ -10,6 +10,9 @@ import { generateBreadcrumbSchema } from "@/lib/breadcrumbs";
 export const metadata: Metadata = {
     title: "Private Events and Immersive Parties | Zero Latency VR Houston, Webster",
     description: "Host private parties, corporate team building, or bachelor parties in Webster, Houston. Exclusive free-roam VR, private arena, and on-site dining.",
+    authors: [{ name: "Zero Latency VR Houston, Webster" }],
+    creator: "Zero Latency VR Houston, Webster",
+    publisher: "Zero Latency VR Houston, Webster",
     alternates: {
         canonical: "https://zlwebster.com/private-events",
     },

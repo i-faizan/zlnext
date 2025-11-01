@@ -10,6 +10,9 @@ import { generateBreadcrumbSchema } from "@/lib/breadcrumbs";
 export const metadata: Metadata = {
     title: "Contact Us - Location, Hours & Booking Info | Zero Latency VR Houston, Webster",
     description: "Find Zero Latency VR location, hours, and contact info in Webster, Houston. Questions about events, parties, or bookings? Get in touch today.",
+    authors: [{ name: "Zero Latency VR Houston, Webster" }],
+    creator: "Zero Latency VR Houston, Webster",
+    publisher: "Zero Latency VR Houston, Webster",
     alternates: {
         canonical: "https://zlwebster.com/contact-us",
     },

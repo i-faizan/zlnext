@@ -10,6 +10,9 @@ import { generateBreadcrumbSchema } from "@/lib/breadcrumbs";
 export const metadata: Metadata = {
     title: "What to Expect | Zero Latency VR Houston, Webster",
     description: "New to VR? Learn what to expect: check-in, VR gear setup, game briefing, and free-roam gameplay. No experience needed. We guide you every step.",
+    authors: [{ name: "Zero Latency VR Houston, Webster" }],
+    creator: "Zero Latency VR Houston, Webster",
+    publisher: "Zero Latency VR Houston, Webster",
     alternates: {
         canonical: "https://zlwebster.com/what-to-expect",
     },
@@ -91,15 +94,156 @@ const timelineSteps = [
     },
 ];
 
+const whatToExpectFaqs = [
+    { q: "Do I need prior VR experience?", a: "Not at all! Our games are designed for everyone, and our Game Masters will teach you everything you need to know." },
+    { q: "Is it scary or intense?", a: "It can be! We offer high-intensity thrillers, but also have amazing, family-friendly adventures with no combat." },
+    { q: "What is the age limit?", a: "Players must be 13 years or older to participate." },
+    { q: "Can I wear glasses with the VR headset?", a: "Yes, you can wear glasses with our VR headsets. The headsets are designed to accommodate most prescription glasses comfortably." },
+    { q: "How long before my session should I arrive?", a: "Please arrive 15 minutes before your scheduled time to allow for check-in, waiver completion, and briefing." },
+    { q: "What happens if I need to stop during a game?", a: "If you feel uncomfortable at any point, simply signal to our Game Masters who will immediately assist you. Your safety is our top priority." },
+];
+
 export default function WhatToExpectPage() {
     const breadcrumbSchema = generateBreadcrumbSchema([
         { name: "Home", url: "https://zlwebster.com/" },
         { name: "What to Expect", url: "https://zlwebster.com/what-to-expect" },
     ]);
 
+    const articleSchema = {
+        "@context": "https://schema.org",
+        "@type": "Article",
+        "@id": "https://zlwebster.com/what-to-expect#article",
+        "headline": "What to Expect | Zero Latency VR Houston, Webster",
+        "description": "New to VR? Learn what to expect: check-in, VR gear setup, game briefing, and free-roam gameplay. No experience needed. We guide you every step.",
+        "datePublished": "2024-01-01",
+        "dateModified": "2024-12-01",
+        "author": {
+            "@type": "Organization",
+            "@id": "https://zlwebster.com/#organization",
+            "name": "Zero Latency VR Houston, Webster"
+        },
+        "publisher": {
+            "@type": "Organization",
+            "@id": "https://zlwebster.com/#organization",
+            "name": "Zero Latency VR Houston, Webster",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https://zlwebster.com/ZL-W.png"
+            }
+        },
+        "about": {
+            "@type": "LocalBusiness",
+            "@id": "https://zlwebster.com/#localbusiness"
+        },
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https://zlwebster.com/what-to-expect"
+        }
+    };
+
+    const howToSchema = {
+        "@context": "https://schema.org",
+        "@type": "HowTo",
+        "name": "How to Experience Zero Latency VR",
+        "description": "Step-by-step guide to your first VR experience at Zero Latency Webster",
+        "step": [
+            {
+                "@type": "HowToStep",
+                "position": 1,
+                "name": "Book Your Session",
+                "text": "Secure your spot online in advance and sign the waiver before you arrive.",
+                "url": "https://zlwebster.com/what-to-expect#step1"
+            },
+            {
+                "@type": "HowToStep",
+                "position": 2,
+                "name": "Check-In & Briefing",
+                "text": "Arrive 15 minutes early, confirm your booking, and attend the briefing session.",
+                "url": "https://zlwebster.com/what-to-expect#step2"
+            },
+            {
+                "@type": "HowToStep",
+                "position": 3,
+                "name": "Gear Up",
+                "text": "Get equipped with VR headset, controller, and wireless backpack by our Game Masters.",
+                "url": "https://zlwebster.com/what-to-expect#step3"
+            },
+            {
+                "@type": "HowToStep",
+                "position": 4,
+                "name": "Play the Game",
+                "text": "Enter the VR world and play for 15-45 minutes in our warehouse-scale arena.",
+                "url": "https://zlwebster.com/what-to-expect#step4"
+            },
+            {
+                "@type": "HowToStep",
+                "position": 5,
+                "name": "Check Scores & Celebrate",
+                "text": "View your scores on the leaderboard and take photos with your team.",
+                "url": "https://zlwebster.com/what-to-expect#step5"
+            }
+        ],
+        "totalTime": "PT1H",
+        "supply": [
+            {
+                "@type": "HowToSupply",
+                "name": "Comfortable closed-toe shoes"
+            },
+            {
+                "@type": "HowToSupply",
+                "name": "Signed waiver"
+            }
+        ],
+        "tool": [
+            {
+                "@type": "HowToTool",
+                "name": "VR Headset"
+            },
+            {
+                "@type": "HowToTool",
+                "name": "Wireless Controller"
+            }
+        ]
+    };
+
+    const faqJsonLd = {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": whatToExpectFaqs.map((f) => ({
+            "@type": "Question",
+            "name": f.q,
+            "acceptedAnswer": { "@type": "Answer", "text": f.a },
+        })),
+    };
+
+    const videoSchema = {
+        "@context": "https://schema.org",
+        "@type": "VideoObject",
+        "name": "What to Expect at Zero Latency VR - Video Guide | Zero Latency VR Houston, Webster",
+        "description": "Learn what to expect during your visit to Zero Latency VR Webster, from check-in to gameplay.",
+        "thumbnailUrl": "https://zlwebster.com/what-to-expect-thumbnail.webp",
+        "uploadDate": "2025-11-01",
+        "contentUrl": "https://zlwebster.com/expect.m4v",
+        "embedUrl": "https://zlwebster.com/what-to-expect#video",
+        "duration": "PT50S",
+        "publisher": {
+            "@type": "Organization",
+            "@id": "https://zlwebster.com/#organization",
+            "name": "Zero Latency VR Houston, Webster",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https://zlwebster.com/ZL-W.png"
+            }
+        }
+    };
+
     return (
         <>
             <Script id="breadcrumb-schema" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+            <Script id="article-schema" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
+            <Script id="howto-schema" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }} />
+            <Script id="faq-schema" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
+            <Script id="video-schema" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(videoSchema) }} />
             <article itemScope itemType="https://schema.org/Article">
                 <meta itemProp="headline" content="What to Expect | Zero Latency VR Houston, Webster" />
                 <main id="main-content">
@@ -124,7 +268,7 @@ export default function WhatToExpectPage() {
                     </div>
                 </section>
 
-                <section className="py-16 md:py-24">
+                <section id="video" className="py-16 md:py-24">
                     <div className="mx-auto max-w-6xl px-4 sm:px-6">
                         <InteractiveVideoPlayer
                             videoSrc="/expect.m4v"
@@ -141,7 +285,7 @@ export default function WhatToExpectPage() {
                         <div className="absolute left-8 top-8 h-full w-0.5 bg-gray-700/50" aria-hidden="true"></div>
 
                         {timelineSteps.map((item, index) => (
-                            <div key={item.step} className="relative pl-20 pb-16">
+                            <div key={item.step} id={`step${item.step.replace('0', '')}`} className="relative pl-20 pb-16">
                                 {/* The Icon and Step Number */}
                                 <div className="absolute left-0 top-0 flex items-center">
                                     <div className="flex h-16 w-16 items-center justify-center rounded-full bg-gray-800 border border-cyan-500/30 shadow-lg">
@@ -218,11 +362,7 @@ export default function WhatToExpectPage() {
                         </div>
                         <div className="space-y-4">
                             <h3 className="text-3xl font-poppins font-bold text-white mb-4 text-center">Frequently Asked Questions</h3>
-                            {[
-                                { q: "Do I need prior VR experience?", a: "Not at all! Our games are designed for everyone, and our Game Masters will teach you everything you need to know." },
-                                { q: "Is it scary or intense?", a: "It can be! We offer high-intensity thrillers, but also have amazing, family-friendly adventures with no combat." },
-                                { q: "What is the age limit?", a: "Players must be 13 years or older to participate." },
-                            ].map(faq => (
+                            {whatToExpectFaqs.map(faq => (
                                 <div key={faq.q} className="bg-gray-800/50 p-4 rounded-lg border border-gray-700">
                                     <h4 className="font-bold text-cyan-400">{faq.q}</h4>
                                     <p className="text-gray-300 mt-1">{faq.a}</p>

@@ -13,6 +13,9 @@ export const metadata: Metadata = {
   title: "Engineerium – Surreal Puzzle VR Adventure | Zero Latency VR Houston, Webster",
   description:
     "Family-friendly VR puzzle adventure. Walk among floating islands, solve mind-bending puzzles, and defy gravity. No guns, no gore. Perfect for all ages.",
+  authors: [{ name: "Zero Latency VR Houston, Webster" }],
+  creator: "Zero Latency VR Houston, Webster",
+  publisher: "Zero Latency VR Houston, Webster",
   alternates: {
     canonical: "https://zlwebster.com/games/engineerium",
   },
@@ -123,10 +126,32 @@ export default function EngineeriumPage() {
     "gameItem": "VR Experience"
   };
 
+  const videoSchema = {
+    "@context": "https://schema.org",
+    "@type": "VideoObject",
+    "name": "Engineerium - Gravity-Defying VR Puzzle World Trailer | Zero Latency VR Houston, Webster",
+    "description": "Watch the trailer for Engineerium, a family-friendly VR puzzle adventure with gravity-defying worlds.",
+    "thumbnailUrl": "https://zlwebster.com/engineerium-trailer-thumbnail.jpg",
+    "uploadDate": "2025-11-01",
+    "contentUrl": "https://zlwebster.com/engineerium-trailer.mp4",
+    "embedUrl": "https://zlwebster.com/games/engineerium#video",
+    "duration": "PT1M10S",
+    "publisher": {
+      "@type": "Organization",
+      "@id": "https://zlwebster.com/#organization",
+      "name": "Zero Latency VR Houston, Webster",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://zlwebster.com/ZL-W.png"
+      }
+    }
+  };
+
   return (
     <>
       <Script id="breadcrumb-schema" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <Script id="game-schema" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(gameSchema) }} />
+      <Script id="video-schema" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(videoSchema) }} />
       <article itemScope itemType="https://schema.org/VideoGame">
         <meta itemProp="name" content="Engineerium" />
         <main id="main-content">
@@ -184,7 +209,7 @@ export default function EngineeriumPage() {
           </div>
         </section>
 
-        <section className="py-16 md:py-24">
+        <section id="video" className="py-16 md:py-24">
                         <div className="mx-auto max-w-6xl px-4 sm:px-6">
                             <InteractiveVideoPlayer
                                 videoSrc="/engineerium-trailer.mp4"

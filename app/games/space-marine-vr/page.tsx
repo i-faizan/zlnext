@@ -12,6 +12,9 @@ import InteractiveVideoPlayer from "@/components/InteractiveVideoPlayer";
 export const metadata: Metadata = {
     title: "Space Marine VR – Warhammer 40,000 Experience | Zero Latency VR Houston, Webster",
     description: "Battle Tyranid swarms in Warhammer 40,000 VR. Step into the boots of a Space Marine in our most intense free-roam VR game for 1-8 players.",
+    authors: [{ name: "Zero Latency VR Houston, Webster" }],
+    creator: "Zero Latency VR Houston, Webster",
+    publisher: "Zero Latency VR Houston, Webster",
     alternates: {
         canonical: "https://zlwebster.com/games/space-marine-vr",
     },
@@ -119,10 +122,32 @@ export default function SpaceMarinePage() {
         "gameItem": "VR Experience"
     };
 
+    const videoSchema = {
+        "@context": "https://schema.org",
+        "@type": "VideoObject",
+        "name": "Space Marine VR - Warhammer 40,000 Experience Trailer | Zero Latency VR Houston, Webster",
+        "description": "Watch the trailer for Space Marine VR, a Warhammer 40,000 free-roam VR experience battling Tyranid swarms.",
+        "thumbnailUrl": "https://zlwebster.com/become-a-marine.webp",
+        "uploadDate": "2025-11-01",
+        "contentUrl": "https://zlwebster.com/space-marine-trailer.mp4",
+        "embedUrl": "https://zlwebster.com/games/space-marine-vr#video",
+        "duration": "PT50S",
+        "publisher": {
+            "@type": "Organization",
+            "@id": "https://zlwebster.com/#organization",
+            "name": "Zero Latency VR Houston, Webster",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https://zlwebster.com/ZL-W.png"
+            }
+        }
+    };
+
     return (
         <>
             <Script id="breadcrumb-schema" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
             <Script id="game-schema" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(gameSchema) }} />
+            <Script id="video-schema" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(videoSchema) }} />
             <article itemScope itemType="https://schema.org/VideoGame">
                 <meta itemProp="name" content="Space Marine VR" />
                 <main id="main-content">
@@ -180,7 +205,7 @@ export default function SpaceMarinePage() {
                     </div>
                 </section>
 
-                <section className="py-16 md:py-24">
+                <section id="video" className="py-16 md:py-24">
                         <div className="mx-auto max-w-6xl px-4 sm:px-6">
                             <InteractiveVideoPlayer
                                 videoSrc="/space-marine-trailer.mp4"

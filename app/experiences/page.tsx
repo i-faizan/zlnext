@@ -86,6 +86,9 @@ const experienceJsonLd =
 export const metadata: Metadata = {
     title: "VR Experiences & Immersive Adventures | Zero Latency VR Houston, Webster",
     description: "Explore VR experiences in Webster, Houston. Zombie survival, space missions, PvP battles, and fantasy worlds. Free-roam adventures for groups.",
+    authors: [{ name: "Zero Latency VR Houston, Webster" }],
+    creator: "Zero Latency VR Houston, Webster",
+    publisher: "Zero Latency VR Houston, Webster",
     alternates: {
         canonical: "https://zlwebster.com/experiences",
     },
@@ -268,11 +271,33 @@ export default function ExperiencesPage() {
         }
     };
 
+    const videoSchema = {
+        "@context": "https://schema.org",
+        "@type": "VideoObject",
+        "name": "VR Experiences at Zero Latency Webster | Overview Video",
+        "description": "Explore the thrilling VR experiences at Zero Latency Webster, from zombie survival to competitive PvP esports.",
+        "thumbnailUrl": "https://zlwebster.com/experience.webp",
+        "uploadDate": "2025-11-01",
+        "contentUrl": "https://zlwebster.com/experience.mp4",
+        "embedUrl": "https://zlwebster.com/experiences#video",
+        "duration": "PT30S",
+        "publisher": {
+            "@type": "Organization",
+            "@id": "https://zlwebster.com/#organization",
+            "name": "Zero Latency VR Houston, Webster",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https://zlwebster.com/ZL-W.png"
+            }
+        }
+    };
+
     return (
         <>
             <Script id="experience-schema" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(experienceJsonLd) }} />
             <Script id="breadcrumb-schema" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
             <Script id="service-schema" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }} />
+            <Script id="video-schema" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(videoSchema) }} />
             <main id="main-content" className="pt-20 sm:pt-0">
                 <div className="bg-[#000F13] text-gray-200 font-montserrat">
                     {/* HERO SECTION */}
@@ -295,7 +320,7 @@ export default function ExperiencesPage() {
                         </div>
                     </section>
 
-                    <section className="py-16 md:py-24">
+                    <section id="video" className="py-16 md:py-24">
                         <div className="mx-auto max-w-6xl px-4 sm:px-6">
                             <InteractiveVideoPlayer
                                 videoSrc="/experience.mp4"

@@ -12,6 +12,9 @@ import InteractiveVideoPlayer from "@/components/InteractiveVideoPlayer";
 export const metadata: Metadata = {
     title: "Haunted VR - Dare to Enter, Hope to Escape | Zero Latency VR Houston, Webster",
     description: "Experience Haunted, the latest in full-body, ultra-immersive VR terror. A world that doesn't just look scary, it feels scary. Can you survive the house?",
+    authors: [{ name: "Zero Latency VR Houston, Webster" }],
+    creator: "Zero Latency VR Houston, Webster",
+    publisher: "Zero Latency VR Houston, Webster",
     alternates: {
         canonical: "https://zlwebster.com/games/haunted-vr",
     },
@@ -80,6 +83,27 @@ export default function HauntedPage() {
         { name: "Haunted VR", url: "https://zlwebster.com/games/haunted-vr" }, // Updated
     ]);
 
+    const videoSchema = {
+        "@context": "https://schema.org",
+        "@type": "VideoObject",
+        "name": "Haunted VR - Full-Body Horror VR Trailer | Zero Latency VR Houston, Webster",
+        "description": "Watch the trailer for Haunted VR, a full-body, ultra-immersive horror experience in free-roam VR.",
+        "thumbnailUrl": "https://zlwebster.com/haunted-trailer-thumbnail.jpg",
+        "uploadDate": "2025-11-01",
+        "contentUrl": "https://zlwebster.com/haunted-trailer.mp4",
+        "embedUrl": "https://zlwebster.com/games/haunted-vr#video",
+        "duration": "PT30S",
+        "publisher": {
+            "@type": "Organization",
+            "@id": "https://zlwebster.com/#organization",
+            "name": "Zero Latency VR Houston, Webster",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https://zlwebster.com/ZL-W.png"
+            }
+        }
+    };
+
     const gameSchema = {
         "@context": "https://schema.org",
         "@type": "VideoGame",
@@ -123,6 +147,7 @@ export default function HauntedPage() {
         <>
             <Script id="breadcrumb-schema" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
             <Script id="game-schema" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(gameSchema) }} />
+            <Script id="video-schema" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(videoSchema) }} />
             <article itemScope itemType="https://schema.org/VideoGame">
                 <meta itemProp="name" content="Haunted VR" />
                 <main id="main-content">
@@ -183,7 +208,7 @@ export default function HauntedPage() {
                 </section>
 
                 {/* Video Player Section */}
-                <section className="py-16 md:py-24">
+                <section id="video" className="py-16 md:py-24">
                         <div className="mx-auto max-w-6xl px-4 sm:px-6">
                             <InteractiveVideoPlayer
                                 videoSrc="/haunted-trailer.mp4" // Placeholder video

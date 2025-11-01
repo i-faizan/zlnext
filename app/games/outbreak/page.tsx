@@ -12,6 +12,9 @@ import InteractiveVideoPlayer from "@/components/InteractiveVideoPlayer";
 export const metadata: Metadata = {
     title: "Outbreak - Zombie Survival VR | Zero Latency VR Houston, Webster",
     description: "Survive a zombie apocalypse in Outbreak VR. Team up with up to 8 players in this heart-pounding co-op shooter. Fight through undead hordes in Houston.",
+    authors: [{ name: "Zero Latency VR Houston, Webster" }],
+    creator: "Zero Latency VR Houston, Webster",
+    publisher: "Zero Latency VR Houston, Webster",
     alternates: {
         canonical: "https://zlwebster.com/games/outbreak",
     },
@@ -113,10 +116,32 @@ export default function OutbreakPage() {
         "gameItem": "VR Experience"
     };
 
+    const videoSchema = {
+        "@context": "https://schema.org",
+        "@type": "VideoObject",
+        "name": "Outbreak - Zombie Survival VR Trailer | Zero Latency VR Houston, Webster",
+        "description": "Watch the trailer for Outbreak, a heart-pounding zombie survival co-op shooter in free-roam VR in Houston.",
+        "thumbnailUrl": "https://zlwebster.com/outbreak-trailer-thumbnail.jpg",
+        "uploadDate": "2025-11-01",
+        "contentUrl": "https://zlwebster.com/outbreak-trailer.mp4",
+        "embedUrl": "https://zlwebster.com/games/outbreak#video",
+        "duration": "PT1M15S",
+        "publisher": {
+            "@type": "Organization",
+            "@id": "https://zlwebster.com/#organization",
+            "name": "Zero Latency VR Houston, Webster",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https://zlwebster.com/ZL-W.png"
+            }
+        }
+    };
+
     return (
         <>
             <Script id="breadcrumb-schema" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
             <Script id="game-schema" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(gameSchema) }} />
+            <Script id="video-schema" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(videoSchema) }} />
             <article itemScope itemType="https://schema.org/VideoGame">
                 <meta itemProp="name" content="Outbreak" />
                 <main id="main-content">
@@ -174,7 +199,7 @@ export default function OutbreakPage() {
                     </div>
                 </section>
 
-                <section className="py-16 md:py-24">
+                <section id="video" className="py-16 md:py-24">
                         <div className="mx-auto max-w-6xl px-4 sm:px-6">
                             <InteractiveVideoPlayer
                                 videoSrc="/outbreak-trailer.mp4"

@@ -12,6 +12,9 @@ import { generateBreadcrumbSchema } from "@/lib/breadcrumbs";
 export const metadata: Metadata = {
     title: "VR Games at Zero Latency Houston - All Free-Roam Experiences",
     description: "Browse all VR games at Zero Latency Houston. Zombie survival, space adventures, PvP battles, and more. Free-roam VR experiences for 1-8 players.",
+    authors: [{ name: "Zero Latency VR Houston, Webster" }],
+    creator: "Zero Latency VR Houston, Webster",
+    publisher: "Zero Latency VR Houston, Webster",
     alternates: {
         canonical: "https://zlwebster.com/games",
     },

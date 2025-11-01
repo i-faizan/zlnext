@@ -13,6 +13,9 @@ export const metadata: Metadata = {
   title: "Undead Arena - Zombie Wave VR Shooter | Zero Latency VR Houston, Webster",
   description:
     "Battle zombies in a post-apocalyptic game show. Free-roam VR wave shooter for up to 8 players. Compete for high scores in Houston's ultimate zombie arena.",
+  authors: [{ name: "Zero Latency VR Houston, Webster" }],
+  creator: "Zero Latency VR Houston, Webster",
+  publisher: "Zero Latency VR Houston, Webster",
   alternates: {
     canonical: "https://zlwebster.com/games/undead-arena",
   },
@@ -122,10 +125,32 @@ export default function UndeadArenaPage() {
     "gameItem": "VR Experience"
   };
 
+  const videoSchema = {
+    "@context": "https://schema.org",
+    "@type": "VideoObject",
+    "name": "Undead Arena VR Trailer | Zero Latency VR",
+    "description": "Watch the trailer for Undead Arena, a post-apocalyptic game show where you battle zombies for fame in free-roam VR.",
+    "thumbnailUrl": "https://zlwebster.com/undead-arena-trailer-thumbnail.jpg",
+    "uploadDate": "2025-11-01",
+    "contentUrl": "https://zlwebster.com/undead-arena-trailer.mp4",
+    "embedUrl": "https://zlwebster.com/games/undead-arena#video",
+    "duration": "PT45S",
+    "publisher": {
+      "@type": "Organization",
+      "@id": "https://zlwebster.com/#organization",
+      "name": "Zero Latency VR Houston, Webster",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://zlwebster.com/ZL-W.png"
+      }
+    }
+  };
+
   return (
     <>
       <Script id="breadcrumb-schema" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <Script id="game-schema" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(gameSchema) }} />
+      <Script id="video-schema" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(videoSchema) }} />
       <article itemScope itemType="https://schema.org/VideoGame">
         <meta itemProp="name" content="Undead Arena" />
         <main id="main-content">
@@ -157,7 +182,7 @@ export default function UndeadArenaPage() {
           </div>
         </section>
 
-        <section className="py-16 md:py-24">
+        <section id="video" className="py-16 md:py-24">
                         <div className="mx-auto max-w-6xl px-4 sm:px-6">
                             <InteractiveVideoPlayer
                                 videoSrc="/undead-arena-trailer.mp4"
