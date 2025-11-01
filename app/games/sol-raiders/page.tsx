@@ -11,14 +11,14 @@ import InteractiveVideoPlayer from "@/components/InteractiveVideoPlayer";
 export const metadata: Metadata = {
   title: "Sol Raiders - Team PvP VR Battle | Zero Latency VR Houston, Webster",
   description:
-    "Compete in Sol Raiders, a team-vs-team VR shootout at Zero Latency Houston, Webster. Two squads of up to 4 each battle across futuristic arenas in a quest for a precious energy source. Cover your teammates, take out opponents, and capture objectives in this eSports-style free-roam VR game. Sol Raiders delivers high-adrenaline PvP action – rally your crew and prove who’s the best in Houston’s ultimate VR showdown!",
+    "Compete in team-vs-team PvP VR. Two squads of up to 4 battle for control of energy cores in futuristic arenas. High-adrenaline esports-style VR in Houston.",
   alternates: {
     canonical: "https://zlwebster.com/games/sol-raiders",
   },
   openGraph: {
     title: "Sol Raiders - Team PvP VR Battle | Zero Latency VR Houston, Webster",
     description:
-      "Two squads. One objective. Compete in an esports-style PvP VR arena for up to 8 players.",
+      "Team-vs-team PvP VR. Two squads compete in an esports-style arena for up to 8 players.",
     url: "https://zlwebster.com/games/sol-raiders",
     type: "website",
     images: [
@@ -33,7 +33,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Sol Raiders - Team PvP VR Battle | Zero Latency VR Houston, Webster",
-    description: "Two squads. One objective. Compete in an esports-style PvP VR arena for up to 8 players.",
+    description: "Team-vs-team PvP VR. Compete in an esports-style arena for up to 8 players.",
     images: ["https://zlwebster.com/game-sol-raiders.webp"],
   },
   robots: {

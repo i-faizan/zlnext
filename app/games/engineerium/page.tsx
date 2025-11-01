@@ -7,18 +7,19 @@ import BookGameButton from "@/components/BookBtn";
 import { Eye, Puzzle, Recycle, Users } from "lucide-react";
 import Script from "next/script";
 import { generateBreadcrumbSchema } from "@/lib/breadcrumbs";
+import InteractiveVideoPlayer from "@/components/InteractiveVideoPlayer";
 
 export const metadata: Metadata = {
   title: "Engineerium – Surreal Puzzle VR Adventure | Zero Latency VR Houston, Webster",
   description:
-    "Enter the magical world of Engineerium, a family-friendly VR experience at Zero Latency VR Houston, Webster. Walk among floating islands and solve mind-bending puzzles in a beautiful alien realm – all in free-roam VR with no guns or gore. Perfect for first-timers, kids, and anyone who loves exploration and challenges. Defy gravity and discover the secrets of Engineerium – an immersive adventure unlike any other.",
+    "Family-friendly VR puzzle adventure. Walk among floating islands, solve mind-bending puzzles, and defy gravity. No guns, no gore. Perfect for all ages.",
   alternates: {
     canonical: "https://zlwebster.com/games/engineerium",
   },
   openGraph: {
-    title: "Engineerium – Surreal Puzzle VR Adventure in Houston | Zero Latency",
+    title: "Engineerium – Surreal Puzzle VR Adventure | Zero Latency VR Houston, Webster",
     description:
-      "A serene, gravity-defying VR puzzle world for all ages. Explore floating islands and solve mind-bending challenges—no guns, no gore.",
+      "Family-friendly VR puzzle adventure. Explore floating islands and solve mind-bending challenges. No guns, no gore.",
     url: "https://zlwebster.com/games/engineerium",
     type: "website",
     images: [
@@ -33,8 +34,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Engineerium – Surreal Puzzle VR Adventure in Houston | Zero Latency",
-    description: "A serene, gravity-defying VR puzzle world for all ages. Explore floating islands and solve mind-bending challenges.",
+    title: "Engineerium – Surreal Puzzle VR Adventure | Zero Latency VR Houston, Webster",
+    description: "Family-friendly VR puzzle adventure. Explore floating islands and solve mind-bending challenges.",
     images: ["https://zlwebster.com/game-engineerium.webp"],
   },
   robots: {
@@ -182,6 +183,16 @@ export default function EngineeriumPage() {
             </div>
           </div>
         </section>
+
+        <section className="py-16 md:py-24">
+                        <div className="mx-auto max-w-6xl px-4 sm:px-6">
+                            <InteractiveVideoPlayer
+                                videoSrc="/engineerium-trailer.mp4"
+                                thumbnailSrc="/engineerium-trailer-thumbnail.jpg"
+                                thumbnailAlt="Engineerium trailer"
+                            />
+                        </div>
+                    </section>
 
         {/* CONCEPT / ATMOSPHERE */}
         <section className="py-20 sm:py-24">

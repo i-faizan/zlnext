@@ -14,6 +14,7 @@ const nav = [
     label: 'Games',
     children: [
       { label: 'Overview', href: '/games' },
+      { label: 'Haunted', href: '/games/haunted' },
       { label: 'Space Marine VR', href: '/games/space-marine' },
       { label: 'Outbreak', href: '/games/outbreak' },
       { label: 'Far Cry VR', href: '/games/far-cry' },
@@ -21,7 +22,7 @@ const nav = [
       { label: 'Singularity', href: '/games/singularity' },
       { label: 'Sol Raiders', href: '/games/sol-raiders' },  
       { label: 'Engineerium', href: '/games/engineerium' },
-      { label: 'Haunted', href: '/games/haunted' },
+      
     ],
   },
   { label: 'Private Events', href: '/private-events' },

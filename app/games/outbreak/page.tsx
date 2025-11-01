@@ -11,13 +11,13 @@ import InteractiveVideoPlayer from "@/components/InteractiveVideoPlayer";
 
 export const metadata: Metadata = {
     title: "Outbreak - Zombie Survival VR | Zero Latency VR Houston, Webster",
-    description: "Survive a zombie apocalypse in Outbreak, a heart-pounding free-roam VR game at Zero Latency VR Houston, Webster. Team up with up to 8 survivors, fight through undead-infested streets, and uncover the source of the outbreak. Intense action, lifelike zombies, and co-op gameplay make Outbreak a must-play for horror fans. Can your team make it out alive?",
+    description: "Survive a zombie apocalypse in Outbreak VR. Team up with up to 8 players in this heart-pounding co-op shooter. Fight through undead hordes in Houston.",
     alternates: {
         canonical: "https://zlwebster.com/games/outbreak",
     },
     openGraph: {
         title: "Outbreak - Zombie Survival VR | Zero Latency VR Houston, Webster",
-        description: "Team up to fight hordes of the undead in a hyper-realistic free-roam VR experience.",
+        description: "Team up to fight hordes of the undead in a hyper-realistic free-roam VR experience. Up to 8 players.",
         url: "https://zlwebster.com/games/outbreak",
         type: "website",
         images: [
@@ -32,7 +32,7 @@ export const metadata: Metadata = {
     twitter: {
         card: "summary_large_image",
         title: "Outbreak - Zombie Survival VR | Zero Latency VR Houston, Webster",
-        description: "Team up to fight hordes of the undead in a hyper-realistic free-roam VR experience.",
+        description: "Team up to fight hordes of the undead in a hyper-realistic free-roam VR experience. Up to 8 players.",
         images: ["https://zlwebster.com/game-outbreak.webp"],
     },
     robots: {

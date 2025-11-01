@@ -10,14 +10,14 @@ import { generateBreadcrumbSchema } from "@/lib/breadcrumbs";
 import InteractiveVideoPlayer from "@/components/InteractiveVideoPlayer";
 
 export const metadata: Metadata = {
-    title: "Singularity - Battle Robots & AI in VR Space Station | Zero Latency VR Houston, Webster",
-    description: "Investigate a secret research facility in Singularity, a futuristic VR shooter at Zero Latency Houston, Webster. In this free-roam adventure, up to 8 players explore a space station overrun by rogue robots and AI defenses. Wield high-tech weapons, navigate zero-gravity environments, and survive ambushes by drones and cyborgs. Sci-fi action meets mystery – can your team shut down the rogue AI?",
+    title: "Singularity - Battle Robots in Space VR | Zero Latency VR Houston, Webster",
+    description: "Investigate a space station overrun by rogue robots in Singularity VR. Wield high-tech weapons, navigate zero-gravity, and survive AI ambushes.",
     alternates: {
         canonical: "https://zlwebster.com/games/singularity",
     },
     openGraph: {
-        title: "Singularity - Battle Robots & AI in VR Space Station | Zero Latency VR Houston, Webster",
-        description: "Your team must investigate a military space station that&apos;s gone dark. But you&apos;re not alone. A rogue AI is in control.",
+        title: "Singularity - Battle Robots in VR Space Station | Zero Latency VR Houston, Webster",
+        description: "Investigate a space station overrun by rogue robots. A futuristic VR shooter for up to 8 players.",
         url: "https://zlwebster.com/games/singularity",
         type: "website",
         images: [
@@ -31,8 +31,8 @@ export const metadata: Metadata = {
     },
     twitter: {
         card: "summary_large_image",
-        title: "Singularity - Battle Robots & AI in VR Space Station | Zero Latency VR Houston, Webster",
-        description: "Your team must investigate a military space station that's gone dark. But you're not alone. A rogue AI is in control.",
+        title: "Singularity - Battle Robots in VR Space Station | Zero Latency VR Houston, Webster",
+        description: "Investigate a space station overrun by rogue robots. Futuristic VR shooter for up to 8 players.",
         images: ["https://zlwebster.com/game-singularity.webp"],
     },
     robots: {

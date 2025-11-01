@@ -84,14 +84,14 @@ const experienceJsonLd =
 
 
 export const metadata: Metadata = {
-    title: "VR Experiences & Immersive Adventures for Every Group | Zero Latency VR Houston, Webster",
-    description: "Explore the thrilling VR experiences at Zero Latency Webster. Fight zombies in apocalyptic arenas, brave outer space missions, compete in esports-style shootouts, or roam fantasy worlds. Immersive free-roam VR adventures perfect for friends, families, and team events.",
+    title: "VR Experiences & Immersive Adventures | Zero Latency VR Houston, Webster",
+    description: "Explore VR experiences in Webster, Houston. Zombie survival, space missions, PvP battles, and fantasy worlds. Free-roam adventures for groups.",
     alternates: {
         canonical: "https://zlwebster.com/experiences",
     },
     openGraph: {
-        title: "VR Experiences & Immersive Adventures for Every Group | Zero Latency VR Houston, Webster",
-        description: "Explore the thrilling VR experiences at Zero Latency Webster, from zombie survival to competitive PvP esports.",
+        title: "VR Experiences & Immersive Adventures | Zero Latency VR Houston, Webster",
+        description: "Explore VR experiences: zombie survival, space missions, PvP battles, and more. Free-roam adventures in Houston.",
         url: "https://zlwebster.com/experiences",
         type: "website",
         images: [
@@ -105,8 +105,8 @@ export const metadata: Metadata = {
     },
     twitter: {
         card: "summary_large_image",
-        title: "VR Experiences & Immersive Adventures for Every Group | Zero Latency VR Houston, Webster",
-        description: "Explore the thrilling VR experiences at Zero Latency Webster, from zombie survival to competitive PvP esports.",
+        title: "VR Experiences & Immersive Adventures | Zero Latency VR Houston, Webster",
+        description: "Explore VR experiences: zombie survival, space missions, PvP battles. Free-roam adventures in Houston.",
         images: ["https://zlwebster.com/experience.jpg"],
     },
     robots: {

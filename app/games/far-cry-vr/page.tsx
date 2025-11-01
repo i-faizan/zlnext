@@ -12,14 +12,14 @@ import InteractiveVideoPlayer from "@/components/InteractiveVideoPlayer";
 export const metadata: Metadata = {
   title: "Far Cry VR: Dive Into Insanity | Zero Latency VR Houston, Webster",
   description:
-    "Enter the world of Far Cry® 3 in an exclusive VR adventure only at Zero Latency VR Houston, Webster. Far Cry VR: Dive Into Insanity thrusts up to 8 players onto a dangerous tropical island ruled by the infamous Vaas. Fight for survival through lush jungles and deranged warlords in this 30-minute free-roam VR shooter. A must for Far Cry fans and thrill-seekers alike – book your Far Cry VR experience in Houston now!",
+    "Enter the world of Far Cry 3 in VR. Fight your way off Vaas's tropical island in this 30-minute free-roam VR adventure for up to 8 players in Houston.",
   alternates: {
     canonical: "https://zlwebster.com/games/far-cry-vr",
   },
   openGraph: {
     title: "Far Cry VR: Dive Into Insanity | Zero Latency VR Houston, Webster",
     description:
-      "Team up and fight your way off Vaas's island in a 30-minute Far Cry® 3 free-roam VR adventure for up to 8 players.",
+      "Team up and fight your way off Vaas's island in a 30-minute Far Cry 3 free-roam VR adventure for up to 8 players.",
     url: "https://zlwebster.com/games/far-cry-vr",
     type: "website",
     images: [
@@ -35,7 +35,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Far Cry VR: Dive Into Insanity | Zero Latency VR Houston, Webster",
-    description: "Team up and fight your way off Vaas's island in a 30-minute Far Cry® 3 free-roam VR adventure.",
+    description: "Team up and fight your way off Vaas's island in a 30-minute Far Cry 3 free-roam VR adventure.",
     images: ["https://zlwebster.com/game-far-cry-vr.webp"],
   },
   robots: {

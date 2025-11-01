@@ -13,8 +13,8 @@ const nav = [
   {
     label: 'Games',
     children: [
-      { label: 'Haunted', href: '/games/haunted' },
       { label: 'Overview', href: '/games' },
+      { label: 'Haunted', href: '/games/haunted' },
       { label: 'Space Marine VR', href: '/games/space-marine-vr' },
       { label: 'Outbreak', href: '/games/outbreak' },
       { label: 'Far Cry VR', href: '/games/far-cry-vr' },

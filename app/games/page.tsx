@@ -11,13 +11,13 @@ import { generateBreadcrumbSchema } from "@/lib/breadcrumbs";
 // SEO Metadata for the page
 export const metadata: Metadata = {
     title: "VR Games at Zero Latency Houston - All Free-Roam Experiences",
-    description: "Browse all the VR games available at Zero Latency Houston. From zombie survival to space adventures and PvP battles, discover our free-roam virtual reality experiences. Find game summaries, player counts, and genres – pick your next adventure and step into the game!",
+    description: "Browse all VR games at Zero Latency Houston. Zombie survival, space adventures, PvP battles, and more. Free-roam VR experiences for 1-8 players.",
     alternates: {
         canonical: "https://zlwebster.com/games",
     },
     openGraph: {
         title: "VR Games at Zero Latency Houston - All Free-Roam Experiences",
-        description: "Browse all the VR games available at Zero Latency Houston. From zombie survival to space adventures and PvP battles, discover our free-roam virtual reality experiences.",
+        description: "Browse all VR games at Zero Latency Houston. Zombie survival, space adventures, PvP battles, and more.",
         url: "https://zlwebster.com/games",
         type: "website",
         images: [{
@@ -30,7 +30,7 @@ export const metadata: Metadata = {
     twitter: {
         card: "summary_large_image",
         title: "VR Games at Zero Latency Houston - All Free-Roam Experiences",
-        description: "Browse all the VR games available at Zero Latency Houston. From zombie survival to space adventures and PvP battles.",
+        description: "Browse all VR games at Zero Latency Houston. Zombie survival, space adventures, PvP battles, and more.",
         images: ["https://zlwebster.com/OG.jpg"],
     },
     robots: {

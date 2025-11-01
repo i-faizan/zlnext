@@ -9,13 +9,13 @@ import { generateBreadcrumbSchema } from "@/lib/breadcrumbs";
 
 export const metadata: Metadata = {
     title: "Private Events and Immersive Parties | Zero Latency VR Houston, Webster",
-    description: "Host an unforgettable private party, corporate team building event, or bachelor party at Zero Latency Webster. Our Houston-area venue offers exclusive free-roam VR adventures, a private arena, and on-site dining for the ultimate group experience.",
+    description: "Host private parties, corporate team building, or bachelor parties in Webster, Houston. Exclusive free-roam VR, private arena, and on-site dining.",
     alternates: {
         canonical: "https://zlwebster.com/private-events",
     },
     openGraph: {
         title: "Private Events and Immersive Parties | Zero Latency VR Houston, Webster",
-        description: "Looking for a unique venue? Book a private VR party, team building event, or bachelor party for an experience your group will never forget.",
+        description: "Book a private VR party, team building event, or bachelor party. Unique venue in Houston for unforgettable group experiences.",
         url: "https://zlwebster.com/private-events",
         type: "website",
         images: [
@@ -30,7 +30,7 @@ export const metadata: Metadata = {
     twitter: {
         card: "summary_large_image",
         title: "Private Events and Immersive Parties | Zero Latency VR Houston, Webster",
-        description: "Looking for a unique venue? Book a private VR party, team building event, or bachelor party for an experience your group will never forget.",
+        description: "Book a private VR party, team building, or bachelor party. Unique venue in Houston for unforgettable experiences.",
         images: ["https://zlwebster.com/OG.jpg"],
     },
     robots: {

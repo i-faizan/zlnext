@@ -11,13 +11,13 @@ import InteractiveVideoPlayer from "@/components/InteractiveVideoPlayer";
 // Metadata remains the same
 export const metadata: Metadata = {
     title: "Space Marine VR – Warhammer 40,000 Experience | Zero Latency VR Houston, Webster",
-    description: "See what it&apos;s like to battle Tyranid swarms in the Hive City of Fervastium. This image-rich guide shows you the weapons, tactics, and worlds of our most intense free-roam VR game.",
+    description: "Battle Tyranid swarms in Warhammer 40,000 VR. Step into the boots of a Space Marine in our most intense free-roam VR game for 1-8 players.",
     alternates: {
         canonical: "https://zlwebster.com/games/space-marine-vr",
     },
     openGraph: {
-        title: "Space Marine VR - Warhammer 40,000 Experience | Zero Latency VR Houston, Webster",
-        description: "See what it&apos;s like to battle Tyranid swarms in the Hive City of Fervastium. This image-rich guide shows you the weapons, tactics, and worlds of our most intense free-roam VR game.",
+        title: "Space Marine VR – Warhammer 40,000 Experience | Zero Latency VR Houston, Webster",
+        description: "Battle Tyranid swarms in Warhammer 40,000 VR. Our most intense free-roam VR game for 1-8 players.",
         url: "https://zlwebster.com/games/space-marine-vr",
         type: "website",
         images: [{
@@ -29,8 +29,8 @@ export const metadata: Metadata = {
     },
     twitter: {
         card: "summary_large_image",
-        title: "Space Marine VR - Warhammer 40,000 Experience | Zero Latency VR Houston, Webster",
-        description: "See what it&apos;s like to battle Tyranid swarms in the Hive City of Fervastium.",
+        title: "Space Marine VR – Warhammer 40,000 Experience | Zero Latency VR Houston, Webster",
+        description: "Battle Tyranid swarms in Warhammer 40,000 VR. Intense free-roam VR for 1-8 players.",
         images: ["https://zlwebster.com/game-space-marine.webp"],
     },
     robots: {

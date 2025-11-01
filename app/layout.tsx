@@ -15,8 +15,8 @@ const siteUrl = "https://zlwebster.com";
 
 
 export const metadata: Metadata = {
-  title: "Virtual Reality Gaming Arena in Greater Houston | Zero Latency VR Houston, Webster",
-  description: "Experience the world's most advanced VR Adventure in Webster serving Greater Houston. Up to 8 players. Zombie survival, sci-fi missions, PvP esports, and family-friendly worlds.",
+  title: "VR Arena Houston | Zero Latency VR Webster",
+  description: "Free-roam VR in Webster, Houston. Up to 8 players. Zombie survival, sci-fi missions, PvP esports, and family-friendly worlds. Book now.",
   keywords: seoKeywords,
   authors: [{ name: "Zero Latency VR Houston, Webster" }],
   creator: "Zero Latency VR Houston, Webster",
@@ -26,9 +26,9 @@ export const metadata: Metadata = {
   metadataBase: new URL("https://zlwebster.com/"),
   referrer: "origin-when-cross-origin",
   openGraph: {
-    title: "Virtual Reality Gaming Arena in Greater Houston | Zero Latency VR Houston, Webster",
+    title: "VR Arena Houston | Zero Latency VR Webster",
     description:
-      "Experience the world's most advanced VR Adventure in Webster serving Greater Houston. Up to 8 players. Zombie survival, sci-fi missions, PvP esports, and family-friendly worlds.",
+      "Free-roam VR in Webster, Houston. Up to 8 players. Zombie survival, sci-fi missions, PvP esports, and family-friendly worlds. Book now.",
     siteName: "Zero Latency VR Webster",
     url: "https://zlwebster.com/",
     images: [
@@ -44,8 +44,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Virtual Reality Gaming Arena in Greater Houston | Zero Latency VR Houston, Webster",
-    description: "Experience the world's most advanced VR Adventure in Webster serving Greater Houston. Up to 8 players. Zombie survival, sci-fi missions, PvP esports, and family-friendly worlds.",
+    title: "VR Arena Houston | Zero Latency VR Webster",
+    description: "Free-roam VR in Webster, Houston. Up to 8 players. Zombie survival, sci-fi missions, PvP esports, and family-friendly worlds.",
     images: ["https://zlwebster.com/OG.jpg"],
     creator: "@zlwebster",
   },
@@ -108,7 +108,7 @@ const websiteSchema = {
   "@id": "https://zlwebster.com/#website",
   "url": "https://zlwebster.com/",
   "name": "Zero Latency VR Houston, Webster",
-  "description": "Experience the world's most advanced VR Adventure in Webster serving Greater Houston. Up to 8 players. Zombie survival, sci-fi missions, PvP esports, and family-friendly worlds.",
+  "description": "Free-roam VR in Webster, Houston. Up to 8 players. Zombie survival, sci-fi missions, PvP esports, and family-friendly worlds.",
   "publisher": { "@id": "https://zlwebster.com/#organization" },
   "potentialAction": {
     "@type": "SearchAction",

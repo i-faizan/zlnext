@@ -12,14 +12,14 @@ import InteractiveVideoPlayer from "@/components/InteractiveVideoPlayer";
 export const metadata: Metadata = {
   title: "Undead Arena - Zombie Wave VR Shooter | Zero Latency VR Houston, Webster",
   description:
-    "Step into Undead Arena, a post-apocalyptic game show where you battle zombies for fame! Only at Zero Latency Houston, this free-roam VR shooter pits up to 8 players against waves of undead in an arena packed with surprises. Compete for the high score and survive live on (virtual) TV. It’s gruesome, action-packed fun – do you have what it takes to be the champion of the Undead Arena?",
+    "Battle zombies in a post-apocalyptic game show. Free-roam VR wave shooter for up to 8 players. Compete for high scores in Houston's ultimate zombie arena.",
   alternates: {
     canonical: "https://zlwebster.com/games/undead-arena",
   },
   openGraph: {
     title: "Undead Arena - Zombie Wave VR Shooter | Zero Latency VR Houston, Webster",
     description:
-      "Contestants wanted! Battle waves of zombies for glory in a post-apocalyptic game show. Up to 8 players. Free-roam VR.",
+      "Battle waves of zombies in a post-apocalyptic game show. Up to 8 players. Free-roam VR in Houston.",
     url: "https://zlwebster.com/games/undead-arena",
     type: "website",
     images: [
@@ -34,7 +34,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Undead Arena - Zombie Wave VR Shooter | Zero Latency VR Houston, Webster",
-    description: "Contestants wanted! Battle waves of zombies for glory in a post-apocalyptic game show. Up to 8 players.",
+    description: "Battle waves of zombies in a post-apocalyptic game show. Up to 8 players. Free-roam VR.",
     images: ["https://zlwebster.com/game-undead-arena.webp"],
   },
   robots: {
