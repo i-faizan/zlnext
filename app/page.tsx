@@ -72,7 +72,7 @@ const localBusinessJsonLd = {
   "priceRange": "$$",
   "address": {
     "@type": "PostalAddress",
-    "streetAddress": "20801 Gulf Fwy suite 5",
+    "streetAddress": "BayWay Village Shopping Center, 20801 Gulf Fwy suite 5",
     "addressLocality": "Webster",
     "addressRegion": "TX",
     "postalCode": "77598",

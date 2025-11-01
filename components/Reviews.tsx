@@ -319,6 +319,17 @@ const reviewSchema = {
     "bestRating": "5",
     "worstRating": "1"
   },
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "BayWay Village Shopping Center, 20801 Gulf Fwy suite 5",
+    "addressLocality": "Webster",
+    "addressRegion": "TX",
+    "postalCode": "77598",
+    "addressCountry": "US"
+  },
+  "priceRange": "$$",
+  "telephone": "+14694049149",
+  "image": "https://zlwebster.com/OG.jpg",
   "review": testimonials.map((testimonial) => ({
     "@type": "Review",
     "author": {
@@ -332,7 +343,6 @@ const reviewSchema = {
       "worstRating": "1"
     },
     "reviewBody": testimonial.quote,
-    "datePublished": "2025-11-01",
     "publisher": {
       "@type": "Organization",
       "name": testimonial.source || "Google"

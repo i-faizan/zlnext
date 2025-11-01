@@ -108,7 +108,7 @@ export default function OutbreakPage() {
         "aggregateRating": {
             "@type": "AggregateRating",
             "ratingValue": "5",
-            "ratingCount": "228"
+            "ratingCount": "229"
         },
         "genre": ["Horror", "Survival", "Shooter", "Zombie"],
         "numberOfPlayers": "1-8",
