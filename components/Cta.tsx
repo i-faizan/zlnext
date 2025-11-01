@@ -3,19 +3,66 @@
 import { track } from "@/lib/ga";
 import { fbqTrack } from "@/lib/meta";
 import {EXPERIENCE_URL } from "@/lib/navData";
-import React, { useEffect } from "react";
+import React, { useEffect, useRef, useCallback } from "react";
 import YouTubeEmbed from "./YoutubeEmbed";
 
 export default function CTA() {
+  const hasTracked = useRef<boolean>(false);
 
+  const trackCTA = useCallback(() => {
+    // Only track once
+    if (hasTracked.current) return;
+    hasTracked.current = true;
 
-    const handleClick = () => {
-        track('challenge', { link_url: EXPERIENCE_URL });
-        fbqTrack('challenge', { value: 0, currency: 'USD' });
-        setTimeout(() => {
-          window.open(EXPERIENCE_URL, '_blank', 'noopener,noreferrer');
-        }, 500);
-      };
+    // Fire analytics events
+    track('challenge', { link_url: EXPERIENCE_URL });
+    fbqTrack('challenge', { value: 0, currency: 'USD' });
+    
+    // Track for dashboard analytics
+    const trackingUUID = (window as any).trackingUUID;
+    if (trackingUUID) {
+      const trackingData = JSON.stringify({
+        uuid: trackingUUID,
+        type: "cta",
+        source: "challenge",
+        label: "TAKE THE CHALLENGE",
+        ctaType: "other",
+        url: EXPERIENCE_URL,
+      });
+      
+      // Use sendBeacon - it's guaranteed to complete even if page navigates
+      if (navigator.sendBeacon) {
+        navigator.sendBeacon(
+          "/api/visits",
+          new Blob([trackingData], { type: "application/json" })
+        );
+      } else if (navigator.sendBeacon === undefined) {
+        // Fallback: use fetch with keepalive
+        fetch("/api/visits", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: trackingData,
+          keepalive: true,
+        }).catch(() => {});
+      }
+    }
+  }, []);
+
+  const handleClick = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    // Mark element immediately to prevent global handler from tracking
+    e.currentTarget.setAttribute('data-cta-tracked', 'true');
+    
+    // Track the CTA
+    trackCTA();
+    
+    // Open link after a tiny delay to ensure beacon is sent
+    setTimeout(() => {
+      window.open(EXPERIENCE_URL, '_blank', 'noopener,noreferrer');
+    }, 50);
+  }, [trackCTA]);
 
   useEffect(() => {
     const prevOverflow = document.body.style.overflow;
@@ -27,10 +74,9 @@ export default function CTA() {
 
   return (
     <section
-      className="fixed inset-0 flex h-dvh w-screen items-center justify-center text-center overflow-hidden"
+      className="relative flex min-h-screen items-center justify-center overflow-hidden bg-black px-6 py-20"
     >
-      <div
-        className="pointer-events-none absolute inset-0 bg-cover bg-center blur-2xl scale-110"
+      <div className="pointer-events-none absolute inset-0 bg-cover bg-center blur-2xl scale-110"
         style={{
           backgroundImage:
             "url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80')",
@@ -54,6 +100,8 @@ export default function CTA() {
                     </div>
         <button
           onClick={handleClick}
+          data-cta-handled="true"
+          data-cta-source="challenge"
           rel="noopener noreferrer"
           className="btn text-xl p-8 mt-10 btn-outline text-white rounded-3xl border-[#00bcd4]"
         >

@@ -1,3 +1,6 @@
+"use client";
+
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import BookGameButton from "./BookBtn";
 import { ArrowRight, CheckCircle, Gift, Headset, Move, PartyPopper, Users } from "lucide-react";
@@ -38,6 +41,15 @@ function sciFiRandom() {
 }
 
 export default function HeroHome({ faqs }: FaqProps) {
+    // Use state to ensure random values are only generated on client side (prevents hydration mismatch)
+    const [zombieGame, setZombieGame] = useState<string | null>(null);
+    const [sciFiGame, setSciFiGame] = useState<string | null>(null);
+
+    useEffect(() => {
+        // Only generate random values on client side
+        setZombieGame(zombieRandom());
+        setSciFiGame(sciFiRandom());
+    }, []);
     return (
         <div className="bg-[#000F13] text-gray-200 font-montserrat">
             <section id="hero"
@@ -140,8 +152,8 @@ export default function HeroHome({ faqs }: FaqProps) {
                     <div className="mt-16 grid grid-cols-1 md:grid-cols-2 gap-8">
                         {[
                             // Added 'href' to each object for navigation
-                            { title: "Zombie Survival", desc: "Heart-pounding action as you fight your way through hordes of the undead.", img: "/Outbreak-Digital-Square.webp", href: zombieRandom() },
-                            { title: "Sci-Fi Adventures", desc: "Explore futuristic worlds filled with rogue AI, robots, and alien invasions.", img: "/Sci-fi.webp", href: sciFiRandom() },
+                            { title: "Zombie Survival", desc: "Heart-pounding action as you fight your way through hordes of the undead.", img: "/Outbreak-Digital-Square.webp", href: zombieGame || "/games/outbreak" },
+                            { title: "Sci-Fi Adventures", desc: "Explore futuristic worlds filled with rogue AI, robots, and alien invasions.", img: "/Sci-fi.webp", href: sciFiGame || "/games/singularity" },
                             { title: "PvP Esports Battles", desc: "Go head-to-head against friends in team-based shooter challenges.", img: "/pvp.webp", href: "/games/sol-raiders" },
                             { title: "Family-Friendly Worlds", desc: "Stunning, non-combat experiences perfect for first-timers and all ages.", img: "/Family-Adventure.webp", href: "/games/engineerium" },
                         ].map(exp => (

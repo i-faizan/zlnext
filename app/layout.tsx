@@ -5,8 +5,9 @@ import Script from "next/script";
 import { montserrat, poppins } from './fonts'
 import Footer from "@/components/Footer";
 import AnalyticsClient from "@/components/AnalyticsClient";
+import EnhancedTracking from "@/components/EnhancedTracking";
 import { Suspense } from "react";
-import HeaderV4 from "@/components/HeaderV4";
+import ConditionalHeader from "@/components/ConditionalHeader";
 
 const GA_ID = process.env.NEXT_PUBLIC_GA_ID
 // const META_PIXEL_ID = process.env.NEXT_PUBLIC_META_PIXEL_ID
@@ -233,8 +234,8 @@ export default function RootLayout({
       <body className={`${poppins.variable} ${montserrat.variable} antialiased`}>
         <a href="#main-content" className="sr-only focus:not-sr-only">Skip to content</a>
         <Suspense><AnalyticsClient /></Suspense>
-
-        <HeaderV4 />
+        <Suspense><EnhancedTracking /></Suspense>
+        <Suspense><ConditionalHeader /></Suspense>
         <Script id="organization-schema-ld-json" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }} />
         <Script id="website-schema-ld-json" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }} />
         <Script id="nav-schema-ld-json" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(navSchema) }} />

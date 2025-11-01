@@ -16,12 +16,75 @@ type InteractiveVideoPlayerProps = {
 export default function InteractiveVideoPlayer({ videoSrc, thumbnailSrc, thumbnailAlt }: InteractiveVideoPlayerProps) {
     const [isPlaying, setIsPlaying] = useState(false);
     const videoRef = useRef<HTMLVideoElement>(null);
+    const playStartTimeRef = useRef<number | null>(null);
+    const hasTrackedPlay = useRef<boolean>(false);
+
+    const trackVideoPlay = () => {
+        // Prevent duplicate tracking - if already tracked, skip
+        if (hasTrackedPlay.current) return;
+
+        const trackingUUID = (window as any).trackingUUID;
+        if (!trackingUUID) return;
+
+        hasTrackedPlay.current = true;
+        playStartTimeRef.current = Date.now();
+        const videoTitle = thumbnailAlt || 'Video';
+
+        // Mark video element to prevent EnhancedTracking from also tracking
+        if (videoRef.current) {
+            videoRef.current.setAttribute('data-video-tracked', 'true');
+        }
+
+        fetch("/api/visits", {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                uuid: trackingUUID,
+                type: "video",
+                videoSrc: videoSrc,
+                videoTitle: videoTitle,
+                videoType: "html5",
+                duration: 0,
+                completion: 0,
+            }),
+        }).catch(() => {});
+    };
+
+    const trackVideoEnd = () => {
+        const trackingUUID = (window as any).trackingUUID;
+        if (!trackingUUID || !playStartTimeRef.current) return;
+
+        const video = videoRef.current;
+        const duration = video ? Math.round(video.duration || 0) : Math.round((Date.now() - playStartTimeRef.current) / 1000);
+        const videoTitle = thumbnailAlt || 'Video';
+
+        fetch("/api/visits", {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                uuid: trackingUUID,
+                type: "video",
+                videoSrc: videoSrc,
+                videoTitle: videoTitle,
+                videoType: "html5",
+                duration: duration,
+                completion: 100,
+            }),
+        }).catch(() => {});
+        
+        playStartTimeRef.current = null;
+        hasTrackedPlay.current = false; // Reset for potential replay
+        if (video) {
+            video.removeAttribute('data-video-tracked');
+        }
+    };
 
     const handlePlayClick = () => {
         const video = videoRef.current;
         if (video) {
             // The video element's native events will handle setting isPlaying state
             video.play();
+            trackVideoPlay();
         }
     };
     
@@ -44,8 +107,18 @@ export default function InteractiveVideoPlayer({ videoSrc, thumbnailSrc, thumbna
                 playsInline
                 controls={false}
                 onClick={handleVideoClick}
-                onPlay={() => setIsPlaying(true)}
+                onPlay={() => {
+                    setIsPlaying(true);
+                    // Only track if not already tracked (prevents duplicate from EnhancedTracking)
+                    if (!playStartTimeRef.current && !hasTrackedPlay.current) {
+                        trackVideoPlay();
+                    }
+                }}
                 onPause={() => setIsPlaying(false)}
+                onEnded={() => {
+                    setIsPlaying(false);
+                    trackVideoEnd();
+                }}
             />
             {!isPlaying && (
                 <div className="absolute inset-0 flex items-center justify-center bg-black/50 cursor-pointer" onClick={handlePlayClick}>
