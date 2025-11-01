@@ -160,9 +160,9 @@ export default function UndeadArenaPage() {
         <section className="py-16 md:py-24">
                         <div className="mx-auto max-w-6xl px-4 sm:px-6">
                             <InteractiveVideoPlayer
-                                videoSrc="/far-cry-trailer.mp4"
-                                thumbnailSrc="/far-cry-trailer-thumbnail.jpg"
-                                thumbnailAlt="Far Cry VR trailer"
+                                videoSrc="/undead-arena-trailer.mp4"
+                                thumbnailSrc="/undead-arena-trailer-thumbnail.jpg"
+                                thumbnailAlt="Undead Arena trailer"
                             />
                         </div>
                     </section>
