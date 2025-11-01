@@ -201,7 +201,7 @@ export default function HauntedPage() {
                         </div>
                         <div className="grid md:grid-cols-3 gap-8">
                             <VisualFeatureCard imgSrc="/haunted-survive.webp" imgAlt="A group of players huddling together in a dark virtual hallway." title="SURVIVE TOGETHER">
-                                You enter as a group. But staying together? That’s another story. The house wants to get you alone. It whispers and twists, luring players into the dark. Whatever happens, don’t split up.
+                                You enter as a group. But staying together? That's another story. The house wants to get you alone. It whispers and twists, luring players into the dark. Whatever happens, don’t split up.
                             </VisualFeatureCard>
                             <VisualFeatureCard imgSrc="/haunted-virtual-horror.webp" imgAlt="A close-up of a terrifying ghost in the Haunted VR game." title="VIRTUAL HORROR. REAL FEAR.">
                                 Haunted uses next-gen 360° immersion, spatial sound and 5K resolution to bring your darkest fears to life. It&apos;s the scariest, realest full-body immersive experience.
@@ -223,7 +223,7 @@ export default function HauntedPage() {
                             <div className="prose prose-invert max-w-none">
                                 <h2 className="text-4xl font-poppins font-bold sm:text-5xl">AWAKEN THE <span className="text-stroke-red">FEAR WITHIN</span></h2>
                                 <p className="mt-4 text-lg text-gray-300">
-                                    Haunted is the latest in full-body, ultra-immersive VR terror. A world that doesn’t just look scary, but feels scary. Your hands shake. Your heart races.
+                                    Haunted is the latest in full-body, ultra-immersive VR terror. A world that doesn't just look scary, but feels scary. Your hands shake. Your heart races.
                                 </p>
                                 <p className="mt-4 text-lg text-gray-300">
                                      You&apos;ll need to stick together to survive. But be careful. The house will do anything to get you alone.
