@@ -28,7 +28,7 @@ export default function BookGameButton({
     fbqTrack('Book Now Clicked', { value: 0, currency: 'USD' });
     
     // Track for dashboard analytics
-    const trackingUUID = (window as any).trackingUUID;
+    const trackingUUID = typeof window !== 'undefined' ? (window as Window & { trackingUUID?: string }).trackingUUID : undefined;
     if (trackingUUID) {
       const trackingData = JSON.stringify({
         uuid: trackingUUID,

@@ -147,7 +147,7 @@ async function createNewSession(request: Request) {
   const userAgent = headers.get('user-agent') || undefined;
   const referrer = headers.get('referer') || headers.get('referrer') || undefined;
   const url = new URL(request.url);
-  let path = body?.path || url.searchParams.get('path') || '/';
+  const path = body?.path || url.searchParams.get('path') || '/';
   
   // Exclude dashboard paths from tracking
   if (path.startsWith('/dashboard')) {

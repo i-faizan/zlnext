@@ -17,7 +17,7 @@ export default function YouTubeEmbed({ videoId, title = "YouTube video", classNa
     const handleMessage = (event: MessageEvent) => {
       if (event.origin !== 'https://www.youtube.com') return;
       
-      const trackingUUID = (window as any).trackingUUID;
+      const trackingUUID = typeof window !== 'undefined' ? (window as Window & { trackingUUID?: string }).trackingUUID : undefined;
       if (!trackingUUID) return;
 
       try {
@@ -78,7 +78,7 @@ export default function YouTubeEmbed({ videoId, title = "YouTube video", classNa
 
     // Also track when iframe is clicked (user interaction)
     const handleIframeClick = () => {
-      const trackingUUID = (window as any).trackingUUID;
+      const trackingUUID = typeof window !== 'undefined' ? (window as Window & { trackingUUID?: string }).trackingUUID : undefined;
       if (!trackingUUID || playStartTimeRef.current) return;
       
       // Small delay to allow YouTube to start playing

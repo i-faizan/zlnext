@@ -23,7 +23,7 @@ export default function InteractiveVideoPlayer({ videoSrc, thumbnailSrc, thumbna
         // Prevent duplicate tracking - if already tracked, skip
         if (hasTrackedPlay.current) return;
 
-        const trackingUUID = (window as any).trackingUUID;
+        const trackingUUID = typeof window !== 'undefined' ? (window as Window & { trackingUUID?: string }).trackingUUID : undefined;
         if (!trackingUUID) return;
 
         hasTrackedPlay.current = true;
@@ -51,7 +51,7 @@ export default function InteractiveVideoPlayer({ videoSrc, thumbnailSrc, thumbna
     };
 
     const trackVideoEnd = () => {
-        const trackingUUID = (window as any).trackingUUID;
+        const trackingUUID = typeof window !== 'undefined' ? (window as Window & { trackingUUID?: string }).trackingUUID : undefined;
         if (!trackingUUID || !playStartTimeRef.current) return;
 
         const video = videoRef.current;

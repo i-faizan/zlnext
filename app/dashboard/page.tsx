@@ -165,7 +165,7 @@ export default function DashboardPage() {
   };
 
   // Detect device type from user agent
-  const getDeviceType = (userAgent?: string): { type: 'mobile' | 'desktop' | 'unknown'; icon: JSX.Element } => {
+  const getDeviceType = (userAgent?: string): { type: 'mobile' | 'desktop' | 'unknown'; icon: React.ReactElement } => {
     if (!userAgent) {
       return {
         type: 'unknown',
@@ -198,7 +198,7 @@ export default function DashboardPage() {
   };
 
   // Detect traffic source from referrer
-  const getTrafficSource = (referrer?: string, userAgent?: string): { source: string; icon: JSX.Element; color: string } => {
+  const getTrafficSource = (referrer?: string, userAgent?: string): { source: string; icon: React.ReactElement; color: string } => {
     // Check if direct (no referrer)
     if (!referrer || referrer.trim() === '' || referrer === 'direct') {
       return {
