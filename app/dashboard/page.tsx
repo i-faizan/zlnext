@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useMemo } from "react";
-import { Smartphone, Monitor, HelpCircle, Facebook, Search, Link as LinkIcon } from "lucide-react";
+import { Smartphone, Monitor, HelpCircle, Facebook, Search, Link as LinkIcon, Instagram, Youtube, Twitter, Linkedin, Music2, Trash2, RefreshCw, ExternalLink } from "lucide-react";
 
 interface PageVisit {
   path: string;
@@ -121,6 +121,24 @@ export default function DashboardPage() {
     setExpandedSession(null);
   };
 
+  const handleClearAll = async () => {
+    if (!confirm("Are you sure you want to clear all session data? This action cannot be undone.")) {
+      return;
+    }
+
+    try {
+      const res = await fetch("/api/visits", { method: "DELETE" });
+      if (res.ok) {
+        setSessions([]);
+        setExpandedSession(null);
+        setLastUpdate(new Date());
+      }
+    } catch (err) {
+      console.error("Failed to clear sessions:", err);
+      alert("Failed to clear sessions. Please try again.");
+    }
+  };
+
   const fetchSessions = async () => {
     try {
       const res = await fetch("/api/dashboard");
@@ -197,10 +215,10 @@ export default function DashboardPage() {
     };
   };
 
-  // Detect traffic source from referrer
+  // Comprehensive traffic source detection
   const getTrafficSource = (referrer?: string, userAgent?: string): { source: string; icon: React.ReactElement; color: string } => {
-    // Check if direct (no referrer)
-    if (!referrer || referrer.trim() === '' || referrer === 'direct') {
+    // Check if direct (no referrer or empty referrer)
+    if (!referrer || referrer.trim() === '' || referrer === 'direct' || referrer === 'null') {
       return {
         source: 'Direct',
         icon: <LinkIcon className="w-4 h-4" />,
@@ -208,105 +226,247 @@ export default function DashboardPage() {
       };
     }
 
-    const ref = referrer.toLowerCase();
-    const ua = (userAgent || '').toLowerCase();
+    try {
+      const url = new URL(referrer);
+      const hostname = url.hostname.toLowerCase();
+      const pathname = url.pathname.toLowerCase();
+      const searchParams = url.searchParams;
+      const refLower = referrer.toLowerCase();
+      const ua = (userAgent || '').toLowerCase();
 
-    // Facebook detection
-    if (ref.includes('facebook.com') || ref.includes('fb.com') || ref.includes('fbclid') || ua.includes('fban') || ua.includes('fbav')) {
-      // Check if it's from ads (fbclid parameter usually indicates ads)
-      if (ref.includes('fbclid') || ref.includes('fbclickid')) {
+      // ========== GOOGLE SOURCES ==========
+      if (hostname.includes('google') || hostname.includes('googleusercontent') || ua.includes('googlebot')) {
+        // Google Ads - check for gclid, gclsrc, or other ad parameters
+        const hasGclid = searchParams.has('gclid') || searchParams.has('gclsrc') || refLower.includes('gclid=') || refLower.includes('gclsrc=');
+        const hasUclick = searchParams.has('uclick') || refLower.includes('uclick=');
+        const hasWbraid = searchParams.has('wbraid') || refLower.includes('wbraid=');
+        
+        if (hasGclid || hasUclick || hasWbraid) {
+          return {
+            source: 'Google Ads',
+            icon: <Search className="w-4 h-4" />,
+            color: 'text-red-600',
+          };
+        }
+
+        // Google Organic Search - check for search query parameters
+        const hasSearchQuery = searchParams.has('q') || searchParams.has('query') || 
+                              pathname.includes('/search') || 
+                              refLower.includes('?q=') || refLower.includes('&q=') ||
+                              refLower.includes('/search?') || refLower.includes('/webhp?');
+        
+        if (hasSearchQuery) {
+          return {
+            source: 'Google Organic',
+            icon: <Search className="w-4 h-4" />,
+            color: 'text-green-600',
+          };
+        }
+
+        // Google Images
+        if (pathname.includes('/imgres') || pathname.includes('/imghp') || refLower.includes('tbm=isch')) {
+          return {
+            source: 'Google Images',
+            icon: <Search className="w-4 h-4" />,
+            color: 'text-blue-500',
+          };
+        }
+
+        // Generic Google (could be Maps, News, etc.)
         return {
-          source: 'Facebook Ads',
-          icon: <Facebook className="w-4 h-4" />,
-          color: 'text-blue-600',
+          source: 'Google',
+          icon: <Search className="w-4 h-4" />,
+          color: 'text-blue-500',
         };
       }
-      return {
-        source: 'Facebook Organic',
-        icon: <Facebook className="w-4 h-4" />,
-        color: 'text-blue-500',
-      };
-    }
 
-    // Instagram (owned by Facebook)
-    if (ref.includes('instagram.com') || ua.includes('instagram')) {
-      return {
-        source: 'Instagram',
-        icon: <Facebook className="w-4 h-4" />,
-        color: 'text-pink-600',
-      };
-    }
+      // ========== FACEBOOK/META SOURCES ==========
+      if (hostname.includes('facebook.com') || hostname.includes('fb.com') || hostname.includes('m.facebook.com') || 
+          ua.includes('fban') || ua.includes('fbav') || ua.includes('fbios')) {
+        
+        // Facebook/Meta Ads - check for ad indicators
+        const hasFbclid = searchParams.has('fbclid') || refLower.includes('fbclid=');
+        const hasFbClickId = searchParams.has('fbclickid') || refLower.includes('fbclickid=');
+        const hasAdId = searchParams.has('ad_id') || refLower.includes('ad_id=');
+        const hasClickId = pathname.includes('/l.php') || searchParams.has('h='); // Facebook link wrapper
+        
+        if (hasFbclid || hasFbClickId || hasAdId || hasClickId) {
+          return {
+            source: 'Meta Ads',
+            icon: <Facebook className="w-4 h-4" />,
+            color: 'text-blue-600',
+          };
+        }
 
-    // Google detection
-    if (ref.includes('google.com') || ref.includes('googleusercontent.com') || ref.includes('googlebot')) {
-      // Check for Google Ads indicators (gclid parameter)
-      if (ref.includes('gclid') || ref.includes('gclsrc')) {
+        // Facebook Organic
         return {
-          source: 'Google Ads',
-          icon: <Search className="w-4 h-4" />,
+          source: 'Facebook Organic',
+          icon: <Facebook className="w-4 h-4" />,
+          color: 'text-blue-500',
+        };
+      }
+
+      // ========== INSTAGRAM ==========
+      if (hostname.includes('instagram.com') || hostname.includes('instagr.am') || ua.includes('instagram')) {
+        // Check for Instagram Ads (often uses fbclid)
+        if (searchParams.has('igshid') && (searchParams.has('fbclid') || refLower.includes('fbclid='))) {
+          return {
+            source: 'Instagram Ads',
+            icon: <Instagram className="w-4 h-4" />,
+            color: 'text-pink-600',
+          };
+        }
+        return {
+          source: 'Instagram',
+          icon: <Instagram className="w-4 h-4" />,
+          color: 'text-pink-500',
+        };
+      }
+
+      // ========== YOUTUBE ==========
+      if (hostname.includes('youtube.com') || hostname.includes('youtu.be') || hostname.includes('youtube-nocookie.com')) {
+        return {
+          source: 'YouTube',
+          icon: <Youtube className="w-4 h-4" />,
           color: 'text-red-600',
         };
       }
-      // Check if it's a search (usually has query parameters like q=, search?q=, etc.)
-      if (ref.includes('/search') || ref.includes('?q=') || ref.includes('&q=')) {
+
+      // ========== TIKTOK ==========
+      if (hostname.includes('tiktok.com') || ua.includes('tiktok') || ua.includes('musical')) {
+        // Check for TikTok Ads
+        if (searchParams.has('tt_medium') || searchParams.has('tt_campaign') || refLower.includes('tt_medium=')) {
+          return {
+            source: 'TikTok Ads',
+            icon: <Music2 className="w-4 h-4" />,
+            color: 'text-black',
+          };
+        }
         return {
-          source: 'Google Organic',
-          icon: <Search className="w-4 h-4" />,
-          color: 'text-green-600',
+          source: 'TikTok',
+          icon: <Music2 className="w-4 h-4" />,
+          color: 'text-black',
         };
       }
-      return {
-        source: 'Google',
-        icon: <Search className="w-4 h-4" />,
-        color: 'text-blue-500',
-      };
-    }
 
-    // TikTok
-    if (ref.includes('tiktok.com') || ua.includes('tiktok')) {
-      return {
-        source: 'TikTok',
-        icon: <LinkIcon className="w-4 h-4" />,
-        color: 'text-black',
-      };
-    }
+      // ========== TWITTER/X ==========
+      if (hostname.includes('twitter.com') || hostname.includes('x.com') || hostname.includes('t.co') || ua.includes('twitter')) {
+        return {
+          source: 'Twitter/X',
+          icon: <Twitter className="w-4 h-4" />,
+          color: 'text-black',
+        };
+      }
 
-    // YouTube
-    if (ref.includes('youtube.com') || ref.includes('youtu.be')) {
-      return {
-        source: 'YouTube',
-        icon: <LinkIcon className="w-4 h-4" />,
-        color: 'text-red-600',
-      };
-    }
+      // ========== LINKEDIN ==========
+      if (hostname.includes('linkedin.com') || ua.includes('linkedin')) {
+        // Check for LinkedIn Ads
+        if (searchParams.has('trk') || searchParams.has('utm_campaign') || refLower.includes('trk=')) {
+          return {
+            source: 'LinkedIn Ads',
+            icon: <Linkedin className="w-4 h-4" />,
+            color: 'text-blue-700',
+          };
+        }
+        return {
+          source: 'LinkedIn',
+          icon: <Linkedin className="w-4 h-4" />,
+          color: 'text-blue-700',
+        };
+      }
 
-    // Twitter/X
-    if (ref.includes('twitter.com') || ref.includes('x.com') || ref.includes('t.co')) {
-      return {
-        source: 'Twitter/X',
-        icon: <LinkIcon className="w-4 h-4" />,
-        color: 'text-black',
-      };
-    }
+      // ========== OTHER SEARCH ENGINES ==========
+      if (hostname.includes('bing.com')) {
+        if (searchParams.has('msclkid') || refLower.includes('msclkid=')) {
+          return {
+            source: 'Bing Ads',
+            icon: <Search className="w-4 h-4" />,
+            color: 'text-orange-600',
+          };
+        }
+        if (searchParams.has('q') || pathname.includes('/search')) {
+          return {
+            source: 'Bing Organic',
+            icon: <Search className="w-4 h-4" />,
+            color: 'text-orange-500',
+          };
+        }
+        return {
+          source: 'Bing',
+          icon: <Search className="w-4 h-4" />,
+          color: 'text-orange-500',
+        };
+      }
 
-    // LinkedIn
-    if (ref.includes('linkedin.com')) {
-      return {
-        source: 'LinkedIn',
-        icon: <LinkIcon className="w-4 h-4" />,
-        color: 'text-blue-700',
-      };
-    }
+      if (hostname.includes('yahoo.com') || hostname.includes('search.yahoo.com')) {
+        return {
+          source: 'Yahoo',
+          icon: <Search className="w-4 h-4" />,
+          color: 'text-purple-600',
+        };
+      }
 
-    // Other referrer (external site)
-    try {
-      const url = new URL(referrer);
+      if (hostname.includes('duckduckgo.com')) {
+        return {
+          source: 'DuckDuckGo',
+          icon: <Search className="w-4 h-4" />,
+          color: 'text-yellow-600',
+        };
+      }
+
+      // ========== SOCIAL MEDIA ==========
+      if (hostname.includes('reddit.com')) {
+        return {
+          source: 'Reddit',
+          icon: <LinkIcon className="w-4 h-4" />,
+          color: 'text-orange-600',
+        };
+      }
+
+      if (hostname.includes('pinterest.com')) {
+        return {
+          source: 'Pinterest',
+          icon: <LinkIcon className="w-4 h-4" />,
+          color: 'text-red-500',
+        };
+      }
+
+      // ========== CHECK FOR UTM PARAMETERS ==========
+      // If we have UTM parameters, use them as a hint
+      const utmSource = searchParams.get('utm_source')?.toLowerCase();
+      const utmMedium = searchParams.get('utm_medium')?.toLowerCase();
+      const utmCampaign = searchParams.get('utm_campaign')?.toLowerCase();
+
+      if (utmSource) {
+        // Meta/Facebook Ads
+        if (utmSource.includes('facebook') && (utmMedium?.includes('cpc') || utmCampaign)) {
+          return {
+            source: 'Meta Ads',
+            icon: <Facebook className="w-4 h-4" />,
+            color: 'text-blue-600',
+          };
+        }
+        // Google Ads via UTM
+        if (utmSource.includes('google') && utmMedium?.includes('cpc')) {
+          return {
+            source: 'Google Ads',
+            icon: <Search className="w-4 h-4" />,
+            color: 'text-red-600',
+          };
+        }
+      }
+
+      // ========== EXTERNAL REFERRER ==========
+      // Return the hostname as source
+      const cleanHostname = hostname.replace('www.', '').split('.')[0];
       return {
-        source: url.hostname.replace('www.', ''),
-        icon: <LinkIcon className="w-4 h-4" />,
+        source: cleanHostname.charAt(0).toUpperCase() + cleanHostname.slice(1),
+        icon: <ExternalLink className="w-4 h-4" />,
         color: 'text-gray-600',
       };
+
     } catch {
+      // If URL parsing fails, return Other
       return {
         source: 'Other',
         icon: <LinkIcon className="w-4 h-4" />,
@@ -425,85 +585,99 @@ export default function DashboardPage() {
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
       <header className="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-            <div>
-              <h1 className="text-2xl font-bold text-gray-900">Analytics Dashboard</h1>
-              <div className="flex items-center gap-2 mt-1">
-                <div className={`h-2 w-2 rounded-full ${autoRefresh ? 'bg-green-500 animate-pulse' : 'bg-gray-400'}`} />
-                <p className="text-sm text-gray-500">
-                  {autoRefresh ? `Live • Updated ${formatTimeAgo(lastUpdate.getTime())}` : 'Paused'}
-                </p>
+        <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6 xl:px-8 py-3 sm:py-4">
+          <div className="flex flex-col gap-3">
+            <div className="flex items-start justify-between gap-3">
+              <div className="flex-1 min-w-0">
+                <h1 className="text-xl sm:text-2xl font-bold text-gray-900">Analytics Dashboard</h1>
+                <div className="flex items-center gap-2 mt-1">
+                  <div className={`h-2 w-2 rounded-full flex-shrink-0 ${autoRefresh ? 'bg-green-500 animate-pulse' : 'bg-gray-400'}`} />
+                  <p className="text-xs sm:text-sm text-gray-500 truncate">
+                    {autoRefresh ? `Live • Updated ${formatTimeAgo(lastUpdate.getTime())}` : 'Paused'}
+                  </p>
+                </div>
               </div>
-            </div>
-            <div className="flex items-center gap-3">
-              <label className="flex items-center gap-2 cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={autoRefresh}
-                  onChange={(e) => setAutoRefresh(e.target.checked)}
-                  className="w-4 h-4 text-blue-600 rounded focus:ring-blue-500"
-                />
-                <span className="text-sm text-gray-700">Auto-refresh</span>
-              </label>
-              <button
-                onClick={fetchSessions}
-                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition text-sm font-medium"
-              >
-                Refresh Now
-              </button>
-              <button
-                onClick={handleLogout}
-                className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition text-sm font-medium"
-              >
-                Logout
-              </button>
+              <div className="flex flex-wrap items-center gap-2">
+                <label className="flex items-center gap-2 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={autoRefresh}
+                    onChange={(e) => setAutoRefresh(e.target.checked)}
+                    className="w-4 h-4 text-blue-600 rounded focus:ring-blue-500"
+                  />
+                  <span className="text-sm text-gray-700 whitespace-nowrap">Auto-refresh</span>
+                </label>
+                <button
+                  onClick={fetchSessions}
+                  className="px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition text-sm font-medium flex items-center gap-2 whitespace-nowrap"
+                >
+                  <RefreshCw className="w-4 h-4" />
+                  Refresh
+                </button>
+                <button
+                  onClick={handleClearAll}
+                  className="px-3 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition text-sm font-medium flex items-center gap-2 whitespace-nowrap"
+                >
+                  <Trash2 className="w-4 h-4" />
+                  Clear All
+                </button>
+                <button
+                  onClick={handleLogout}
+                  className="px-3 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition text-sm font-medium whitespace-nowrap"
+                >
+                  Logout
+                </button>
+              </div>
             </div>
           </div>
         </div>
       </header>
 
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <main className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6 xl:px-8 py-4 sm:py-6">
         {/* Statistics Cards */}
-        <div className="grid grid-cols-2 md:grid-cols-6 gap-4 mb-6">
-          <div className="bg-white rounded-lg shadow-sm p-4 border border-gray-200">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4 mb-4 sm:mb-6">
+          <div className="bg-white rounded-lg shadow-sm p-3 sm:p-4 border border-gray-200">
             <div className="text-xs text-gray-500 uppercase tracking-wide mb-1">Total Sessions</div>
-            <div className="text-2xl font-bold text-gray-900">{stats.totalSessions}</div>
+            <div className="text-xl sm:text-2xl font-bold text-gray-900">{stats.totalSessions}</div>
           </div>
-          <div className="bg-green-50 rounded-lg shadow-sm p-4 border border-green-200">
+          <div className="bg-green-50 rounded-lg shadow-sm p-3 sm:p-4 border border-green-200">
             <div className="text-xs text-green-700 uppercase tracking-wide mb-1">Active Now</div>
-            <div className="text-2xl font-bold text-green-900">{stats.activeSessions}</div>
+            <div className="text-xl sm:text-2xl font-bold text-green-900">{stats.activeSessions}</div>
           </div>
-          <div className="bg-purple-50 rounded-lg shadow-sm p-4 border border-purple-200">
+          <div className="bg-purple-50 rounded-lg shadow-sm p-3 sm:p-4 border border-purple-200">
             <div className="text-xs text-purple-700 uppercase tracking-wide mb-1">Bookings</div>
-            <div className="text-2xl font-bold text-purple-900">{stats.totalBookingClicks}</div>
+            <div className="text-xl sm:text-2xl font-bold text-purple-900">{stats.totalBookingClicks}</div>
           </div>
-          <div className="bg-blue-50 rounded-lg shadow-sm p-4 border border-blue-200">
+          <div className="bg-blue-50 rounded-lg shadow-sm p-3 sm:p-4 border border-blue-200">
             <div className="text-xs text-blue-700 uppercase tracking-wide mb-1">Pages Viewed</div>
-            <div className="text-2xl font-bold text-blue-900">{stats.totalPages}</div>
+            <div className="text-xl sm:text-2xl font-bold text-blue-900">{stats.totalPages}</div>
           </div>
-          <div className="bg-orange-50 rounded-lg shadow-sm p-4 border border-orange-200">
+          <div className="bg-yellow-50 rounded-lg shadow-sm p-3 sm:p-4 border border-yellow-200">
+            <div className="text-xs text-yellow-700 uppercase tracking-wide mb-1">Videos</div>
+            <div className="text-xl sm:text-2xl font-bold text-yellow-900">{stats.totalVideoPlays}</div>
+          </div>
+          <div className="bg-orange-50 rounded-lg shadow-sm p-3 sm:p-4 border border-orange-200">
             <div className="text-xs text-orange-700 uppercase tracking-wide mb-1">Avg. Time</div>
-            <div className="text-2xl font-bold text-orange-900">{formatDuration(stats.avgTime)}</div>
+            <div className="text-xl sm:text-2xl font-bold text-orange-900">{formatDuration(stats.avgTime)}</div>
           </div>
         </div>
 
         {/* Search and Filters */}
-        <div className="bg-white rounded-lg shadow-sm p-4 mb-6 border border-gray-200">
-          <div className="flex flex-col sm:flex-row gap-4">
+        <div className="bg-white rounded-lg shadow-sm p-3 sm:p-4 mb-4 sm:mb-6 border border-gray-200">
+          <div className="flex flex-col gap-3">
             <div className="flex-1">
               <input
                 type="text"
                 placeholder="Search sessions..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                className="w-full px-3 sm:px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
               />
             </div>
-            <div className="flex gap-2">
+            <div className="flex flex-wrap gap-2">
               <button
                 onClick={() => setFilterActive("all")}
-                className={`px-4 py-2 rounded-lg transition font-medium text-sm ${
+                className={`px-3 sm:px-4 py-2 rounded-lg transition font-medium text-xs sm:text-sm flex-1 sm:flex-none ${
                   filterActive === "all"
                     ? "bg-blue-600 text-white shadow"
                     : "bg-gray-100 text-gray-700 hover:bg-gray-200"
@@ -513,7 +687,7 @@ export default function DashboardPage() {
               </button>
               <button
                 onClick={() => setFilterActive("active")}
-                className={`px-4 py-2 rounded-lg transition font-medium text-sm ${
+                className={`px-3 sm:px-4 py-2 rounded-lg transition font-medium text-xs sm:text-sm flex-1 sm:flex-none ${
                   filterActive === "active"
                     ? "bg-green-600 text-white shadow"
                     : "bg-gray-100 text-gray-700 hover:bg-gray-200"
@@ -523,7 +697,7 @@ export default function DashboardPage() {
               </button>
               <button
                 onClick={() => setFilterActive("with-cta")}
-                className={`px-4 py-2 rounded-lg transition font-medium text-sm ${
+                className={`px-3 sm:px-4 py-2 rounded-lg transition font-medium text-xs sm:text-sm flex-1 sm:flex-none ${
                   filterActive === "with-cta"
                     ? "bg-purple-600 text-white shadow"
                     : "bg-gray-100 text-gray-700 hover:bg-gray-200"
@@ -603,16 +777,16 @@ export default function DashboardPage() {
                       </div>
 
                       {/* Right: Metrics */}
-                      <div className="flex items-center gap-6 text-sm">
-                        <div className="text-center">
+                      <div className="flex items-center gap-3 sm:gap-4 lg:gap-6 text-xs sm:text-sm flex-shrink-0">
+                        <div className="text-center hidden sm:block">
                           <div className="text-gray-500 text-xs mb-0.5">Time</div>
-                          <div className="font-semibold text-gray-900">{formatDuration(totalTime)}</div>
+                          <div className="font-semibold text-gray-900 whitespace-nowrap">{formatDuration(totalTime)}</div>
                         </div>
                         <div className="text-center">
                           <div className="text-gray-500 text-xs mb-0.5">Pages</div>
                           <div className="font-semibold text-gray-900">{session.pages.length}</div>
                         </div>
-                        <div className="text-center">
+                        <div className="text-center hidden md:block">
                           <div className="text-gray-500 text-xs mb-0.5">Scroll</div>
                           <div className="font-semibold text-gray-900">{session.maxScrollDepth.toFixed(0)}%</div>
                         </div>
@@ -620,13 +794,13 @@ export default function DashboardPage() {
                           <div className="text-gray-500 text-xs mb-0.5">CTAs</div>
                           <div className="font-semibold text-gray-900">{session.ctaClicks.length}</div>
                         </div>
-                        <div className="text-center">
+                        <div className="text-center hidden lg:block">
                           <div className="text-gray-500 text-xs mb-0.5">Videos</div>
                           <div className="font-semibold text-gray-900">{videoPlaysCount}</div>
                         </div>
-                        <div className="ml-2">
+                        <div className="ml-1 sm:ml-2">
                           <svg
-                            className={`w-5 h-5 text-gray-400 transition-transform ${isExpanded ? 'transform rotate-180' : ''}`}
+                            className={`w-4 h-4 sm:w-5 sm:h-5 text-gray-400 transition-transform ${isExpanded ? 'transform rotate-180' : ''}`}
                             fill="none"
                             viewBox="0 0 24 24"
                             stroke="currentColor"
@@ -640,8 +814,8 @@ export default function DashboardPage() {
 
                   {/* Expanded Details */}
                   {isExpanded && (
-                    <div className="border-t border-gray-200 bg-gray-50 p-6">
-                      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div className="border-t border-gray-200 bg-gray-50 p-4 sm:p-6">
+                      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
                         {/* Session Info */}
                         <div>
                           <h3 className="text-sm font-semibold text-gray-900 mb-3 uppercase tracking-wide">Session Details</h3>
