@@ -133,12 +133,32 @@ export default function WhatToExpectPage() {
         },
         "about": {
             "@type": "LocalBusiness",
-            "@id": "https://zlwebster.com/#localbusiness"
+            "@id": "https://zlwebster.com/#localbusiness",
+            "name": "Zero Latency VR Houston, Webster",
+            "aggregateRating": {
+                "@type": "AggregateRating",
+                "ratingValue": "5.0",
+                "reviewCount": "229",
+                "bestRating": "5",
+                "worstRating": "1"
+            },
+            "address": {
+                "@type": "PostalAddress",
+                "streetAddress": "BayWay Village Shopping Center, 20801 Gulf Fwy suite 5",
+                "addressLocality": "Webster",
+                "addressRegion": "TX",
+                "postalCode": "77598",
+                "addressCountry": "US"
+            },
+            "priceRange": "$$",
+            "telephone": "+14694049149",
+            "image": "https://zlwebster.com/OG.jpg",
         },
         "mainEntityOfPage": {
             "@type": "WebPage",
             "@id": "https://zlwebster.com/what-to-expect"
-        }
+        },
+
     };
 
     const howToSchema = {
