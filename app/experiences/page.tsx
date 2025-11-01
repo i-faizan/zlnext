@@ -270,7 +270,7 @@ export default function ExperiencesPage() {
 
     return (
         <>
-            <Script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(experienceJsonLd) }} />
+            <Script id="experience-schema" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(experienceJsonLd) }} />
             <Script id="breadcrumb-schema" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
             <Script id="service-schema" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }} />
             <main id="main-content" className="pt-20 sm:pt-0">

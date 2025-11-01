@@ -36,7 +36,7 @@ export async function POST(request: Request) {
   let body;
   try {
     body = await request.json();
-  } catch (e) {
+  } catch {
     // The request has no body or it's not valid JSON.
     body = null;
   }
@@ -76,7 +76,7 @@ export async function PUT(request: Request) {
             return NextResponse.json({ message: "Session updated" }, { status: 200 });
         }
         return NextResponse.json({ error: "Invalid or missing UUID" }, { status: 400 });
-    } catch (error) {
+    } catch {
         return NextResponse.json({ error: "Invalid request body" }, { status: 400 });
     }
 }
