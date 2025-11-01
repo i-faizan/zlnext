@@ -71,7 +71,7 @@ export default function YouTubeEmbed({ videoId, title = "YouTube video", classNa
             }
           }
         }
-      } catch (e) {
+      } catch {
         // Ignore parse errors
       }
     };
