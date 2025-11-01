@@ -317,7 +317,7 @@ const reviewSchema = {
     "ratingValue": "5.0",
     "reviewCount": "229",
     "bestRating": "5",
-    "worstRating": "4"
+    "worstRating": "1"
   },
   "review": testimonials.map((testimonial) => ({
     "@type": "Review",
@@ -329,7 +329,7 @@ const reviewSchema = {
       "@type": "Rating",
       "ratingValue": testimonial.stars.toString(),
       "bestRating": "5",
-      "worstRating": "4"
+      "worstRating": "1"
     },
     "reviewBody": testimonial.quote,
     "datePublished": "2025-11-01",

@@ -65,7 +65,7 @@ const localBusinessJsonLd = {
     "ratingValue": "5.0",
     "reviewCount": "229",
     "bestRating": "5",
-    "worstRating": "4"
+    "worstRating": "1"
   },
   "geo": { "@type": "GeoCoordinates", "latitude": 29.5377, "longitude": -95.1183 },
   "hasMap": "https://maps.google.com/?q=Zero+Latency+Webster",
@@ -120,6 +120,9 @@ const localBusinessJsonLd = {
   "sameAs": [
     "https://www.facebook.com/zerolatencywebstr",
     "https://www.instagram.com/zerolatencywebstr",
+    "https://www.tiktok.com/@zerolatencywebstr",
+    "https://www.youtube.com/@ZeroLatencyWebster",
+    "https://twitter.com/zlwebster"
   ],
   "potentialAction": {
     "@type": "ReserveAction",

@@ -90,7 +90,7 @@ const organizationSchema = {
     "https://www.instagram.com/zerolatencywebstr",
     "https://www.tiktok.com/@zerolatencywebstr",
     "https://www.youtube.com/@ZeroLatencyWebster",
-    "https://www.twitter.com/@zlwebster"
+    "https://twitter.com/zlwebster"
   ],
   "address": {
     "@type": "PostalAddress",

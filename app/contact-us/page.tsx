@@ -46,9 +46,48 @@ export default function ContactPage() {
         { name: "Contact Us", url: "https://zlwebster.com/contact-us" },
     ]);
 
+    const localBusinessSchema = {
+        "@context": "https://schema.org",
+        "@type": ["LocalBusiness", "EntertainmentBusiness"],
+        "@id": "https://zlwebster.com/#localbusiness",
+        "name": "Zero Latency VR Houston, Webster",
+        "image": "https://zlwebster.com/OG.jpg",
+        "url": "https://zlwebster.com/",
+        "telephone": "+14694049149",
+        "email": "zero@zlwebster.com",
+        "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": 29.5377,
+            "longitude": -95.1183
+        },
+        "hasMap": "https://maps.google.com/?q=Zero+Latency+Webster",
+        "priceRange": "$$",
+        "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "BayWay Village Shopping Center, 20801 Gulf Fwy suite 5",
+            "addressLocality": "Webster",
+            "addressRegion": "TX",
+            "postalCode": "77598",
+            "addressCountry": "US"
+        },
+        "openingHoursSpecification": [
+            { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday", "Tuesday"], "opens": "16:00", "closes": "21:30" },
+            { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Wednesday", "Thursday"], "opens": "14:00", "closes": "21:30" },
+            { "@type": "OpeningHoursSpecification", "dayOfWeek": ["Friday", "Saturday", "Sunday"], "opens": "11:00", "closes": "23:00" }
+        ],
+        "sameAs": [
+            "https://www.facebook.com/zerolatencywebstr",
+            "https://www.instagram.com/zerolatencywebstr",
+            "https://www.tiktok.com/@zerolatencywebstr",
+            "https://www.youtube.com/@ZeroLatencyWebster",
+            "https://twitter.com/zlwebster"
+        ]
+    };
+
     return (
         <>
             <Script id="breadcrumb-schema" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+            <Script id="localbusiness-schema" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessSchema) }} />
             <main id="main-content">
             <div className="bg-[#000F13] text-gray-200 font-montserrat overflow-x-hidden">
 

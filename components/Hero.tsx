@@ -23,7 +23,7 @@ export default function Hero() {
               <a href="#video" className="btn btn-ghost">Watch Trailer</a>
             </div>
             <ul className="mt-6 grid grid-cols-2 gap-3 text-sm text-gray-400 sm:grid-cols-3">
-              <li>✔️ 2000+ ★★★★★ reviews</li>
+              <li>✔️ 229+ ★★★★★ reviews</li>
               <li>✔️ 2–8 players</li>
               <li>✔️ 30–45 min sessions</li>
             </ul>

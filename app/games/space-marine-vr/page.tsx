@@ -114,7 +114,7 @@ export default function SpaceMarinePage() {
         "aggregateRating": {
             "@type": "AggregateRating",
             "ratingValue": "5",
-            "ratingCount": "228"
+            "ratingCount": "229"
         },
         "genre": ["Action", "Sci-Fi", "Shooter"],
         "numberOfPlayers": "1-8",
