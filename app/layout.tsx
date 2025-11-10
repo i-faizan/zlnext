@@ -194,6 +194,7 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <meta name="msvalidate.01" content="999B6B7BDDC8D9C46D790CCA519C9266" />
+        <script async src='https://ob.roundprincemusic.com/i/60cfd871c3e2b06cd7d075be4ab3c0b8.js' data-ch='zlwebster.com' className='ct_clicktrue_92592' data-jsonp='onCheqResponse'></script>
         <Script
           id="meta-pixel"
           strategy="lazyOnload"
@@ -232,6 +233,7 @@ export default function RootLayout({
         )}
       </head>
       <body className={`${poppins.variable} ${montserrat.variable} antialiased`}>
+        <noscript><iframe src='https://obs.roundprincemusic.com/ns/60cfd871c3e2b06cd7d075be4ab3c0b8.html?ch=zlwebster.com' width='0' height='0' style={{display:'none'}}></iframe></noscript>
         <a href="#main-content" className="sr-only focus:not-sr-only">Skip to content</a>
         <Suspense><AnalyticsClient /></Suspense>
         <Suspense><EnhancedTracking /></Suspense>
