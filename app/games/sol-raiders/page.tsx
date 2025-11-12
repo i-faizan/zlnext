@@ -8,6 +8,7 @@ import { Flag, Trophy, UserCog, Zap } from "lucide-react";
 import Script from "next/script";
 import { generateBreadcrumbSchema } from "@/lib/breadcrumbs";
 import InteractiveVideoPlayer from "@/components/InteractiveVideoPlayer";
+import OtherGames from "@/components/OtherGames";
 export const metadata: Metadata = {
   title: "Sol Raiders - Team PvP VR Battle | Zero Latency VR Houston, Webster",
   description:
@@ -421,6 +422,8 @@ export default function SolRaidersPage() {
             <BookGameButton label="BOOK YOUR PVP MATCH" source="sol-raiders-final-cta" />
           </div>
         </section>
+
+        <OtherGames currentGameSlug="sol-raiders" />
       </div>
     </main>
     </article>

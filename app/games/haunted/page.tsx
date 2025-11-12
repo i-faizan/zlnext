@@ -7,6 +7,7 @@ import BookGameButton from "@/components/BookBtn";
 import Script from "next/script";
 import { generateBreadcrumbSchema } from "@/lib/breadcrumbs";
 import InteractiveVideoPlayer from "@/components/InteractiveVideoPlayer";
+import OtherGames from "@/components/OtherGames";
 
 // Metadata updated for Haunted VR
 export const metadata: Metadata = {
@@ -279,6 +280,8 @@ export default function HauntedPage() {
                         </div>
                     </div>
                 </section>
+
+                <OtherGames currentGameSlug="haunted" />
             </div>
         </main>
         </article>

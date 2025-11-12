@@ -8,6 +8,7 @@ import { Drama, Flame, Palmtree, Users } from "lucide-react";
 import Script from "next/script";
 import { generateBreadcrumbSchema } from "@/lib/breadcrumbs";
 import InteractiveVideoPlayer from "@/components/InteractiveVideoPlayer";
+import OtherGames from "@/components/OtherGames";
 
 export const metadata: Metadata = {
   title: "Far Cry VR: Dive Into Insanity | Zero Latency VR Houston, Webster",
@@ -427,6 +428,8 @@ export default function FarCryVRPage() {
             </p>
           </div>
         </section>
+
+        <OtherGames currentGameSlug="far-cry-vr" />
       </div>
     </main>
     </article>

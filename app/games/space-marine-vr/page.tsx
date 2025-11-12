@@ -7,6 +7,7 @@ import BookGameButton from "@/components/BookBtn";
 import Script from "next/script";
 import { generateBreadcrumbSchema } from "@/lib/breadcrumbs";
 import InteractiveVideoPlayer from "@/components/InteractiveVideoPlayer";
+import OtherGames from "@/components/OtherGames";
 
 // Metadata remains the same
 export const metadata: Metadata = {
@@ -330,6 +331,8 @@ export default function SpaceMarinePage() {
                         </div>
                     </div>
                 </section>
+
+                <OtherGames currentGameSlug="space-marine-vr" />
             </div>
         </main>
         </article>

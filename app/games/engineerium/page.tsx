@@ -8,6 +8,7 @@ import { Eye, Puzzle, Recycle, Users } from "lucide-react";
 import Script from "next/script";
 import { generateBreadcrumbSchema } from "@/lib/breadcrumbs";
 import InteractiveVideoPlayer from "@/components/InteractiveVideoPlayer";
+import OtherGames from "@/components/OtherGames";
 
 export const metadata: Metadata = {
   title: "Engineerium – Surreal Puzzle VR Adventure | Zero Latency VR Houston, Webster",
@@ -387,6 +388,8 @@ export default function EngineeriumPage() {
             </div>
           </div>
         </section>
+
+        <OtherGames currentGameSlug="engineerium" />
       </div>
     </main>
     </article>

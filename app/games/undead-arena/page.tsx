@@ -8,6 +8,7 @@ import { Skull, Swords, Users, Zap } from "lucide-react";
 import Script from "next/script";
 import { generateBreadcrumbSchema } from "@/lib/breadcrumbs";
 import InteractiveVideoPlayer from "@/components/InteractiveVideoPlayer";
+import OtherGames from "@/components/OtherGames";
 
 export const metadata: Metadata = {
   title: "Undead Arena - Zombie Wave VR Shooter | Zero Latency VR Houston, Webster",
@@ -427,6 +428,8 @@ export default function UndeadArenaPage() {
             <BookGameButton label="BOOK YOUR SPOTLIGHT" source="undead-final-cta" />
           </div>
         </section>
+
+        <OtherGames currentGameSlug="undead-arena" />
       </div>
     </main>
     </article>

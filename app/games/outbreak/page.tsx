@@ -8,6 +8,7 @@ import BookGameButton from "@/components/BookBtn";
 import Script from "next/script";
 import { generateBreadcrumbSchema } from "@/lib/breadcrumbs";
 import InteractiveVideoPlayer from "@/components/InteractiveVideoPlayer";
+import OtherGames from "@/components/OtherGames";
 
 export const metadata: Metadata = {
     title: "Outbreak - Zombie Survival VR | Zero Latency VR Houston, Webster",
@@ -343,6 +344,8 @@ export default function OutbreakPage() {
                         <BookGameButton label="BOOK YOUR SURVIVAL" source="outbreak-final-cta" />
                     </div>
                 </section>
+
+                <OtherGames currentGameSlug="outbreak" />
             </div>
         </main>
         </article>

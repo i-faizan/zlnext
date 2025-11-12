@@ -76,7 +76,7 @@ export default function BookGameButton({
   return (
     <a
       href={link}
-      rel="external nofollow noopener noreferrer"
+      rel="external noopener noreferrer"
       onClick={handleClick}
       data-cta-handled="true"
       data-cta-source={source}
