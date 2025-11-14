@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
+import { buildEnvParams } from "@/lib/env";
 
 // Session storage key
 const SESSION_UUID_KEY = "tracking_session_uuid";
@@ -28,6 +29,8 @@ export default function EnhancedTracking() {
   const pageTrackingInProgressRef = useRef<boolean>(false);
   const videoTrackingRefs = useRef<Map<HTMLVideoElement, { progressInterval?: NodeJS.Timeout }>>(new Map());
   const ctaClickTrackingRef = useRef<Set<string>>(new Set()); // Track clicked CTAs to prevent duplicates
+  const pageLoadedRef = useRef<boolean>(false);
+  const leftBeforeLoadSentRef = useRef<boolean>(false);
 
   // Get or create session UUID with deduplication
   const getOrCreateSession = async (): Promise<string | null> => {
@@ -71,11 +74,16 @@ export default function EnhancedTracking() {
         return window.trackingUUID;
       }
 
+      // Collect device info
+      const fullUrl = typeof window !== 'undefined' ? window.location.href : '';
+      const referrer = typeof document !== 'undefined' ? document.referrer : '';
+      const deviceInfo = buildEnvParams(fullUrl, referrer);
+      
       // Create new session (only one at a time)
       const initPromise = fetch("/api/visits", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ path: pathname }),
+        body: JSON.stringify({ path: pathname, deviceInfo }),
       })
         .then((res) => res.json())
         .then((data) => {
@@ -106,26 +114,38 @@ export default function EnhancedTracking() {
     return null;
   };
 
+  const initializeScrollTiming = (calculateScrollDepth: () => number) => {
+    scrollDepthRef.current = 0;
+    scrollStartTimeRef.current = Date.now();
+    lastScrollTimeRef.current = Date.now();
+    pageLoadedRef.current = true;
+
+    // Force initial scroll calculation for mobile (some mobile browsers don't fire scroll on load)
+    setTimeout(() => {
+      if (uuidRef.current && typeof window !== 'undefined') {
+        const initialDepth = calculateScrollDepth();
+        if (initialDepth > 0) {
+          scrollDepthRef.current = initialDepth;
+        }
+      }
+    }, 500); // Small delay to ensure page is rendered
+  };
+
   useEffect(() => {
     // Skip tracking for dashboard pages
     if (pathname.startsWith('/dashboard')) {
       return;
     }
 
-            // Initialize time refs on client side to prevent hydration mismatch
-            if (lastScrollTimeRef.current === null) {
-              lastScrollTimeRef.current = Date.now();
-            }
-
-            // Note: Don't return early here even if same path
-            // Mobile browsers may re-mount components, and we still need to initialize scroll tracking
-            if (lastTrackedPathRef.current === pathname && uuidRef.current) {
-              // Same page - reset scroll tracking but continue with initialization
-              scrollDepthRef.current = 0;
-              scrollStartTimeRef.current = Date.now();
-              lastScrollTimeRef.current = Date.now();
-              // Don't return - continue to ensure scroll tracking is set up
-            }
+    // Note: Don't return early here even if same path
+    // Mobile browsers may re-mount components, and we still need to initialize scroll tracking
+    if (lastTrackedPathRef.current === pathname && uuidRef.current && pageLoadedRef.current) {
+      // Same page - reset scroll tracking but continue with initialization
+      scrollDepthRef.current = 0;
+      scrollStartTimeRef.current = Date.now();
+      lastScrollTimeRef.current = Date.now();
+      // Don't return - continue to ensure scroll tracking is set up
+    }
 
     // Initialize session and track page change
     let mounted = true;
@@ -139,6 +159,11 @@ export default function EnhancedTracking() {
       
       // Only track if this is a new path (not already tracked)
       if (lastTrackedPathRef.current !== pathname) {
+        // Collect device info for update
+        const fullUrl = typeof window !== 'undefined' ? window.location.href : '';
+        const referrer = typeof document !== 'undefined' ? document.referrer : '';
+        const deviceInfo = buildEnvParams(fullUrl, referrer);
+        
         fetch("/api/visits", {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
@@ -146,6 +171,7 @@ export default function EnhancedTracking() {
             uuid: uuidRef.current,
             type: "page",
             path: pathname,
+            deviceInfo,
           }),
         })
           .then((res) => {
@@ -233,25 +259,35 @@ export default function EnhancedTracking() {
       return Math.min(100, Math.max(0, scrollDepth)); // Clamp between 0-100
     };
 
-    // Initialize scroll tracking for current page
-    scrollDepthRef.current = 0;
-    scrollStartTimeRef.current = Date.now();
-    lastScrollTimeRef.current = Date.now();
-    
-    // Force initial scroll calculation for mobile (some mobile browsers don't fire scroll on load)
-    setTimeout(() => {
-      if (uuidRef.current && typeof window !== 'undefined') {
-        const initialDepth = calculateScrollDepth();
-        if (initialDepth > 0) {
-          scrollDepthRef.current = initialDepth;
-        }
+    const ensureTimingStartsAfterLoad = () => {
+      if (typeof window === 'undefined') {
+        initializeScrollTiming(calculateScrollDepth);
+        return () => {};
       }
-    }, 500); // Small delay to ensure page is rendered
+
+      if (document.readyState === 'complete') {
+        initializeScrollTiming(calculateScrollDepth);
+        return () => {};
+      }
+
+      const handleLoad = () => {
+        initializeScrollTiming(calculateScrollDepth);
+        window.removeEventListener('load', handleLoad);
+      };
+
+      window.addEventListener('load', handleLoad);
+
+      return () => {
+        window.removeEventListener('load', handleLoad);
+      };
+    };
+
+    const cleanupLoadListener = ensureTimingStartsAfterLoad();
 
     const handleScroll = () => {
       // Check current pathname dynamically to avoid stale closures
       const currentPath = typeof window !== 'undefined' ? window.location.pathname : pathname;
-      if (!uuidRef.current || currentPath.startsWith('/dashboard')) return;
+      if (!uuidRef.current || currentPath.startsWith('/dashboard') || !pageLoadedRef.current) return;
 
       const now = Date.now();
       const scrollDepth = calculateScrollDepth();
@@ -620,7 +656,7 @@ export default function EnhancedTracking() {
 
     // On page unload, send final beacon
     const handleUnload = () => {
-      if (uuidRef.current) {
+      if (uuidRef.current && pageLoadedRef.current) {
         // Finalize scroll tracking
         const finalScrollDepth = scrollDepthRef.current;
         const finalTime = Date.now();
@@ -646,6 +682,18 @@ export default function EnhancedTracking() {
           "/api/visits",
           new Blob([sessionData], { type: "application/json" })
         );
+      } else if (uuidRef.current && !pageLoadedRef.current && !leftBeforeLoadSentRef.current) {
+        // User left before page fully loaded
+        leftBeforeLoadSentRef.current = true;
+        const statusData = JSON.stringify({
+          uuid: uuidRef.current,
+          type: "status",
+          leftBeforeLoad: true,
+        });
+        navigator.sendBeacon(
+          "/api/visits",
+          new Blob([statusData], { type: "application/json" })
+        );
       }
     };
 
@@ -661,6 +709,7 @@ export default function EnhancedTracking() {
       document.removeEventListener("click", handleCTAClick, true);
       ctaClickTrackingRef.current.clear();
       document.removeEventListener('play', handleVideoPlay, true);
+      cleanupLoadListener?.();
       
       // Cleanup video tracking intervals
       videoTrackingRefs.current.forEach((info) => {

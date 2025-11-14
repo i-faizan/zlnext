@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useMemo } from "react";
-import { Smartphone, Monitor, HelpCircle, Facebook, Search, Link as LinkIcon, Instagram, Youtube, Twitter, Linkedin, Music2, Trash2, RefreshCw, ExternalLink } from "lucide-react";
+import { Smartphone, Monitor, HelpCircle, Facebook, Search, Link as LinkIcon, Instagram, Youtube, Twitter, Linkedin, Music2, Trash2, RefreshCw, ExternalLink, Users, Activity, MousePointerClick, Video, Timer, AlertTriangle } from "lucide-react";
 
 interface PageVisit {
   path: string;
@@ -30,17 +30,45 @@ interface VideoPlay {
   completion?: number;
 }
 
+interface DeviceInfo {
+  device_type?: string;
+  os_name?: string;
+  os_version?: string;
+  browser_name?: string;
+  browser_version?: string;
+  is_webview?: string;
+  webview_host?: string;
+  screen_resolution?: string;
+  viewport?: string;
+  device_pixel_ratio?: string;
+  language?: string;
+  timezone?: string;
+  hardware_concurrency?: string;
+  device_memory_gb?: string;
+  network_effective_type?: string;
+  save_data?: string;
+  touch_support?: string;
+  utm_source?: string;
+  utm_medium?: string;
+  utm_campaign?: string;
+  utm_content?: string;
+  utm_term?: string;
+  fbclid?: string;
+}
+
 interface Session {
   startTime: number;
   lastSeen: number;
   userAgent?: string;
   referrer?: string;
+  deviceInfo?: DeviceInfo;
   pages: PageVisit[];
   ctaClicks: CTAClick[];
   videoPlays: VideoPlay[];
   currentPage?: string;
   totalScrollDuration: number;
   maxScrollDepth: number;
+  leftBeforeLoad?: boolean;
 }
 
 interface SessionData {
@@ -59,6 +87,8 @@ export default function DashboardPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [filterActive, setFilterActive] = useState<"all" | "active" | "with-cta">("all");
   const [lastUpdate, setLastUpdate] = useState<Date>(new Date());
+  const [currentTime, setCurrentTime] = useState<number>(Date.now());
+  const [showLeftBeforeLoadOnly, setShowLeftBeforeLoadOnly] = useState(false);
 
   useEffect(() => {
     checkAuth();
@@ -70,11 +100,22 @@ export default function DashboardPage() {
       const interval = setInterval(() => {
         fetchSessions();
         setLastUpdate(new Date());
+        setCurrentTime(Date.now()); // Update current time for live page timers
       }, 2000); // Real-time: 2 seconds
 
       return () => clearInterval(interval);
     }
   }, [isAuthenticated, autoRefresh]);
+
+  // Update current time every second for live page timers
+  useEffect(() => {
+    if (isAuthenticated) {
+      const timer = setInterval(() => {
+        setCurrentTime(Date.now());
+      }, 1000);
+      return () => clearInterval(timer);
+    }
+  }, [isAuthenticated]);
 
   const checkAuth = async () => {
     try {
@@ -508,8 +549,12 @@ export default function DashboardPage() {
       });
     }
 
+    if (showLeftBeforeLoadOnly) {
+      filtered = filtered.filter((s) => s.session.leftBeforeLoad);
+    }
+
     return filtered;
-  }, [sessions, filterActive, searchQuery]);
+  }, [sessions, filterActive, searchQuery, showLeftBeforeLoadOnly]);
 
   // Calculate statistics
   const stats = useMemo(() => {
@@ -534,6 +579,53 @@ export default function DashboardPage() {
       avgTime,
     };
   }, [sessions]);
+
+  const leftBeforeLoadCount = sessions.filter((s) => s.session.leftBeforeLoad).length;
+
+  const statCards = [
+    {
+      label: "Total Sessions",
+      value: stats.totalSessions,
+      description: "Visitors tracked today",
+      icon: Users,
+      accent: "bg-white border-gray-200",
+    },
+    {
+      label: "Active Now",
+      value: stats.activeSessions,
+      description: "Live on site",
+      icon: Activity,
+      accent: "bg-green-50 border-green-100",
+    },
+    {
+      label: "Bookings",
+      value: stats.totalBookingClicks,
+      description: "CTA conversions",
+      icon: MousePointerClick,
+      accent: "bg-purple-50 border-purple-100",
+    },
+    {
+      label: "Pages Viewed",
+      value: stats.totalPages,
+      description: "Total pageviews",
+      icon: Activity,
+      accent: "bg-blue-50 border-blue-100",
+    },
+    {
+      label: "Videos",
+      value: stats.totalVideoPlays,
+      description: "Video interactions",
+      icon: Video,
+      accent: "bg-yellow-50 border-yellow-100",
+    },
+    {
+      label: "Avg. Time",
+      value: formatDuration(stats.avgTime),
+      description: "Per visitor",
+      icon: Timer,
+      accent: "bg-orange-50 border-orange-100",
+    },
+  ];
 
   const toggleSessionExpansion = (uuid: string) => {
     setExpandedSession(expandedSession === uuid ? null : uuid);
@@ -598,15 +690,6 @@ export default function DashboardPage() {
                 </div>
               </div>
               <div className="flex flex-wrap items-center gap-2">
-                <label className="flex items-center gap-2 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    checked={autoRefresh}
-                    onChange={(e) => setAutoRefresh(e.target.checked)}
-                    className="w-4 h-4 text-blue-600 rounded focus:ring-blue-500"
-                  />
-                  <span className="text-sm text-gray-700 whitespace-nowrap">Auto-refresh</span>
-                </label>
                 <button
                   onClick={fetchSessions}
                   className="px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition text-sm font-medium flex items-center gap-2 whitespace-nowrap"
@@ -635,76 +718,88 @@ export default function DashboardPage() {
 
       <main className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-6 xl:px-8 py-4 sm:py-6">
         {/* Statistics Cards */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4 mb-4 sm:mb-6">
-          <div className="bg-white rounded-lg shadow-sm p-3 sm:p-4 border border-gray-200">
-            <div className="text-xs text-gray-500 uppercase tracking-wide mb-1">Total Sessions</div>
-            <div className="text-xl sm:text-2xl font-bold text-gray-900">{stats.totalSessions}</div>
-          </div>
-          <div className="bg-green-50 rounded-lg shadow-sm p-3 sm:p-4 border border-green-200">
-            <div className="text-xs text-green-700 uppercase tracking-wide mb-1">Active Now</div>
-            <div className="text-xl sm:text-2xl font-bold text-green-900">{stats.activeSessions}</div>
-          </div>
-          <div className="bg-purple-50 rounded-lg shadow-sm p-3 sm:p-4 border border-purple-200">
-            <div className="text-xs text-purple-700 uppercase tracking-wide mb-1">Bookings</div>
-            <div className="text-xl sm:text-2xl font-bold text-purple-900">{stats.totalBookingClicks}</div>
-          </div>
-          <div className="bg-blue-50 rounded-lg shadow-sm p-3 sm:p-4 border border-blue-200">
-            <div className="text-xs text-blue-700 uppercase tracking-wide mb-1">Pages Viewed</div>
-            <div className="text-xl sm:text-2xl font-bold text-blue-900">{stats.totalPages}</div>
-          </div>
-          <div className="bg-yellow-50 rounded-lg shadow-sm p-3 sm:p-4 border border-yellow-200">
-            <div className="text-xs text-yellow-700 uppercase tracking-wide mb-1">Videos</div>
-            <div className="text-xl sm:text-2xl font-bold text-yellow-900">{stats.totalVideoPlays}</div>
-          </div>
-          <div className="bg-orange-50 rounded-lg shadow-sm p-3 sm:p-4 border border-orange-200">
-            <div className="text-xs text-orange-700 uppercase tracking-wide mb-1">Avg. Time</div>
-            <div className="text-xl sm:text-2xl font-bold text-orange-900">{formatDuration(stats.avgTime)}</div>
-          </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-3 sm:gap-4 mb-4 sm:mb-6">
+          {statCards.map(({ label, value, description, icon: Icon, accent }) => (
+            <div key={label} className={`rounded-xl border shadow-sm p-4 flex flex-col gap-2 ${accent}`}>
+              <div className="flex items-center justify-between text-xs uppercase tracking-wide text-gray-600">
+                <span>{label}</span>
+                <Icon className="w-4 h-4 text-gray-400" />
+              </div>
+              <div className="text-2xl font-bold text-gray-900">{value}</div>
+              <p className="text-xs text-gray-500">{description}</p>
+            </div>
+          ))}
         </div>
 
         {/* Search and Filters */}
-        <div className="bg-white rounded-lg shadow-sm p-3 sm:p-4 mb-4 sm:mb-6 border border-gray-200">
-          <div className="flex flex-col gap-3">
-            <div className="flex-1">
-              <input
-                type="text"
-                placeholder="Search sessions..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full px-3 sm:px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
-              />
+        <div className="bg-white rounded-2xl shadow-sm p-4 sm:p-6 mb-4 sm:mb-6 border border-gray-200/80">
+          <div className="flex flex-col gap-4">
+            <div className="flex flex-col sm:flex-row gap-3">
+              <div className="flex-1 relative">
+                <Search className="absolute left-3 top-2.5 h-4 w-4 text-gray-400" />
+                <input
+                  type="text"
+                  placeholder="Search by session ID, page, referrer, device..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full pl-10 pr-4 py-2.5 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                />
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="text-xs uppercase tracking-wide text-gray-500">Auto Refresh</span>
+                <label className="inline-flex items-center cursor-pointer">
+                  <input
+                    type="checkbox"
+                    className="sr-only"
+                    checked={autoRefresh}
+                    onChange={(e) => setAutoRefresh(e.target.checked)}
+                  />
+                  <span className={`w-10 h-5 flex items-center bg-gray-200 rounded-full p-1 transition ${autoRefresh ? 'bg-blue-500' : ''}`}>
+                    <span className={`bg-white w-4 h-4 rounded-full shadow transform transition ${autoRefresh ? 'translate-x-5' : ''}`} />
+                  </span>
+                </label>
+              </div>
             </div>
-            <div className="flex flex-wrap gap-2">
+
+            <div className="flex flex-col gap-2">
+              <div className="flex items-center justify-between text-xs uppercase tracking-wide text-gray-500">
+                <span>Quick Filters</span>
+                <span className="text-gray-400">Tap to focus</span>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {[
+                  { key: "all", label: `All (${sessions.length})` },
+                  { key: "active", label: `Active (${stats.activeSessions})` },
+                  { key: "with-cta", label: `With CTA (${sessions.filter(s => s.session.ctaClicks.length > 0).length})` },
+                ].map((chip) => (
+                  <button
+                    key={chip.key}
+                    onClick={() => setFilterActive(chip.key as typeof filterActive)}
+                    className={`px-3 py-1.5 rounded-full text-xs font-semibold transition ${
+                      filterActive === chip.key
+                        ? "bg-blue-600 text-white shadow"
+                        : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                    }`}
+                  >
+                    {chip.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-dashed border-gray-200">
               <button
-                onClick={() => setFilterActive("all")}
-                className={`px-3 sm:px-4 py-2 rounded-lg transition font-medium text-xs sm:text-sm flex-1 sm:flex-none ${
-                  filterActive === "all"
-                    ? "bg-blue-600 text-white shadow"
-                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                onClick={() => setShowLeftBeforeLoadOnly((prev) => !prev)}
+                className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold transition ${
+                  showLeftBeforeLoadOnly ? "bg-red-600 text-white" : "bg-red-50 text-red-700"
                 }`}
               >
-                All ({sessions.length})
+                <AlertTriangle className="w-4 h-4" />
+                Left before load ({leftBeforeLoadCount})
               </button>
-              <button
-                onClick={() => setFilterActive("active")}
-                className={`px-3 sm:px-4 py-2 rounded-lg transition font-medium text-xs sm:text-sm flex-1 sm:flex-none ${
-                  filterActive === "active"
-                    ? "bg-green-600 text-white shadow"
-                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                }`}
-              >
-                Active ({stats.activeSessions})
-              </button>
-              <button
-                onClick={() => setFilterActive("with-cta")}
-                className={`px-3 sm:px-4 py-2 rounded-lg transition font-medium text-xs sm:text-sm flex-1 sm:flex-none ${
-                  filterActive === "with-cta"
-                    ? "bg-purple-600 text-white shadow"
-                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                }`}
-              >
-                With CTA ({sessions.filter(s => s.session.ctaClicks.length > 0).length})
-              </button>
+              <span className="text-xs text-gray-500">
+                Showing <strong>{filteredSessions.length}</strong> of {sessions.length} sessions
+              </span>
             </div>
           </div>
         </div>
@@ -735,7 +830,7 @@ export default function DashboardPage() {
               return (
                 <div
                   key={sessionData.uuid}
-                  className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow"
+                  className="bg-white/95 backdrop-blur rounded-2xl shadow-sm border border-gray-200/80 overflow-hidden hover:shadow-lg transition-all"
                 >
                   {/* Compact Session Card */}
                   <div
@@ -746,7 +841,7 @@ export default function DashboardPage() {
                       {/* Left: UUID, Device, Source, and Time */}
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 mb-2 flex-wrap">
-                          <code className="text-xs font-mono text-gray-600 bg-gray-100 px-2 py-1 rounded">
+                          <code className="text-xs font-mono text-gray-700 bg-gray-100 px-2 py-1 rounded-full">
                             {sessionData.uuid.substring(0, 8)}...
                           </code>
                           {/* Device Icon */}
@@ -759,12 +854,22 @@ export default function DashboardPage() {
                             {trafficSource.icon}
                             <span className="text-xs font-medium">{trafficSource.source}</span>
                           </div>
-                          {active && (
-                            <span className="px-2 py-0.5 bg-green-100 text-green-700 text-xs font-medium rounded-full flex items-center gap-1">
-                              <span className="h-1.5 w-1.5 bg-green-500 rounded-full animate-pulse" />
-                              Active
-                            </span>
-                          )}
+                          <span
+                            className={`px-2 py-0.5 rounded-full text-xs font-medium flex items-center gap-1 ${
+                              session.leftBeforeLoad
+                                ? "bg-red-100 text-red-700"
+                                : active
+                                  ? "bg-green-100 text-green-700"
+                                  : "bg-gray-100 text-gray-600"
+                            }`}
+                          >
+                            <span
+                              className={`h-1.5 w-1.5 rounded-full ${
+                                session.leftBeforeLoad ? "bg-red-500" : active ? "bg-green-500 animate-pulse" : "bg-gray-400"
+                              }`}
+                            />
+                            {session.leftBeforeLoad ? "Closed Before Load" : active ? "Active" : "Idle"}
+                          </span>
                           {hasBookingClicks && (
                             <span className="px-2 py-0.5 bg-purple-100 text-purple-700 text-xs font-medium rounded-full">
                               ✓ Booked ({bookingCount})
@@ -840,11 +945,149 @@ export default function DashboardPage() {
                               <span className="text-gray-600">Max Scroll Depth:</span>
                               <span className="text-gray-900 font-medium">{session.maxScrollDepth.toFixed(1)}%</span>
                             </div>
+                          {session.leftBeforeLoad && (
+                            <div className="flex items-start gap-2 mt-2 p-2 rounded bg-red-50 border border-red-100 text-xs text-red-700">
+                              <span className="font-semibold">Heads up:</span>
+                              <span>This visitor closed the page before it fully loaded.</span>
+                            </div>
+                          )}
                             {session.referrer && (
                               <div className="pt-2 border-t border-gray-200">
                                 <div className="text-gray-600 mb-1">Referrer:</div>
                                 <div className="text-xs text-gray-900 break-all">{session.referrer}</div>
                               </div>
+                            )}
+                            {session.deviceInfo && (
+                              <>
+                                <div className="pt-2 border-t border-gray-200">
+                                  <div className="text-gray-600 mb-2 font-semibold">Device Information</div>
+                                  <div className="grid grid-cols-2 gap-2 text-xs">
+                                    {session.deviceInfo.device_type && (
+                                      <div>
+                                        <span className="text-gray-500">Device:</span>
+                                        <span className="ml-1 text-gray-900 font-medium">{session.deviceInfo.device_type}</span>
+                                      </div>
+                                    )}
+                                    {session.deviceInfo.os_name && (
+                                      <div>
+                                        <span className="text-gray-500">OS:</span>
+                                        <span className="ml-1 text-gray-900 font-medium">
+                                          {session.deviceInfo.os_name} {session.deviceInfo.os_version}
+                                        </span>
+                                      </div>
+                                    )}
+                                    {session.deviceInfo.browser_name && (
+                                      <div>
+                                        <span className="text-gray-500">Browser:</span>
+                                        <span className="ml-1 text-gray-900 font-medium">
+                                          {session.deviceInfo.browser_name} {session.deviceInfo.browser_version}
+                                        </span>
+                                      </div>
+                                    )}
+                                    {session.deviceInfo.screen_resolution && (
+                                      <div>
+                                        <span className="text-gray-500">Screen:</span>
+                                        <span className="ml-1 text-gray-900 font-medium">{session.deviceInfo.screen_resolution}</span>
+                                      </div>
+                                    )}
+                                    {session.deviceInfo.viewport && (
+                                      <div>
+                                        <span className="text-gray-500">Viewport:</span>
+                                        <span className="ml-1 text-gray-900 font-medium">{session.deviceInfo.viewport}</span>
+                                      </div>
+                                    )}
+                                    {session.deviceInfo.language && (
+                                      <div>
+                                        <span className="text-gray-500">Language:</span>
+                                        <span className="ml-1 text-gray-900 font-medium">{session.deviceInfo.language}</span>
+                                      </div>
+                                    )}
+                                    {session.deviceInfo.timezone && (
+                                      <div>
+                                        <span className="text-gray-500">Timezone:</span>
+                                        <span className="ml-1 text-gray-900 font-medium">{session.deviceInfo.timezone}</span>
+                                      </div>
+                                    )}
+                                    {session.deviceInfo.is_webview === 'true' && (
+                                      <div>
+                                        <span className="text-gray-500">WebView:</span>
+                                        <span className="ml-1 text-gray-900 font-medium">
+                                          Yes {session.deviceInfo.webview_host && `(${session.deviceInfo.webview_host})`}
+                                        </span>
+                                      </div>
+                                    )}
+                                    {session.deviceInfo.network_effective_type && (
+                                      <div>
+                                        <span className="text-gray-500">Network:</span>
+                                        <span className="ml-1 text-gray-900 font-medium">{session.deviceInfo.network_effective_type}</span>
+                                      </div>
+                                    )}
+                                    {session.deviceInfo.touch_support && (
+                                      <div>
+                                        <span className="text-gray-500">Touch:</span>
+                                        <span className="ml-1 text-gray-900 font-medium">
+                                          {session.deviceInfo.touch_support === 'true' ? 'Yes' : 'No'}
+                                        </span>
+                                      </div>
+                                    )}
+                                    {session.deviceInfo.hardware_concurrency && (
+                                      <div>
+                                        <span className="text-gray-500">CPU Cores:</span>
+                                        <span className="ml-1 text-gray-900 font-medium">{session.deviceInfo.hardware_concurrency}</span>
+                                      </div>
+                                    )}
+                                    {session.deviceInfo.device_memory_gb && (
+                                      <div>
+                                        <span className="text-gray-500">Memory:</span>
+                                        <span className="ml-1 text-gray-900 font-medium">{session.deviceInfo.device_memory_gb} GB</span>
+                                      </div>
+                                    )}
+                                  </div>
+                                  {(session.deviceInfo.utm_source || session.deviceInfo.utm_medium || session.deviceInfo.utm_campaign) && (
+                                    <div className="mt-3 pt-2 border-t border-gray-200">
+                                      <div className="text-gray-600 mb-2 font-semibold">UTM Parameters</div>
+                                      <div className="grid grid-cols-2 gap-2 text-xs">
+                                        {session.deviceInfo.utm_source && (
+                                          <div>
+                                            <span className="text-gray-500">Source:</span>
+                                            <span className="ml-1 text-gray-900 font-medium">{session.deviceInfo.utm_source}</span>
+                                          </div>
+                                        )}
+                                        {session.deviceInfo.utm_medium && (
+                                          <div>
+                                            <span className="text-gray-500">Medium:</span>
+                                            <span className="ml-1 text-gray-900 font-medium">{session.deviceInfo.utm_medium}</span>
+                                          </div>
+                                        )}
+                                        {session.deviceInfo.utm_campaign && (
+                                          <div>
+                                            <span className="text-gray-500">Campaign:</span>
+                                            <span className="ml-1 text-gray-900 font-medium">{session.deviceInfo.utm_campaign}</span>
+                                          </div>
+                                        )}
+                                        {session.deviceInfo.utm_content && (
+                                          <div>
+                                            <span className="text-gray-500">Content:</span>
+                                            <span className="ml-1 text-gray-900 font-medium">{session.deviceInfo.utm_content}</span>
+                                          </div>
+                                        )}
+                                        {session.deviceInfo.utm_term && (
+                                          <div>
+                                            <span className="text-gray-500">Term:</span>
+                                            <span className="ml-1 text-gray-900 font-medium">{session.deviceInfo.utm_term}</span>
+                                          </div>
+                                        )}
+                                        {session.deviceInfo.fbclid && (
+                                          <div>
+                                            <span className="text-gray-500">FB Click ID:</span>
+                                            <span className="ml-1 text-gray-900 font-medium text-xs truncate">{session.deviceInfo.fbclid}</span>
+                                          </div>
+                                        )}
+                                      </div>
+                                    </div>
+                                  )}
+                                </div>
+                              </>
                             )}
                             <div className="pt-2 border-t border-gray-200">
                               <div className="text-gray-600 mb-1">User Agent:</div>
@@ -873,33 +1116,51 @@ export default function DashboardPage() {
                           <h3 className="text-sm font-semibold text-gray-900 mb-3 uppercase tracking-wide">
                             Page Visits ({session.pages.length})
                           </h3>
-                          <div className="space-y-2 max-h-64 overflow-y-auto">
-                            {session.pages.map((page, index) => (
-                              <div
-                                key={index}
-                                className="bg-white rounded-lg p-3 border border-gray-200 flex items-center justify-between"
-                              >
-                                <div className="flex-1 min-w-0">
-                                  <div className="font-medium text-sm text-gray-900 truncate">{page.path}</div>
-                                  <div className="text-xs text-gray-500 mt-1">
-                                    {formatDate(page.startTime)}
-                                    {page.duration !== undefined && ` • ${page.duration}s`}
+                          <div className="space-y-2 max-h-64 overflow-y-auto pl-1">
+                            {session.pages.map((page, index) => {
+                              const sessionIsActive = isSessionActive(session);
+                              const effectiveNow = sessionIsActive ? currentTime : session.lastSeen;
+                              // Calculate duration: if it's the current page and has no endTime, use current time
+                              const isCurrentPage = index === session.pages.length - 1 && !page.endTime;
+                              const pageDuration = isCurrentPage 
+                                ? Math.max(0, Math.round(((effectiveNow ?? page.startTime) - page.startTime) / 1000))
+                                : (page.duration !== undefined ? page.duration : 0);
+                              
+                              return (
+                                <div
+                                  key={index}
+                                  className="relative bg-white rounded-lg p-3 border border-gray-200 flex items-center justify-between pl-6 before:absolute before:left-2 before:top-4 before:bottom-4 before:w-0.5 before:bg-gray-200"
+                                >
+                                  <span className="absolute left-1 top-4 h-2 w-2 rounded-full bg-blue-500" />
+                                  <div className="flex-1 min-w-0">
+                                    <div className="font-medium text-sm text-gray-900 truncate">
+                                      {page.path}
+                                      {isCurrentPage && (
+                                        <span className="ml-2 px-2 py-0.5 bg-green-100 text-green-700 text-xs font-medium rounded">
+                                          Current
+                                        </span>
+                                      )}
+                                    </div>
+                                    <div className="text-xs text-gray-500 mt-1">
+                                      {formatDate(page.startTime)}
+                                      {pageDuration > 0 && ` • ${formatDuration(pageDuration)}`}
+                                    </div>
                                   </div>
-                                </div>
-                                <div className="flex items-center gap-4 ml-4 text-xs">
-                                  <div className="text-right">
-                                    <div className="text-gray-500">Scroll</div>
-                                    <div className="font-medium text-gray-900">{page.scrollDepth.toFixed(0)}%</div>
-                                  </div>
-                                  <div className="text-right">
-                                    <div className="text-gray-500">Time</div>
-                                    <div className="font-medium text-gray-900">
-                                      {formatDuration(Math.round(page.scrollDuration / 1000))}
+                                  <div className="flex items-center gap-4 ml-4 text-xs">
+                                    <div className="text-right">
+                                      <div className="text-gray-500">Scroll</div>
+                                      <div className="font-medium text-gray-900">{page.scrollDepth.toFixed(0)}%</div>
+                                    </div>
+                                    <div className="text-right">
+                                      <div className="text-gray-500">Time</div>
+                                      <div className="font-medium text-gray-900">
+                                        {formatDuration(Math.round(page.scrollDuration / 1000))}
+                                      </div>
                                     </div>
                                   </div>
                                 </div>
-                              </div>
-                            ))}
+                              );
+                            })}
                           </div>
                         </div>
                       )}

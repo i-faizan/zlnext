@@ -27,17 +27,45 @@ interface VideoPlay {
   completion?: number; // Percentage watched (0-100)
 }
 
+interface DeviceInfo {
+  device_type?: string;
+  os_name?: string;
+  os_version?: string;
+  browser_name?: string;
+  browser_version?: string;
+  is_webview?: string;
+  webview_host?: string;
+  screen_resolution?: string;
+  viewport?: string;
+  device_pixel_ratio?: string;
+  language?: string;
+  timezone?: string;
+  hardware_concurrency?: string;
+  device_memory_gb?: string;
+  network_effective_type?: string;
+  save_data?: string;
+  touch_support?: string;
+  utm_source?: string;
+  utm_medium?: string;
+  utm_campaign?: string;
+  utm_content?: string;
+  utm_term?: string;
+  fbclid?: string;
+}
+
 interface Session {
   startTime: number;
   lastSeen: number;
   userAgent?: string;
   referrer?: string;
+  deviceInfo?: DeviceInfo;
   pages: PageVisit[];
   ctaClicks: CTAClick[];
   videoPlays: VideoPlay[];
   currentPage?: string;
   totalScrollDuration: number;
   maxScrollDepth: number;
+  leftBeforeLoad?: boolean;
 }
 
 // In-memory store for user sessions.
@@ -178,11 +206,13 @@ async function createNewSession(request: Request) {
   
   // Create new session
   const uuid = crypto.randomUUID();
+  const deviceInfo: DeviceInfo | undefined = body?.deviceInfo;
   const session: Session = {
     startTime: now,
     lastSeen: now,
     userAgent,
     referrer,
+    deviceInfo,
     pages: [{
       path,
       startTime: now,
@@ -194,6 +224,7 @@ async function createNewSession(request: Request) {
     currentPage: path,
     totalScrollDuration: 0,
     maxScrollDepth: 0,
+    leftBeforeLoad: false,
   };
   
   userSessions.set(uuid, session);
@@ -296,7 +327,16 @@ async function handleUpdate(request: Request) {
         const now = Date.now();
         session.lastSeen = now;
         
-        if (type === 'page') {
+        // Update device info if provided
+        if (data.deviceInfo) {
+          session.deviceInfo = { ...session.deviceInfo, ...data.deviceInfo };
+        }
+        
+        if (type === 'status') {
+            if (data.leftBeforeLoad) {
+                session.leftBeforeLoad = true;
+            }
+        } else if (type === 'page') {
             const newPath = data.path || '/';
             
             // Prevent duplicate tracking of the same page
