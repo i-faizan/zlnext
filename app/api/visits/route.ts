@@ -1,453 +1,85 @@
 import { NextResponse } from "next/server";
 
-interface PageVisit {
-  path: string;
-  startTime: number;
-  endTime?: number;
-  duration?: number;
-  scrollDepth: number;
-  scrollDuration: number;
-}
-
-interface CTAClick {
-  timestamp: number;
-  source: string;
-  label: string;
-  type: 'booking' | 'other';
-  url?: string;
-}
-
-interface VideoPlay {
-  timestamp: number;
-  videoId?: string;
-  videoSrc?: string;
-  videoTitle?: string;
-  videoType: 'youtube' | 'html5';
-  duration?: number; // How long the video was played in seconds
-  completion?: number; // Percentage watched (0-100)
-}
-
-interface DeviceInfo {
-  device_type?: string;
-  os_name?: string;
-  os_version?: string;
-  browser_name?: string;
-  browser_version?: string;
-  is_webview?: string;
-  webview_host?: string;
-  screen_resolution?: string;
-  viewport?: string;
-  device_pixel_ratio?: string;
-  language?: string;
-  timezone?: string;
-  hardware_concurrency?: string;
-  device_memory_gb?: string;
-  network_effective_type?: string;
-  save_data?: string;
-  touch_support?: string;
-  utm_source?: string;
-  utm_medium?: string;
-  utm_campaign?: string;
-  utm_content?: string;
-  utm_term?: string;
-  fbclid?: string;
-}
-
 interface Session {
   startTime: number;
   lastSeen: number;
+  path: string;
   userAgent?: string;
   referrer?: string;
-  deviceInfo?: DeviceInfo;
-  pages: PageVisit[];
-  ctaClicks: CTAClick[];
-  videoPlays: VideoPlay[];
-  currentPage?: string;
-  totalScrollDuration: number;
-  maxScrollDepth: number;
-  leftBeforeLoad?: boolean;
 }
 
-// In-memory store for user sessions.
-// In a real-world production app, you would use a persistent database
-// like Redis, Vercel KV, or a traditional SQL/NoSQL database.
-const userSessions = new Map<string, Session>();
+// In-memory session store
+const sessions = new Map<string, Session>();
 
-// Export function to get all sessions for dashboard
+// Export for dashboard
 export function getSessions() {
-  const sessions: Array<{ uuid: string; session: Session }> = [];
-  const now = Date.now();
-  
-  for (const [uuid, session] of userSessions.entries()) {
-    // Calculate time spent in seconds
-    const timeSpent = Math.round((session.lastSeen - session.startTime) / 1000);
-    
-    // Check if session is active (seen in last 60 seconds)
-    const timeSinceLastSeen = now - session.lastSeen;
-    const isActive = timeSinceLastSeen < 60000; // 60 seconds
-    
-    // Auto-mark as leftBeforeLoad if time is 0s and not active
-    // This catches users who left immediately before page loaded
-    if (timeSpent === 0 && !isActive && !session.leftBeforeLoad) {
-      session.leftBeforeLoad = true;
-    }
-    
-    sessions.push({ uuid, session });
-  }
-  return sessions;
+  return Array.from(sessions.entries()).map(([uuid, session]) => ({
+    uuid,
+    session,
+  }));
 }
 
-/**
- * @api {get} /api/visits
- * @apiDescription Retrieves a list of all active user sessions with their engagement time.
- * @apiSuccess {Object[]} sessions - List of user sessions.
- * @apiSuccess {string} sessions.uuid - The unique identifier for the session.
- * @apiSuccess {number} sessions.seconds - The total time spent in seconds.
- */
+// GET - Return all sessions
 export async function GET() {
-  const engagementData = [];
-  
-  // Iterate over the sessions and calculate the time spent for each one.
-  for (const [uuid, session] of userSessions.entries()) {
+  const data = Array.from(sessions.entries()).map(([uuid, session]) => {
     const seconds = Math.round((session.lastSeen - session.startTime) / 1000);
-    engagementData.push({ uuid, seconds });
-  }
+    return { uuid, seconds };
+  });
 
-  return NextResponse.json(engagementData);
+  return NextResponse.json(data);
 }
 
-/**
- * @api {post} /api/visits
- * @apiDescription Creates a new user session or updates an existing one for beacon calls.
- * This dual purpose is to accommodate `navigator.sendBeacon`, which only uses POST.
- * Also handles CTA tracking updates from sendBeacon.
- * @apiSuccess {string} uuid - The unique identifier for the new session.
- * @apiSuccess {number} count - The current number of active sessions.
- */
+// POST - Create new session
 export async function POST(request: Request) {
-  const contentType = request.headers.get("content-type");
-  
-  // Try to parse body for updates (sendBeacon might not always set content-type correctly)
-  // Check both if content-type is set to json OR if it's not set (some browsers with sendBeacon)
-  if (!contentType || contentType.includes("application/json") || contentType.includes("text/plain")) {
-    try {
-      // Clone the request to read body multiple times
-      const clonedRequest = request.clone();
-      const text = await clonedRequest.text();
-      if (text && text.trim()) {
-        const body = JSON.parse(text);
-        // If it has a type field, treat it as an update request (from sendBeacon for CTA tracking)
-        if (body.type && body.uuid) {
-          // Reconstruct request with body for handleUpdate
-          const updateRequest = new Request(request.url, {
-            method: request.method,
-            headers: request.headers,
-            body: text,
-          });
-          return handleUpdate(updateRequest);
-        }
-        // If it has a uuid but no type, it's a simple beacon update on page unload
-        if (body.uuid && userSessions.has(body.uuid)) {
-          const now = Date.now();
-          const session = userSessions.get(body.uuid) as Session;
-          session.lastSeen = now;
-          
-          // Finalize current page visit if exists
-          if (session.currentPage && session.pages.length > 0) {
-            const currentPage = session.pages[session.pages.length - 1];
-            if (currentPage.path === session.currentPage && !currentPage.endTime) {
-              currentPage.endTime = now;
-              currentPage.duration = Math.round((now - currentPage.startTime) / 1000);
-            }
-          }
-          
-          userSessions.set(body.uuid, session);
-          // Beacons don't process responses, so we send a "No Content" status.
-          return new Response(null, { status: 204 });
-        }
-      }
-    } catch {
-      // If parsing fails, continue to create new session
-    }
-  }
-  
-  // Otherwise, create a brand new session.
-  return createNewSession(request);
-}
-
-async function createNewSession(request: Request) {
-  const now = Date.now();
-  let body;
   try {
-    body = await request.json();
-  } catch {
-    // The request has no body or it's not valid JSON.
-    body = null;
-  }
+    const body = await request.json();
+    const path = body.path || '/';
 
-  // First, check if there's a very recent session with the same user agent
-  // to prevent duplicate sessions from React Strict Mode or rapid refreshes
-  const headers = request.headers;
-  const userAgent = headers.get('user-agent') || undefined;
-  const referrer = headers.get('referer') || headers.get('referrer') || undefined;
-  const url = new URL(request.url);
-  const path = body?.path || url.searchParams.get('path') || '/';
-  
-  // Exclude dashboard paths from tracking
+    // Skip dashboard paths
   if (path.startsWith('/dashboard')) {
-    return NextResponse.json({ error: "Dashboard paths are not tracked" }, { status: 403 });
-  }
-  
-  // Check for existing recent session (within last 5 seconds) with same user agent
-  // This prevents duplicate sessions from React Strict Mode double-mounting
-  if (userAgent) {
-    const recentSessions = Array.from(userSessions.entries()).filter(([_, session]) => {
-      const timeSinceLastSeen = now - session.lastSeen;
-      return (
-        session.userAgent === userAgent &&
-        timeSinceLastSeen < 5000 && // Within last 5 seconds
-        session.referrer === referrer // Same referrer
-      );
-    });
-    
-    // If we find a very recent duplicate, return the existing UUID instead
-    if (recentSessions.length > 0) {
-      const [existingUuid, existingSession] = recentSessions[0];
-      // Update lastSeen to current time
-      existingSession.lastSeen = now;
-      userSessions.set(existingUuid, existingSession);
-      return NextResponse.json({ uuid: existingUuid, count: userSessions.size });
+      return NextResponse.json({ error: 'Dashboard paths not tracked' }, { status: 403 });
     }
-  }
-  
-  // Create new session
+
   const uuid = crypto.randomUUID();
-  const deviceInfo: DeviceInfo | undefined = body?.deviceInfo;
-  const leftBeforeLoad = body?.leftBeforeLoad === true; // Check if leftBeforeLoad flag is set
+    const now = Date.now();
+
   const session: Session = {
     startTime: now,
     lastSeen: now,
-    userAgent,
-    referrer,
-    deviceInfo,
-    pages: [{
       path,
-      startTime: now,
-      scrollDepth: 0,
-      scrollDuration: 0,
-    }],
-    ctaClicks: [],
-    videoPlays: [],
-    currentPage: path,
-    totalScrollDuration: 0,
-    maxScrollDepth: 0,
-    leftBeforeLoad: leftBeforeLoad,
-  };
-  
-  userSessions.set(uuid, session);
+      userAgent: request.headers.get('user-agent') || undefined,
+      referrer: request.headers.get('referer') || undefined,
+    };
 
-  const count = userSessions.size;
-  return NextResponse.json({ uuid, count });
+    sessions.set(uuid, session);
+
+    return NextResponse.json({ uuid, count: sessions.size });
+  } catch (error) {
+    return NextResponse.json({ error: 'Invalid request' }, { status: 400 });
+  }
 }
 
-/**
- * @api {put} /api/visits
- * @apiDescription Updates a session's `lastSeen` timestamp as a heartbeat, or tracks events.
- * @apiParam {string} uuid - The unique identifier for the session to update.
- * @apiParam {string} type - Type of update: 'heartbeat', 'page', 'scroll', 'cta'
- */
+// PUT - Update session (heartbeat)
 export async function PUT(request: Request) {
-    return handleUpdate(request);
-}
-
-async function handleUpdate(request: Request) {
     try {
         const body = await request.json();
-        const { uuid, type, ...data } = body;
-        
-        if (!uuid) {
-            return NextResponse.json({ error: "Invalid or missing UUID" }, { status: 400 });
-        }
-        
-        // If session doesn't exist, try to recover it
-        if (!userSessions.has(uuid)) {
-            // For scroll and heartbeat, silently succeed (non-critical operations)
-            // This prevents errors when server restarts but client still has UUID
-            if (type === 'scroll' || type === 'heartbeat') {
-                return NextResponse.json({ 
-                    message: "Session not found, skipping non-critical update",
-                    recovered: false 
-                }, { status: 200 });
-            }
-            
-            // For critical operations (page, cta), try to find a matching session or create recovery
-            // Try to find a recent session with matching user agent
-            const headers = request.headers;
-            const userAgent = headers.get('user-agent') || undefined;
-            
-            if (userAgent && type === 'page') {
-                // Try to find a very recent session (within last 30 seconds) with same user agent
-                const now = Date.now();
-                const recentSessions = Array.from(userSessions.entries()).filter(([_, session]) => {
-                    const timeSinceLastSeen = now - session.lastSeen;
-                    return (
-                        session.userAgent === userAgent &&
-                        timeSinceLastSeen < 30000 // Within last 30 seconds
-                    );
-                });
-                
-                if (recentSessions.length > 0) {
-                    // Found a matching session, update it instead
-                    const [existingUuid, existingSession] = recentSessions[0];
-                    existingSession.lastSeen = now;
-                    
-                    // Handle page tracking
-                    const newPath = data.path || '/';
-                    if (existingSession.currentPage !== newPath) {
-                        // End previous page visit
-                        if (existingSession.currentPage && existingSession.pages.length > 0) {
-                            const currentPageVisit = existingSession.pages[existingSession.pages.length - 1];
-                            if (currentPageVisit.path === existingSession.currentPage && !currentPageVisit.endTime) {
-                                currentPageVisit.endTime = now;
-                                currentPageVisit.duration = Math.round((now - currentPageVisit.startTime) / 1000);
-                            }
-                        }
-                        
-                        // Start new page visit
-                        const newPage: PageVisit = {
-                            path: newPath,
-                            startTime: now,
-                            scrollDepth: 0,
-                            scrollDuration: 0,
-                        };
-                        existingSession.pages.push(newPage);
-                        existingSession.currentPage = newPage.path;
-                    }
-                    
-                    userSessions.set(existingUuid, existingSession);
-                    return NextResponse.json({ 
-                        message: "Session recovered", 
-                        uuid: existingUuid,
-                        recovered: true 
-                    }, { status: 200 });
-                }
-            }
-            
-            // Could not recover - return error for critical operations
-            return NextResponse.json({ 
-                error: "Invalid or missing UUID",
-                needsNewSession: true 
-            }, { status: 400 });
-        }
-        
-        const session = userSessions.get(uuid) as Session;
-        const now = Date.now();
-        session.lastSeen = now;
-        
-        // Update device info if provided
-        if (data.deviceInfo) {
-          session.deviceInfo = { ...session.deviceInfo, ...data.deviceInfo };
-        }
-        
-        if (type === 'status') {
-            if (data.leftBeforeLoad) {
-                session.leftBeforeLoad = true;
-            }
-        } else if (type === 'page') {
-            const newPath = data.path || '/';
-            
-            // Prevent duplicate tracking of the same page
-            // Only track if it's a different page than the current one
-            if (session.currentPage === newPath) {
-                // Same page, just update lastSeen - don't create duplicate page view
-                return NextResponse.json({ message: "Same page, skipping duplicate" }, { status: 200 });
-            }
-            
-            // End previous page visit
-            if (session.currentPage && session.pages.length > 0) {
-                const currentPageVisit = session.pages[session.pages.length - 1];
-                if (currentPageVisit.path === session.currentPage && !currentPageVisit.endTime) {
-                    currentPageVisit.endTime = now;
-                    currentPageVisit.duration = Math.round((now - currentPageVisit.startTime) / 1000);
-                }
-            }
-            
-            // Start new page visit
-            const newPage: PageVisit = {
-                path: newPath,
-                startTime: now,
-                scrollDepth: 0,
-                scrollDuration: 0,
-            };
-            session.pages.push(newPage);
-            session.currentPage = newPage.path;
-        } else if (type === 'scroll') {
-            // Update scroll tracking for current page
-            if (session.pages.length > 0) {
-                const currentPage = session.pages[session.pages.length - 1];
-                currentPage.scrollDepth = Math.max(currentPage.scrollDepth, data.scrollDepth || 0);
-                currentPage.scrollDuration += data.scrollDelta || 0;
-                session.totalScrollDuration += data.scrollDelta || 0;
-                session.maxScrollDepth = Math.max(session.maxScrollDepth, data.scrollDepth || 0);
-            }
-        } else if (type === 'cta') {
-            // Track CTA click
-            const ctaClick: CTAClick = {
-                timestamp: now,
-                source: data.source || 'unknown',
-                label: data.label || '',
-                type: data.ctaType || data.type || 'other',
-                url: data.url,
-            };
-            session.ctaClicks.push(ctaClick);
-        } else if (type === 'video') {
-            // Track video play
-            // Check if this is an update to an existing video play (same video, recent timestamp)
-            const videoId = data.videoId;
-            const videoSrc = data.videoSrc;
-            const existingVideo = session.videoPlays && session.videoPlays.length > 0
-                ? session.videoPlays.find((v, idx) => {
-                    const recent = now - v.timestamp < 10000; // Within 10 seconds
-                    const sameVideo = (videoId && v.videoId === videoId) || 
-                                     (videoSrc && v.videoSrc === videoSrc);
-                    return recent && sameVideo && idx === session.videoPlays.length - 1; // Last video play
-                })
-                : null;
+    const { uuid } = body;
 
-            if (existingVideo) {
-                // Update existing video play (for progress updates)
-                existingVideo.duration = Math.max(existingVideo.duration || 0, data.duration || 0);
-                existingVideo.completion = Math.max(existingVideo.completion || 0, data.completion || 0);
-            } else {
-                // New video play
-                const videoPlay: VideoPlay = {
-                    timestamp: now,
-                    videoId: data.videoId,
-                    videoSrc: data.videoSrc,
-                    videoTitle: data.videoTitle,
-                    videoType: data.videoType || 'html5',
-                    duration: data.duration || 0,
-                    completion: data.completion || 0,
-                };
-                if (!session.videoPlays) {
-                    session.videoPlays = [];
-                }
-                session.videoPlays.push(videoPlay);
-            }
-        }
-        
-        userSessions.set(uuid, session);
-        return NextResponse.json({ message: "Session updated" }, { status: 200 });
+    if (!uuid || !sessions.has(uuid)) {
+      return NextResponse.json({ error: 'Session not found' }, { status: 404 });
+    }
+
+    const session = sessions.get(uuid)!;
+    session.lastSeen = Date.now();
+
+    return NextResponse.json({ message: 'Session updated' });
     } catch (error) {
-        return NextResponse.json({ error: "Invalid request body" }, { status: 400 });
+    return NextResponse.json({ error: 'Invalid request' }, { status: 400 });
     }
 }
 
-/**
- * @api {delete} /api/visits
- * @apiDescription Clears all tracked user sessions from memory.
- */
+// DELETE - Clear all sessions
 export async function DELETE() {
-  userSessions.clear();
-  return NextResponse.json({ message: "All sessions cleared", count: 0 });
+  sessions.clear();
+  return NextResponse.json({ message: 'All sessions cleared' });
 }
