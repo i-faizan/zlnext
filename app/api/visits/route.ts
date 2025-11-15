@@ -76,7 +76,22 @@ const userSessions = new Map<string, Session>();
 // Export function to get all sessions for dashboard
 export function getSessions() {
   const sessions: Array<{ uuid: string; session: Session }> = [];
+  const now = Date.now();
+  
   for (const [uuid, session] of userSessions.entries()) {
+    // Calculate time spent in seconds
+    const timeSpent = Math.round((session.lastSeen - session.startTime) / 1000);
+    
+    // Check if session is active (seen in last 60 seconds)
+    const timeSinceLastSeen = now - session.lastSeen;
+    const isActive = timeSinceLastSeen < 60000; // 60 seconds
+    
+    // Auto-mark as leftBeforeLoad if time is 0s and not active
+    // This catches users who left immediately before page loaded
+    if (timeSpent === 0 && !isActive && !session.leftBeforeLoad) {
+      session.leftBeforeLoad = true;
+    }
+    
     sessions.push({ uuid, session });
   }
   return sessions;
@@ -112,13 +127,14 @@ export async function GET() {
 export async function POST(request: Request) {
   const contentType = request.headers.get("content-type");
   
-  // If content-type is application/json, try to parse and check if it's an update
-  if (contentType?.includes("application/json")) {
+  // Try to parse body for updates (sendBeacon might not always set content-type correctly)
+  // Check both if content-type is set to json OR if it's not set (some browsers with sendBeacon)
+  if (!contentType || contentType.includes("application/json") || contentType.includes("text/plain")) {
     try {
       // Clone the request to read body multiple times
       const clonedRequest = request.clone();
       const text = await clonedRequest.text();
-      if (text) {
+      if (text && text.trim()) {
         const body = JSON.parse(text);
         // If it has a type field, treat it as an update request (from sendBeacon for CTA tracking)
         if (body.type && body.uuid) {
@@ -207,6 +223,7 @@ async function createNewSession(request: Request) {
   // Create new session
   const uuid = crypto.randomUUID();
   const deviceInfo: DeviceInfo | undefined = body?.deviceInfo;
+  const leftBeforeLoad = body?.leftBeforeLoad === true; // Check if leftBeforeLoad flag is set
   const session: Session = {
     startTime: now,
     lastSeen: now,
@@ -224,7 +241,7 @@ async function createNewSession(request: Request) {
     currentPage: path,
     totalScrollDuration: 0,
     maxScrollDepth: 0,
-    leftBeforeLoad: false,
+    leftBeforeLoad: leftBeforeLoad,
   };
   
   userSessions.set(uuid, session);

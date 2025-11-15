@@ -14,6 +14,7 @@ declare global {
   interface Window {
     trackingUUID?: string;
     trackingInitialized?: boolean;
+    trackingPageLoaded?: boolean;
   }
 }
 
@@ -31,6 +32,7 @@ export default function EnhancedTracking() {
   const ctaClickTrackingRef = useRef<Set<string>>(new Set()); // Track clicked CTAs to prevent duplicates
   const pageLoadedRef = useRef<boolean>(false);
   const leftBeforeLoadSentRef = useRef<boolean>(false);
+  const sessionInitStartedRef = useRef<boolean>(false); // Track if session initialization has started
 
   // Get or create session UUID with deduplication
   const getOrCreateSession = async (): Promise<string | null> => {
@@ -46,6 +48,19 @@ export default function EnhancedTracking() {
 
     // Check localStorage first (persistent across page loads)
     if (typeof window !== "undefined") {
+      // FIRST: Check if inline script already created the session
+      // This happens before React hydrates, so check window object first
+      if (window.trackingUUID && window.trackingInitialized) {
+        uuidRef.current = window.trackingUUID;
+        // Also store in localStorage for persistence (if not already there)
+        const storedUuid = localStorage.getItem(SESSION_UUID_KEY);
+        if (storedUuid !== window.trackingUUID) {
+          localStorage.setItem(SESSION_UUID_KEY, window.trackingUUID);
+          localStorage.setItem(SESSION_TIMESTAMP_KEY, Date.now().toString());
+        }
+        return window.trackingUUID;
+      }
+
       const storedUuid = localStorage.getItem(SESSION_UUID_KEY);
       const storedTimestamp = localStorage.getItem(SESSION_TIMESTAMP_KEY);
       
@@ -57,6 +72,7 @@ export default function EnhancedTracking() {
         if (now - timestamp < SESSION_TIMEOUT) {
           uuidRef.current = storedUuid;
           window.trackingUUID = storedUuid;
+          window.trackingInitialized = true;
           return storedUuid;
         } else {
           // Session expired, clear it
@@ -65,25 +81,20 @@ export default function EnhancedTracking() {
         }
       }
 
-      // Check window object (for same-page navigations)
-      if (window.trackingUUID && window.trackingInitialized) {
-        uuidRef.current = window.trackingUUID;
-        // Also store in localStorage for persistence
-        localStorage.setItem(SESSION_UUID_KEY, window.trackingUUID);
-        localStorage.setItem(SESSION_TIMESTAMP_KEY, Date.now().toString());
-        return window.trackingUUID;
-      }
-
-      // Collect device info
+      // Collect device info (minimal, don't wait for anything)
       const fullUrl = typeof window !== 'undefined' ? window.location.href : '';
       const referrer = typeof document !== 'undefined' ? document.referrer : '';
+      // Use minimal device info to speed up session creation
       const deviceInfo = buildEnvParams(fullUrl, referrer);
       
-      // Create new session (only one at a time)
+      // Create new session IMMEDIATELY - fire request right away
+      // This ensures session appears in dashboard instantly
       const initPromise = fetch("/api/visits", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ path: pathname, deviceInfo }),
+        // Don't wait for anything - fire immediately
+        keepalive: true, // Ensure request completes even if page unloads
       })
         .then((res) => res.json())
         .then((data) => {
@@ -118,7 +129,30 @@ export default function EnhancedTracking() {
     scrollDepthRef.current = 0;
     scrollStartTimeRef.current = Date.now();
     lastScrollTimeRef.current = Date.now();
-    pageLoadedRef.current = true;
+    
+    // Mark page as loaded only after a delay to account for images still loading
+    // The window.load event fires when DOM is ready, but images may still be loading
+    // We'll mark as loaded after 2 seconds OR when window.load fires (whichever comes first)
+    const markPageLoaded = () => {
+      pageLoadedRef.current = true;
+      // Also update window flag for inline script compatibility
+      if (typeof window !== 'undefined') {
+        window.trackingPageLoaded = true;
+      }
+    };
+    
+    // If window.load already fired, mark immediately
+    if (document.readyState === 'complete') {
+      // But add a small delay to catch images that are still loading
+      setTimeout(markPageLoaded, 2000);
+    } else {
+      // Wait for load event, then add delay
+      const handleLoad = () => {
+        setTimeout(markPageLoaded, 2000);
+        window.removeEventListener('load', handleLoad);
+      };
+      window.addEventListener('load', handleLoad);
+    }
 
     // Force initial scroll calculation for mobile (some mobile browsers don't fire scroll on load)
     setTimeout(() => {
@@ -130,6 +164,27 @@ export default function EnhancedTracking() {
       }
     }, 500); // Small delay to ensure page is rendered
   };
+
+  // Create session immediately on mount - before any other logic
+  // This ensures the session appears in dashboard instantly
+  // Use a separate effect that runs only once on mount
+  useEffect(() => {
+    // Skip tracking for dashboard pages
+    if (pathname.startsWith('/dashboard')) {
+      return;
+    }
+
+    // Initialize session IMMEDIATELY - don't wait for anything
+    // Fire the request right away so session appears in dashboard instantly
+    if (!sessionInitStartedRef.current) {
+      sessionInitStartedRef.current = true;
+      // Fire immediately - don't await, don't delay
+      getOrCreateSession().catch((err) => {
+        console.error("Failed to initialize session:", err);
+      });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // Empty deps - run only once on mount, pathname is stable
 
   useEffect(() => {
     // Skip tracking for dashboard pages
@@ -147,11 +202,18 @@ export default function EnhancedTracking() {
       // Don't return - continue to ensure scroll tracking is set up
     }
 
-    // Initialize session and track page change
+    // Initialize session if not already started (fallback)
     let mounted = true;
     pageTrackingInProgressRef.current = true;
     
-    getOrCreateSession().then((uuid) => {
+    if (!sessionInitStartedRef.current) {
+      sessionInitStartedRef.current = true;
+    }
+    
+    // Start session creation immediately - don't wait
+    const sessionPromise = getOrCreateSession();
+    
+    sessionPromise.then((uuid) => {
       if (!mounted || !uuid) {
         pageTrackingInProgressRef.current = false;
         return;
@@ -164,11 +226,14 @@ export default function EnhancedTracking() {
         const referrer = typeof document !== 'undefined' ? document.referrer : '';
         const deviceInfo = buildEnvParams(fullUrl, referrer);
         
+        // Use the uuid from the promise, ensuring we have the correct value
+        const trackingUuid = uuidRef.current || uuid;
+        
         fetch("/api/visits", {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            uuid: uuidRef.current,
+            uuid: trackingUuid,
             type: "page",
             path: pathname,
             deviceInfo,
@@ -261,7 +326,7 @@ export default function EnhancedTracking() {
 
     const ensureTimingStartsAfterLoad = () => {
       if (typeof window === 'undefined') {
-        initializeScrollTiming(calculateScrollDepth);
+        // Can't initialize scroll timing in SSR
         return () => {};
       }
 
@@ -656,7 +721,14 @@ export default function EnhancedTracking() {
 
     // On page unload, send final beacon
     const handleUnload = () => {
-      if (uuidRef.current && pageLoadedRef.current) {
+      // Get UUID from ref or window (in case inline script created it)
+      const currentUuid = uuidRef.current || (typeof window !== 'undefined' ? window.trackingUUID : null);
+      
+      // Check both pageLoadedRef and window.trackingPageLoaded (from inline script)
+      const pageLoaded = pageLoadedRef.current || (typeof window !== 'undefined' && window.trackingPageLoaded === true);
+      
+      // If we have a UUID and page loaded, send normal final tracking
+      if (currentUuid && pageLoaded) {
         // Finalize scroll tracking
         const finalScrollDepth = scrollDepthRef.current;
         const finalTime = Date.now();
@@ -666,7 +738,7 @@ export default function EnhancedTracking() {
             : 0;
 
         const data = JSON.stringify({
-          uuid: uuidRef.current,
+          uuid: currentUuid,
           type: "scroll",
           scrollDepth: finalScrollDepth,
           scrollDelta: finalScrollDuration,
@@ -677,27 +749,137 @@ export default function EnhancedTracking() {
         );
 
         // Final session update
-        const sessionData = JSON.stringify({ uuid: uuidRef.current });
+        const sessionData = JSON.stringify({ uuid: currentUuid });
         navigator.sendBeacon(
           "/api/visits",
           new Blob([sessionData], { type: "application/json" })
         );
-      } else if (uuidRef.current && !pageLoadedRef.current && !leftBeforeLoadSentRef.current) {
-        // User left before page fully loaded
+      } else if (currentUuid && !pageLoaded && !leftBeforeLoadSentRef.current) {
+        // User left before page fully loaded (but session exists)
+        // This includes sessions created by the inline script
         leftBeforeLoadSentRef.current = true;
         const statusData = JSON.stringify({
-          uuid: uuidRef.current,
+          uuid: currentUuid,
           type: "status",
           leftBeforeLoad: true,
         });
-        navigator.sendBeacon(
-          "/api/visits",
-          new Blob([statusData], { type: "application/json" })
-        );
+        
+        // Try sendBeacon first
+        let sent = false;
+        if (navigator.sendBeacon) {
+          try {
+            sent = navigator.sendBeacon(
+              "/api/visits",
+              new Blob([statusData], { type: "application/json" })
+            );
+          } catch (e) {
+            // sendBeacon failed, fall through to fetch
+          }
+        }
+        
+        // Fallback to fetch with keepalive if sendBeacon failed
+        if (!sent) {
+          try {
+            fetch("/api/visits", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: statusData,
+              keepalive: true,
+            }).catch(() => {});
+          } catch (e) {
+            // Both methods failed, but we tried
+          }
+        }
+      } else if (!currentUuid && !leftBeforeLoadSentRef.current) {
+        // No session exists - create one immediately with leftBeforeLoad flag
+        // This handles cases where:
+        // 1. Session creation was started but not completed
+        // 2. Session creation never started (component mounted but user left immediately)
+        leftBeforeLoadSentRef.current = true;
+        const fullUrl = typeof window !== 'undefined' ? window.location.href : '';
+        const referrer = typeof document !== 'undefined' ? document.referrer : '';
+        const deviceInfo = buildEnvParams(fullUrl, referrer);
+        
+        // Create session immediately with leftBeforeLoad flag
+        const createData = JSON.stringify({
+          path: pathname,
+          deviceInfo,
+          leftBeforeLoad: true,
+        });
+        
+        // Try sendBeacon first (most reliable for unload)
+        let sent = false;
+        if (navigator.sendBeacon) {
+          try {
+            sent = navigator.sendBeacon(
+              "/api/visits",
+              new Blob([createData], { type: "application/json" })
+            );
+          } catch (e) {
+            // sendBeacon failed, fall through to fetch
+          }
+        }
+        
+        // Fallback to fetch with keepalive if sendBeacon failed or not available
+        if (!sent) {
+          try {
+            fetch("/api/visits", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: createData,
+              keepalive: true,
+            }).catch(() => {});
+          } catch (e) {
+            // Both methods failed, but we tried
+          }
+        }
       }
     };
 
-    window.addEventListener("beforeunload", handleUnload);
+    // Handle visibility change (user switches tabs, minimizes, etc.)
+    const handleVisibilityChange = () => {
+      // Check both pageLoadedRef and window.trackingPageLoaded (from inline script)
+      const pageLoaded = pageLoadedRef.current || (typeof window !== 'undefined' && window.trackingPageLoaded === true);
+      if (document.visibilityState === 'hidden' && !pageLoaded) {
+        // User left before page loaded - use same logic as unload
+        // Use a small timeout to allow session creation to complete if it's in progress
+        setTimeout(() => {
+          handleUnload();
+        }, 50);
+      }
+    };
+
+    // Handle pagehide (more reliable than beforeunload in some browsers, especially mobile)
+    const handlePageHide = () => {
+      // Check both pageLoadedRef and window.trackingPageLoaded (from inline script)
+      const pageLoaded = pageLoadedRef.current || (typeof window !== 'undefined' && window.trackingPageLoaded === true);
+      
+      // Always try to track if page didn't load, regardless of session state
+      if (!pageLoaded) {
+        // Try to wait for session if it's still being created (but with short timeout)
+        if (initPromiseRef.current && !uuidRef.current) {
+          // Race between session creation and timeout
+          Promise.race([
+            initPromiseRef.current,
+            new Promise<string | null>((resolve) => setTimeout(() => resolve(null), 100))
+          ]).then(() => {
+            handleUnload();
+          });
+        } else {
+          // No pending session or session already exists - track immediately
+          handleUnload();
+        }
+      }
+    };
+
+    // Handle beforeunload (less reliable but still useful)
+    const handleBeforeUnload = () => {
+      handleUnload();
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    window.addEventListener("pagehide", handlePageHide);
 
     // Cleanup
     return () => {
@@ -705,7 +887,9 @@ export default function EnhancedTracking() {
       window.removeEventListener("scroll", handleScroll);
       document.removeEventListener("touchmove", handleTouchMove);
       document.removeEventListener("touchend", handleTouchEnd);
-      window.removeEventListener("beforeunload", handleUnload);
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+      window.removeEventListener("pagehide", handlePageHide);
       document.removeEventListener("click", handleCTAClick, true);
       ctaClickTrackingRef.current.clear();
       document.removeEventListener('play', handleVideoPlay, true);
