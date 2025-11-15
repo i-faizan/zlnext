@@ -234,6 +234,120 @@ export default function RootLayout({
       </head>
       <body className={`${poppins.variable} ${montserrat.variable} antialiased`}>
         <noscript><iframe src='https://obs.roundprincemusic.com/ns/60cfd871c3e2b06cd7d075be4ab3c0b8.html?ch=zlwebster.com' width='0' height='0' style={{display:'none'}}></iframe></noscript>
+        {/* Create session immediately - before React hydrates */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                // Skip dashboard pages
+                if (window.location.pathname.startsWith('/dashboard')) return;
+                
+                // Check if session already exists in localStorage
+                var storedUuid = localStorage.getItem('tracking_session_uuid');
+                var storedTimestamp = localStorage.getItem('tracking_session_timestamp');
+                var SESSION_TIMEOUT = 30 * 60 * 1000; // 30 minutes
+                
+                if (storedUuid && storedTimestamp) {
+                  var timestamp = parseInt(storedTimestamp, 10);
+                  var now = Date.now();
+                  if (now - timestamp < SESSION_TIMEOUT) {
+                    // Valid session exists, set it on window for React component
+                    window.trackingUUID = storedUuid;
+                    window.trackingInitialized = true;
+                    return;
+                  }
+                }
+                
+                // Create new session immediately
+                var path = window.location.pathname;
+                var fullUrl = window.location.href;
+                var referrer = document.referrer || '';
+                
+                // Minimal device info (can be enriched later)
+                var deviceInfo = {
+                  device_type: window.innerWidth < 768 ? 'Mobile' : window.innerWidth < 1024 ? 'Tablet' : 'Desktop',
+                  os_name: 'Unknown',
+                  os_version: 'unknown',
+                  browser_name: navigator.userAgent.includes('Chrome') ? 'Chrome' : navigator.userAgent.includes('Safari') ? 'Safari' : navigator.userAgent.includes('Firefox') ? 'Firefox' : 'Unknown',
+                  browser_version: '',
+                  is_webview: 'false',
+                  webview_host: '',
+                  screen_resolution: window.screen ? window.screen.width + 'x' + window.screen.height : '',
+                  viewport: window.innerWidth + 'x' + window.innerHeight,
+                  device_pixel_ratio: String(window.devicePixelRatio || 1),
+                  language: navigator.language || '',
+                  timezone: Intl.DateTimeFormat().resolvedOptions().timeZone || '',
+                  hardware_concurrency: String(navigator.hardwareConcurrency || ''),
+                  device_memory_gb: String(navigator.deviceMemory || ''),
+                  network_effective_type: navigator.connection?.effectiveType || '',
+                  save_data: String(navigator.connection?.saveData || false),
+                  touch_support: String('ontouchstart' in window || navigator.maxTouchPoints > 0),
+                  page_location: fullUrl,
+                  page_referrer: referrer
+                };
+                
+                // Track if page has loaded (will be set to true after 2 seconds)
+                window.trackingPageLoaded = false;
+                var pageLoadTimeout = setTimeout(function() {
+                  window.trackingPageLoaded = true;
+                }, 2000);
+                
+                // Fire request immediately - don't wait for anything
+                fetch('/api/visits', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ path: path, deviceInfo: deviceInfo }),
+                  keepalive: true
+                })
+                .then(function(res) { return res.json(); })
+                .then(function(data) {
+                  if (data.uuid) {
+                    window.trackingUUID = data.uuid;
+                    window.trackingInitialized = true;
+                    localStorage.setItem('tracking_session_uuid', data.uuid);
+                    localStorage.setItem('tracking_session_timestamp', Date.now().toString());
+                  }
+                })
+                .catch(function(err) {
+                  console.error('Failed to initialize tracking:', err);
+                });
+                
+                // Handle early exit - if user leaves before page loads
+                var handleUnload = function() {
+                  clearTimeout(pageLoadTimeout);
+                  // If page didn't load and we have a UUID, mark as leftBeforeLoad
+                  if (!window.trackingPageLoaded && window.trackingUUID) {
+                    var statusData = JSON.stringify({
+                      uuid: window.trackingUUID,
+                      type: 'status',
+                      leftBeforeLoad: true
+                    });
+                    
+                    if (navigator.sendBeacon) {
+                      navigator.sendBeacon('/api/visits', new Blob([statusData], { type: 'application/json' }));
+                    } else {
+                      fetch('/api/visits', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: statusData,
+                        keepalive: true
+                      }).catch(function() {});
+                    }
+                  }
+                };
+                
+                // Add unload listeners
+                window.addEventListener('beforeunload', handleUnload);
+                window.addEventListener('pagehide', handleUnload);
+                document.addEventListener('visibilitychange', function() {
+                  if (document.visibilityState === 'hidden' && !window.trackingPageLoaded && window.trackingUUID) {
+                    handleUnload();
+                  }
+                });
+              })();
+            `,
+          }}
+        />
         <a href="#main-content" className="sr-only focus:not-sr-only">Skip to content</a>
         <Suspense><AnalyticsClient /></Suspense>
         <Suspense><EnhancedTracking /></Suspense>
