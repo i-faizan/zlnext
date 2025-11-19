@@ -158,7 +158,7 @@ export default function FarCryVRPage() {
         <main id="main-content">
       <div className="bg-[#000F13] text-gray-200 font-montserrat overflow-x-hidden">
         {/* HERO */}
-        <section className="relative min-h-[90vh] flex items-center justify-center text-center py-20 lg:py-0">
+        <section className="relative min-h-[90vh] flex items-center justify-center text-center pb-20 lg:pb-0">
           <div className="absolute inset-0 z-0">
             <Image
               src="/far-cry-hero-bg.webp"

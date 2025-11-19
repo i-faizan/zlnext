@@ -104,6 +104,7 @@ export default function Footer() {
                 <li><Link href="/games" className="text-gray-400 hover:text-white transition">Games</Link></li>
                 <li><Link href="/what-to-expect" className="text-gray-400 hover:text-white transition">What to Expect</Link></li>
                 <li><Link href="/private-events" className="text-gray-400 hover:text-white transition">Private Events</Link></li>
+                <li><Link href="/blog" className="text-gray-400 hover:text-white transition">Blog</Link></li>
                 <li><Link href="/contact-us" className="text-gray-400 hover:text-white transition">Contact Us</Link></li>
               </ul>
             </div>

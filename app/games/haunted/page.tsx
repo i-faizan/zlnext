@@ -156,7 +156,7 @@ export default function HauntedPage() {
             <div className="bg-black text-gray-200 font-montserrat overflow-x-hidden">
 
                 {/* HERO SECTION - REVISED WITH CENTERED CONTENT */}
-                <section className="relative min-h-[90vh] flex items-center justify-center text-center py-20 lg:py-0">
+                <section className="relative min-h-[90vh] flex items-center justify-center text-center pb-20 lg:pb-0">
                     <div className="absolute inset-0 z-0 opacity-10">
                          <Image 
                             src="/haunted-house-bg.webp"

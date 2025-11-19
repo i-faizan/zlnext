@@ -176,6 +176,15 @@ const navSchema = {
       "position": 5,
       "item": {
         "@type": "SiteNavigationElement",
+        "name": "Blog",
+        "url": `${siteUrl}/blog`
+      }
+    },
+    {
+      "@type": "ListItem",
+      "position": 6,
+      "item": {
+        "@type": "SiteNavigationElement",
         "name": "Contact Us",
         "url": `${siteUrl}/contact-us`
       }
@@ -355,6 +364,8 @@ export default function RootLayout({
         <Script id="organization-schema-ld-json" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }} />
         <Script id="website-schema-ld-json" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }} />
         <Script id="nav-schema-ld-json" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(navSchema) }} />
+        {/* Spacer to push content below fixed header */}
+        <div className="h-20 md:h-20 mt-9 md:mt-0"></div>
         <main id="main-content" role="main">{children}</main>
         <Footer />
       </body>

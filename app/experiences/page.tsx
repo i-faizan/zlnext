@@ -298,7 +298,7 @@ export default function ExperiencesPage() {
             <Script id="breadcrumb-schema" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
             <Script id="service-schema" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }} />
             <Script id="video-schema" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(videoSchema) }} />
-            <main id="main-content" className="pt-20 sm:pt-0">
+            <main id="main-content">
                 <div className="bg-[#000F13] text-gray-200 font-montserrat">
                     {/* HERO SECTION */}
                     <section className="relative h-[60vh] flex items-center justify-center text-center">

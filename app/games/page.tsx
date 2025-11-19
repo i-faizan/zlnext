@@ -141,7 +141,7 @@ export default function GamesPage() {
             <div className="bg-[#000F13] text-gray-200 font-montserrat">
                 
                 {/* HERO SECTION */}
-                <section className="bg-gray-900/50 pt-32 pb-16 text-center border-b-2 border-cyan-500/20">
+                <section className="bg-gray-900/50 pt-16 pb-16 text-center border-b-2 border-cyan-500/20">
                     <div className="mx-auto max-w-4xl px-4 sm:px-6">
                         <h1 className="text-4xl font-poppins text-white font-black sm:text-5xl md:text-6xl">
                             The <span className="text-stroke-blue">Game Library</span>

@@ -63,7 +63,7 @@ export default function PrivateEventsPage() {
             <div className="bg-[#000F13] text-gray-200 font-montserrat overflow-x-hidden">
 
                 {/* HERO SECTION */}
-                <section className="relative min-h-[70vh] flex items-center justify-center text-center py-20">
+                <section className="relative min-h-[70vh] flex items-center justify-center text-center pb-20">
                     <div className="absolute inset-0 z-0">
                          <Image 
                             src="/events-hero-bg.webp" // A wide shot of a group in the VR arena

@@ -53,7 +53,7 @@ export default function HeroHome({ faqs }: FaqProps) {
     return (
         <div className="bg-[#000F13] text-gray-200 font-montserrat">
             <section id="hero"
-                className="relative h-screen flex items-center justify-center bg-cover bg-center"
+                className="relative min-h-screen flex items-center justify-center bg-cover bg-center"
             >
                 <Image
                     src="/hero_img.webp"
