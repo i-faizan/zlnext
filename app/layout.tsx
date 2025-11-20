@@ -203,7 +203,29 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <meta name="msvalidate.01" content="999B6B7BDDC8D9C46D790CCA519C9266" />
-        <script async src='https://ob.roundprincemusic.com/i/60cfd871c3e2b06cd7d075be4ab3c0b8.js' data-ch='zlwebster.com' className='ct_clicktrue_92592' data-jsonp='onCheqResponse'></script>
+      </head>
+      <body className={`${poppins.variable} ${montserrat.variable} antialiased`}>
+        {/* Roundprincemusic - Async and non-blocking */}
+        <Script
+          id="roundprincemusic"
+          strategy="lazyOnload"
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                var script = document.createElement('script');
+                script.async = true;
+                script.src = 'https://ob.roundprincemusic.com/i/60cfd871c3e2b06cd7d075be4ab3c0b8.js';
+                script.setAttribute('data-ch', 'zlwebster.com');
+                script.setAttribute('class', 'ct_clicktrue_92592');
+                script.setAttribute('data-jsonp', 'onCheqResponse');
+                var firstScript = document.getElementsByTagName('script')[0];
+                firstScript.parentNode.insertBefore(script, firstScript);
+              })();
+            `,
+          }}
+        />
+        
+        {/* Meta Pixel - Async and non-blocking */}
         <Script
           id="meta-pixel"
           strategy="lazyOnload"
@@ -223,14 +245,15 @@ export default function RootLayout({
           }}
         />
 
+        {/* Google Analytics - Async and non-blocking */}
         {GA_ID && (
           <>
             <Script
               id="ga4"
               src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}
-              strategy="afterInteractive"
+              strategy="lazyOnload"
             />
-            <Script id="ga4-init" strategy="afterInteractive">
+            <Script id="ga4-init" strategy="lazyOnload">
               {`
                 window.dataLayer = window.dataLayer || [];
                 function gtag(){dataLayer.push(arguments);}
@@ -240,8 +263,6 @@ export default function RootLayout({
             </Script>
           </>
         )}
-      </head>
-      <body className={`${poppins.variable} ${montserrat.variable} antialiased`}>
         <noscript><iframe src='https://obs.roundprincemusic.com/ns/60cfd871c3e2b06cd7d075be4ab3c0b8.html?ch=zlwebster.com' width='0' height='0' style={{display:'none'}}></iframe></noscript>
         {/* Create session immediately - before React hydrates */}
         <script
