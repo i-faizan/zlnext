@@ -115,8 +115,8 @@ export default function WhatToExpectPage() {
         "@id": "https://zlwebster.com/what-to-expect#article",
         "headline": "What to Expect | Zero Latency VR Houston, Webster",
         "description": "New to VR? Learn what to expect: check-in, VR gear setup, game briefing, and free-roam gameplay. No experience needed. We guide you every step.",
-        "datePublished": "2024-01-01",
-        "dateModified": "2024-12-01",
+        "datePublished": "2025-01-01",
+        "dateModified": "2025-12-01",
         "author": {
             "@type": "Organization",
             "@id": "https://zlwebster.com/#organization",

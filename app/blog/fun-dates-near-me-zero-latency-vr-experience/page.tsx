@@ -1,71 +1,70 @@
-// app/blog/complete-guide-zero-latency-vr-webster-houston/page.tsx
+// app/blog/fun-dates-near-me-zero-latency-vr-experience/page.tsx
 
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { Calendar, Clock, ArrowLeft, MapPin, Users, Gamepad2 } from "lucide-react";
+import { Calendar, Clock, ArrowLeft, MapPin, Users, Gamepad2, Heart } from "lucide-react";
 import Script from "next/script";
 import { generateBreadcrumbSchema } from "@/lib/breadcrumbs";
 import BookGameButton from "@/components/BookBtn";
 import RelatedGames from "@/components/RelatedGames";
 
 export const metadata: Metadata = {
-  title: "Complete Guide to Zero Latency VR in Webster, Houston | Zero Latency VR Webster Blog",
-  description: "Discover everything you need to know about Zero Latency VR in Webster, Houston. From free-roam VR experiences to the best games like Space Marine VR and Outbreak, this comprehensive guide covers it all.",
+  title: "Fun Dates Near Me: Zero Latency VR Experience for Couples | Webster, Houston",
+  description: "Looking for fun dates near me? Zero Latency VR Webster offers unique VR date experiences perfect for couples. Skip dinner and a movie—try something unforgettable! Book now!",
   authors: [{ name: "Zero Latency VR Webster" }],
   creator: "Zero Latency VR Webster",
   publisher: "Zero Latency VR Houston, Webster",
   alternates: {
-    canonical: "https://zlwebster.com/blog/complete-guide-zero-latency-vr-webster-houston",
+    canonical: "https://zlwebster.com/blog/fun-dates-near-me-zero-latency-vr-experience",
   },
   openGraph: {
-    title: "Complete Guide to Zero Latency VR in Webster, Houston",
-    description: "Discover everything you need to know about Zero Latency VR in Webster, Houston. From free-roam VR experiences to the best games like Space Marine VR and Outbreak, this comprehensive guide covers it all.",
-    url: "https://zlwebster.com/blog/complete-guide-zero-latency-vr-webster-houston",
+    title: "Fun Dates Near Me: Zero Latency VR Experience for Couples",
+    description: "Looking for fun dates near me? Zero Latency VR Webster offers unique VR date experiences perfect for couples. Skip dinner and a movie—try something unforgettable!",
+    url: "https://zlwebster.com/blog/fun-dates-near-me-zero-latency-vr-experience",
     type: "article",
-    publishedTime: "2025-09-05",
+    publishedTime: "2025-11-05",
     authors: ["Zero Latency VR Webster"],
     images: [{
       url: "https://zlwebster.com/OG.jpg",
       width: 1200,
       height: 630,
-      alt: "Complete Guide to Zero Latency VR in Webster, Houston",
+      alt: "Fun Dates Near Me: Zero Latency VR Experience for Couples",
     }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Complete Guide to Zero Latency VR in Webster, Houston",
-    description: "Discover everything you need to know about Zero Latency VR in Webster, Houston. From free-roam VR experiences to the best games like Space Marine VR and Outbreak.",
+    title: "Fun Dates Near Me: Zero Latency VR Experience for Couples",
+    description: "Looking for fun dates near me? Zero Latency VR offers unique VR date experiences perfect for couples.",
     images: ["https://zlwebster.com/OG.jpg"],
   },
   robots: {
     index: true,
     follow: true,
   },
-  keywords: ["zero latency vr", "vr arena webster", "free roam vr houston", "virtual reality webster"],
+  keywords: ["fun dates near me", "date ideas", "couples vr", "unique date experience", "vr date", "romantic vr"],
 };
 
-const publishDate = "2025-09-05";
+const publishDate = "2025-11-05";
 const author = "Zero Latency VR Webster";
-const readTime = 8;
+const readTime = 7;
 const featuredImage = "/OG.jpg";
-const title = "Complete Guide to Zero Latency VR in Webster, Houston";
+const title = "Fun Dates Near Me: Zero Latency VR Experience for Couples";
 
-
-export default function CompleteGuidePage() {
+export default function FunDatesNearMePage() {
   const breadcrumbSchema = generateBreadcrumbSchema([
     { name: "Home", url: "https://zlwebster.com/" },
     { name: "Blog", url: "https://zlwebster.com/blog" },
-    { name: title, url: "https://zlwebster.com/blog/complete-guide-zero-latency-vr-webster-houston" },
+    { name: title, url: "https://zlwebster.com/blog/fun-dates-near-me-zero-latency-vr-experience" },
   ]);
 
   const blogPostingSchema = {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
-    "@id": "https://zlwebster.com/blog/complete-guide-zero-latency-vr-webster-houston#blogpost",
+    "@id": "https://zlwebster.com/blog/fun-dates-near-me-zero-latency-vr-experience#blogpost",
     "headline": title,
-    "description": "Discover everything you need to know about Zero Latency VR in Webster, Houston. From free-roam VR experiences to the best games like Space Marine VR and Outbreak, this comprehensive guide covers it all.",
-    "url": "https://zlwebster.com/blog/complete-guide-zero-latency-vr-webster-houston",
+    "description": "Looking for fun dates near me? Zero Latency VR Webster offers unique VR date experiences perfect for couples. Skip dinner and a movie—try something unforgettable!",
+    "url": "https://zlwebster.com/blog/fun-dates-near-me-zero-latency-vr-experience",
     "datePublished": publishDate,
     "author": {
       "@type": "Organization",
@@ -84,7 +83,7 @@ export default function CompleteGuidePage() {
     "image": `https://zlwebster.com${featuredImage}`,
     "mainEntityOfPage": {
       "@type": "WebPage",
-      "@id": "https://zlwebster.com/blog/complete-guide-zero-latency-vr-webster-houston",
+      "@id": "https://zlwebster.com/blog/fun-dates-near-me-zero-latency-vr-experience",
     },
   };
 
@@ -97,7 +96,7 @@ export default function CompleteGuidePage() {
         <meta itemProp="datePublished" content={publishDate} />
         <main id="main-content">
           <div className="bg-[#000F13] text-gray-200 font-montserrat">
-            {/* Hero Section with Featured Image */}
+            {/* Hero Section */}
             <section className="relative min-h-[60vh] flex items-center justify-center overflow-hidden">
               <div className="absolute inset-0 z-0">
                 <Image
@@ -111,7 +110,6 @@ export default function CompleteGuidePage() {
                 <div className="absolute inset-0 bg-gradient-to-t from-[#000F13] via-[#000F13]/80 to-transparent"></div>
               </div>
               
-              {/* Back to Blog Button - Positioned at top */}
               <div className="absolute top-6 left-0 right-0 z-20">
                 <div className="mx-auto max-w-7xl px-4 sm:px-6">
                   <Link 
@@ -126,10 +124,10 @@ export default function CompleteGuidePage() {
 
               <div className="relative z-10 mx-auto max-w-4xl px-4 py-12 sm:px-6 md:py-16 text-center">
                 <h1 className="text-4xl font-poppins text-white font-black sm:text-5xl md:text-6xl mb-6">
-                  Complete Guide to <span className="text-stroke-blue">Zero Latency VR</span>
+                  <span className="text-stroke-blue">Fun Dates Near Me</span>
                 </h1>
                 <p className="text-lg max-w-3xl mx-auto text-gray-300 leading-relaxed mb-6">
-                  Webster, Houston
+                  Zero Latency VR Experience for Couples
                 </p>
                 <div className="flex flex-wrap items-center justify-center gap-4 text-sm text-gray-300">
                   <div className="flex items-center gap-2">
@@ -162,43 +160,50 @@ export default function CompleteGuidePage() {
                 <div className="space-y-8 text-gray-300">
                   {/* Introduction */}
                   <div>
-                    <h2 className="text-2xl sm:text-3xl font-poppins font-bold text-white mt-8 sm:mt-12 mb-6 first:mt-0">Welcome to Zero Latency VR Webster</h2>
-                    <p className="text-base sm:text-lg leading-relaxed text-gray-300 mb-8">Located in the heart of Webster, Houston, Zero Latency VR offers the most immersive free-roam virtual reality experiences in Texas. Whether you&apos;re a VR veteran or a complete beginner, our state-of-the-art arena provides unforgettable adventures for groups of 1-8 players.</p>
+                    <h2 className="text-2xl sm:text-3xl font-poppins font-bold text-white mt-8 sm:mt-12 mb-6 first:mt-0">Skip Dinner and a Movie—Try Something Unforgettable</h2>
+                    <p className="text-base sm:text-lg leading-relaxed text-gray-300 mb-8">
+                      Tired of the same old date ideas? If you&apos;re searching for <strong className="text-white font-semibold">fun dates near me</strong> or unique <strong className="text-white font-semibold">date ideas</strong>, Zero Latency VR Webster offers an experience you&apos;ll both remember forever. Instead of another dinner and a movie, why not fight zombies together, explore a tropical island, or solve puzzles in a gravity-defying world? VR dates are the perfect way to create shared memories and have an adventure together.
+                    </p>
                   </div>
 
-                  {/* What Makes Zero Latency Special - Featured Section */}
+                  {/* Why VR Dates Are Great */}
                   <div className="bg-gray-800/50 rounded-xl border border-gray-700 p-6 sm:p-8 mb-8">
                     <h2 className="text-2xl sm:text-3xl font-poppins font-bold text-white mb-6">
-                      <span className="text-cyan-400">✨</span> What Makes Zero Latency VR Special?
+                      <span className="text-cyan-400">💑</span> Why VR Makes the Perfect Date
                     </h2>
                     <div className="grid md:grid-cols-2 gap-6 items-center">
                       <div>
                         <p className="text-base sm:text-lg leading-relaxed text-gray-300 mb-4">
-                          Unlike traditional VR setups where you&apos;re confined to a small space, Zero Latency VR uses cutting-edge technology to allow you to physically walk, run, and move through massive virtual worlds. Our free-roam system tracks your movements in real-time, creating an unparalleled sense of presence and immersion.
+                          VR dates at Zero Latency VR Webster are unlike any other date experience. You&apos;re not just watching something together—you&apos;re <strong className="text-white font-semibold">experiencing</strong> it together. Whether you&apos;re working as a team to survive a zombie outbreak or exploring a beautiful puzzle world, you&apos;re creating shared memories that will last a lifetime.
                         </p>
-                        <div className="grid sm:grid-cols-2 gap-4 mt-6">
-                          <div className="bg-gray-900/50 rounded-lg p-4 border border-gray-700">
-                            <h4 className="text-white font-semibold mb-2">🚶 Free-Roam Movement</h4>
-                            <p className="text-sm text-gray-400">Walk, run, and move freely through virtual worlds</p>
+                        <div className="space-y-3 mt-6">
+                          <div className="flex items-start gap-3">
+                            <Heart className="h-5 w-5 text-cyan-400 flex-shrink-0 mt-1" />
+                            <div>
+                              <h4 className="text-white font-semibold mb-1">Shared Adventure</h4>
+                              <p className="text-sm text-gray-400">Experience something new together, creating lasting memories</p>
+                            </div>
                           </div>
-                          <div className="bg-gray-900/50 rounded-lg p-4 border border-gray-700">
-                            <h4 className="text-white font-semibold mb-2">📡 Real-Time Tracking</h4>
-                            <p className="text-sm text-gray-400">Advanced technology tracks every movement</p>
+                          <div className="flex items-start gap-3">
+                            <Heart className="h-5 w-5 text-cyan-400 flex-shrink-0 mt-1" />
+                            <div>
+                              <h4 className="text-white font-semibold mb-1">Teamwork</h4>
+                              <p className="text-sm text-gray-400">Work together to solve puzzles or survive challenges</p>
+                            </div>
                           </div>
-                          <div className="bg-gray-900/50 rounded-lg p-4 border border-gray-700">
-                            <h4 className="text-white font-semibold mb-2">🌍 Massive Worlds</h4>
-                            <p className="text-sm text-gray-400">Explore large-scale virtual environments</p>
-                          </div>
-                          <div className="bg-gray-900/50 rounded-lg p-4 border border-gray-700">
-                            <h4 className="text-white font-semibold mb-2">👥 Group Play</h4>
-                            <p className="text-sm text-gray-400">Up to 8 players can play together</p>
+                          <div className="flex items-start gap-3">
+                            <Heart className="h-5 w-5 text-cyan-400 flex-shrink-0 mt-1" />
+                            <div>
+                              <h4 className="text-white font-semibold mb-1">Unique Experience</h4>
+                              <p className="text-sm text-gray-400">Stand out from typical date nights with something truly special</p>
+                            </div>
                           </div>
                         </div>
                       </div>
                       <div className="relative h-64 md:h-80 rounded-lg overflow-hidden border-2 border-cyan-500/30">
                         <Image
                           src="/hero_img.webp"
-                          alt="Players experiencing Zero Latency VR"
+                          alt="Couples experiencing VR together"
                           layout="fill"
                           objectFit="cover"
                           className="transition-transform duration-500 hover:scale-105"
@@ -208,98 +213,93 @@ export default function CompleteGuidePage() {
                     </div>
                   </div>
 
-                  {/* Premier VR Games Section */}
+                  {/* Best Games for Dates */}
                   <div>
                     <h2 className="text-2xl sm:text-3xl font-poppins font-bold text-white mt-8 sm:mt-12 mb-6">
-                      <span className="text-cyan-400">🎮</span> Our Premier VR Games
+                      <span className="text-cyan-400">🎮</span> Best VR Games for Couples
                     </h2>
-                    <p className="text-base sm:text-lg leading-relaxed text-gray-300 mb-6">At Zero Latency VR Webster, we offer a diverse library of games to suit every taste:</p>
-                    
+                    <p className="text-base sm:text-lg leading-relaxed text-gray-300 mb-6">
+                      When planning your VR date, consider these games perfect for couples:
+                    </p>
                     <div className="grid sm:grid-cols-2 gap-4 mb-6">
                       <div className="bg-gray-800/50 rounded-lg p-5 border border-gray-700 hover:border-cyan-500/50 transition-colors">
-                        <Link href="/games/space-marine-vr" className="block">
-                          <h3 className="text-lg font-poppins font-bold text-white mb-2 hover:text-cyan-400 transition-colors">Space Marine VR</h3>
-                          <p className="text-sm text-gray-400">Step into the boots of a genetically enhanced Space Marine in this Warhammer 40,000 experience. Battle relentless Tyranid swarms in our most intense free-roam VR game, perfect for groups of 1-8 players seeking an adrenaline-pumping adventure.</p>
+                        <Link href="/games/engineerium" className="block">
+                          <h3 className="text-lg font-poppins font-bold text-white mb-2 hover:text-cyan-400 transition-colors">Engineerium</h3>
+                          <p className="text-sm text-gray-400 mb-3">Perfect for a relaxed, beautiful experience. Walk among flying whales in a gravity-defying world—great for couples who want to explore together without intense action.</p>
+                          <span className="text-cyan-400 text-sm">Learn more →</span>
                         </Link>
                       </div>
                       <div className="bg-gray-800/50 rounded-lg p-5 border border-gray-700 hover:border-cyan-500/50 transition-colors">
                         <Link href="/games/outbreak" className="block">
                           <h3 className="text-lg font-poppins font-bold text-white mb-2 hover:text-cyan-400 transition-colors">Outbreak</h3>
-                          <p className="text-sm text-gray-400">A deadly virus is ravaging humanity, and your squad is the last hope. This intense cooperative survival shooter will test your teamwork and strategy as you fight to find a cure and save the world.</p>
+                          <p className="text-sm text-gray-400 mb-3">For couples who love action! Work together to survive a zombie apocalypse—perfect for building teamwork and trust.</p>
+                          <span className="text-cyan-400 text-sm">Learn more →</span>
                         </Link>
                       </div>
                       <div className="bg-gray-800/50 rounded-lg p-5 border border-gray-700 hover:border-cyan-500/50 transition-colors">
                         <Link href="/games/far-cry-vr" className="block">
                           <h3 className="text-lg font-poppins font-bold text-white mb-2 hover:text-cyan-400 transition-colors">Far Cry VR</h3>
-                          <p className="text-sm text-gray-400">Escape the clutches of Vaas and his pirates in this VR adventure inspired by Far Cry 3. A tropical paradise becomes a fight for survival in this action-packed experience.</p>
+                          <p className="text-sm text-gray-400 mb-3">Escape to a tropical paradise together! This adventure combines beautiful scenery with exciting action.</p>
+                          <span className="text-cyan-400 text-sm">Learn more →</span>
                         </Link>
                       </div>
                       <div className="bg-gray-800/50 rounded-lg p-5 border border-gray-700 hover:border-cyan-500/50 transition-colors">
-                        <Link href="/games/undead-arena" className="block">
-                          <h3 className="text-lg font-poppins font-bold text-white mb-2 hover:text-cyan-400 transition-colors">Undead Arena</h3>
-                          <p className="text-sm text-gray-400">Compete in a post-apocalyptic game show where you and your friends take on waves of zombies. It&apos;s kill or be killed for fame and glory in this fast-paced zombie action game.</p>
+                        <Link href="/games/haunted" className="block">
+                          <h3 className="text-lg font-poppins font-bold text-white mb-2 hover:text-cyan-400 transition-colors">Haunted VR</h3>
+                          <p className="text-sm text-gray-400 mb-3">For couples who love horror! Experience the scariest VR haunted house together—if you dare.</p>
+                          <span className="text-cyan-400 text-sm">Learn more →</span>
                         </Link>
                       </div>
                     </div>
                   </div>
 
-                  {/* Perfect for Groups and Events */}
+                  {/* Perfect Date Night Package */}
                   <div className="bg-gradient-to-br from-cyan-500/10 to-gray-900/50 rounded-xl p-6 sm:p-8 border-2 border-cyan-500/30">
                     <h2 className="text-2xl sm:text-3xl font-poppins font-bold text-white mb-6 text-center">
-                      Perfect for Groups and Events
+                      The Perfect Date Night Experience
                     </h2>
-                    <p className="text-base sm:text-lg leading-relaxed text-gray-300 mb-6 text-center">
-                      Zero Latency VR Webster is the ideal destination for:
-                    </p>
-                    <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-6">
+                    <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-6">
                       <div className="bg-gray-900/50 rounded-lg p-4 border border-gray-700 text-center">
-                        <div className="text-3xl mb-2">🎂</div>
-                        <h3 className="text-white font-semibold mb-1">Birthday Parties</h3>
-                        <p className="text-sm text-gray-400">Unforgettable celebrations</p>
+                        <div className="text-3xl mb-2">🎮</div>
+                        <h3 className="text-white font-semibold mb-1">Choose Your Game</h3>
+                        <p className="text-sm text-gray-400">Pick from 8+ experiences</p>
                       </div>
                       <div className="bg-gray-900/50 rounded-lg p-4 border border-gray-700 text-center">
-                        <div className="text-3xl mb-2">👔</div>
-                        <h3 className="text-white font-semibold mb-1">Team Building</h3>
-                        <p className="text-sm text-gray-400">Corporate activities</p>
+                        <div className="text-3xl mb-2">👥</div>
+                        <h3 className="text-white font-semibold mb-1">Play Together</h3>
+                        <p className="text-sm text-gray-400">Share the adventure</p>
                       </div>
                       <div className="bg-gray-900/50 rounded-lg p-4 border border-gray-700 text-center">
-                        <div className="text-3xl mb-2">🎉</div>
-                        <h3 className="text-white font-semibold mb-1">Bachelor/Bachelorette</h3>
-                        <p className="text-sm text-gray-400">Pre-wedding celebrations</p>
+                        <div className="text-3xl mb-2">📸</div>
+                        <h3 className="text-white font-semibold mb-1">Capture Memories</h3>
+                        <p className="text-sm text-gray-400">Photos available</p>
                       </div>
                       <div className="bg-gray-900/50 rounded-lg p-4 border border-gray-700 text-center">
-                        <div className="text-3xl mb-2">👨‍👩‍👧‍👦</div>
-                        <h3 className="text-white font-semibold mb-1">Family Outings</h3>
-                        <p className="text-sm text-gray-400">Fun for all ages</p>
-                      </div>
-                      <div className="bg-gray-900/50 rounded-lg p-4 border border-gray-700 text-center">
-                        <div className="text-3xl mb-2">💑</div>
-                        <h3 className="text-white font-semibold mb-1">Date Nights</h3>
-                        <p className="text-sm text-gray-400">Unique experiences</p>
-                      </div>
-                      <div className="bg-gray-900/50 rounded-lg p-4 border border-gray-700 text-center">
-                        <div className="text-3xl mb-2">🎊</div>
-                        <h3 className="text-white font-semibold mb-1">Celebrations</h3>
-                        <p className="text-sm text-gray-400">Special occasions</p>
+                        <div className="text-3xl mb-2">🍽️</div>
+                        <h3 className="text-white font-semibold mb-1">Dinner After</h3>
+                        <p className="text-sm text-gray-400">Nearby restaurants</p>
                       </div>
                     </div>
                   </div>
 
-                  {/* Location and Hours */}
-                  <div className="bg-gray-800/50 rounded-xl p-6 sm:p-8 border border-gray-700">
+                  {/* Location */}
+                  <div className="bg-gray-800/50 rounded-xl border border-gray-700 p-6 sm:p-8">
                     <h2 className="text-2xl sm:text-3xl font-poppins font-bold text-white mb-6">
-                      <span className="text-cyan-400">📍</span> Location and Hours
+                      <span className="text-cyan-400">📍</span> Perfect Location for Your Date
                     </h2>
                     <div className="grid md:grid-cols-2 gap-6">
                       <div>
                         <div className="flex items-start gap-3 mb-4">
                           <MapPin className="h-6 w-6 text-cyan-400 flex-shrink-0 mt-1" />
                           <div>
-                            <h3 className="text-white font-semibold mb-2">Address</h3>
+                            <h3 className="text-white font-semibold mb-2">Zero Latency VR Webster</h3>
                             <p className="text-gray-300">
                               BayWay Village Shopping Center<br />
                               20801 Gulf Fwy suite 5<br />
                               Webster, TX 77598
+                            </p>
+                            <p className="text-sm text-gray-400 mt-2">
+                              Easy to find, with plenty of parking. Perfect for a date night!
                             </p>
                           </div>
                         </div>
@@ -313,6 +313,9 @@ export default function CompleteGuidePage() {
                               Monday - Friday: 3:00pm - 11:00pm<br />
                               Saturday - Sunday: 11:00am - 11:00pm
                             </p>
+                            <p className="text-sm text-gray-400 mt-2">
+                              Perfect for evening dates or weekend adventures
+                            </p>
                           </div>
                         </div>
                       </div>
@@ -321,9 +324,9 @@ export default function CompleteGuidePage() {
 
                   {/* Conclusion */}
                   <div className="mt-8">
-                    <h2 className="text-2xl sm:text-3xl font-poppins font-bold text-white mb-6">Book Your VR Adventure Today</h2>
+                    <h2 className="text-2xl sm:text-3xl font-poppins font-bold text-white mb-6">Make Your Next Date Unforgettable</h2>
                     <p className="text-base sm:text-lg leading-relaxed text-gray-300 mb-6">
-                      Ready to experience the future of virtual reality? Book your session at Zero Latency VR Webster today and discover why we&apos;re Houston&apos;s premier free-roam VR arena.
+                      Stop searching for <strong className="text-white font-semibold">fun dates near me</strong>—you&apos;ve found something truly special. Zero Latency VR Webster offers the perfect <strong className="text-white font-semibold">date experience</strong> that combines adventure, teamwork, and unforgettable memories. Whether you&apos;re celebrating an anniversary, a first date, or just want to try something new together, VR dates are the perfect way to create shared experiences you&apos;ll talk about for years to come.
                     </p>
                   </div>
                 </div>
@@ -338,18 +341,18 @@ export default function CompleteGuidePage() {
               <div className="mx-auto max-w-4xl px-4 sm:px-6">
                 <div className="bg-gray-800/50 rounded-2xl border border-gray-700 p-6 sm:p-8 text-center">
                   <div className="flex justify-center mb-4">
-                    <Gamepad2 className="h-12 w-12 text-cyan-400" />
+                    <Heart className="h-12 w-12 text-cyan-400" />
                   </div>
                   <h2 className="text-2xl sm:text-3xl font-poppins font-bold text-white mb-4">
-                    Ready to Experience <span className="text-stroke-blue">VR?</span>
+                    Plan Your Perfect <span className="text-stroke-blue">VR Date</span>
                   </h2>
                   <p className="text-base sm:text-lg text-gray-300 mb-6">
-                    Book your free-roam VR adventure at Zero Latency VR Webster today!
+                    Book your unique date experience at Zero Latency VR Webster today!
                   </p>
                   <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-6">
                     <div className="flex items-center gap-2 text-sm text-gray-400">
                       <Users className="h-4 w-4 text-cyan-400" />
-                      <span>1-8 Players</span>
+                      <span>Perfect for 2</span>
                     </div>
                     <div className="flex items-center gap-2 text-sm text-gray-400">
                       <Gamepad2 className="h-4 w-4 text-cyan-400" />
@@ -360,7 +363,7 @@ export default function CompleteGuidePage() {
                       <span>Webster, TX</span>
                     </div>
                   </div>
-                  <BookGameButton label="Book Your VR Adventure" source="blog-post-cta" />
+                  <BookGameButton label="Book Your VR Date" source="blog-fun-dates-cta" />
                 </div>
               </div>
             </section>

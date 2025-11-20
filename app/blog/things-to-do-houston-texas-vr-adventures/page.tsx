@@ -6,8 +6,8 @@ import Link from "next/link";
 import { Calendar, Clock, ArrowLeft, MapPin, Users, Gamepad2 } from "lucide-react";
 import Script from "next/script";
 import { generateBreadcrumbSchema } from "@/lib/breadcrumbs";
-import Container from "@/components/Container";
 import BookGameButton from "@/components/BookBtn";
+import RelatedGames from "@/components/RelatedGames";
 
 export const metadata: Metadata = {
   title: "Best Things to Do in Houston, Texas: VR Adventures & More | Zero Latency VR Webster",
@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     description: "Discover the best things to do in Houston, Texas! From free-roam VR adventures at Zero Latency Webster to Space Center Houston, museums, and entertainment.",
     url: "https://zlwebster.com/blog/things-to-do-houston-texas-vr-adventures",
     type: "article",
-    publishedTime: "2025-01-25",
+    publishedTime: "2025-09-15",
     authors: ["Zero Latency VR Webster"],
     images: [{
       url: "https://zlwebster.com/OG.jpg",
@@ -45,18 +45,11 @@ export const metadata: Metadata = {
   keywords: ["things to do houston", "houston activities", "houston texas", "vr houston", "zero latency houston", "things to do in houston tx", "houston entertainment"],
 };
 
-const publishDate = "2025-01-25";
+const publishDate = "2025-09-15";
 const author = "Zero Latency VR Webster";
 const readTime = 10;
 const featuredImage = "/OG.jpg";
 const title = "Best Things to Do in Houston, Texas: VR Adventures & Ultimate Entertainment Guide";
-
-const gamesData = [
-  { title: "Space Marine VR", slug: "space-marine-vr", imageSrc: "/game-space-marine.webp" },
-  { title: "Outbreak", slug: "outbreak", imageSrc: "/game-outbreak.webp" },
-  { title: "Far Cry VR", slug: "far-cry-vr", imageSrc: "/game-far-cry-vr.webp" },
-  { title: "Sol Raiders", slug: "sol-raiders", imageSrc: "/game-sol-raiders.webp" },
-];
 
 export default function ThingsToDoHoustonPage() {
   const breadcrumbSchema = generateBreadcrumbSchema([
@@ -104,7 +97,7 @@ export default function ThingsToDoHoustonPage() {
         <main id="main-content">
           <div className="bg-[#000F13] text-gray-200 font-montserrat">
             {/* Hero Section with Featured Image */}
-            <section className="relative min-h-[50vh] flex items-center justify-center overflow-hidden">
+            <section className="relative min-h-[60vh] flex items-center justify-center overflow-hidden">
               <div className="absolute inset-0 z-0">
                 <Image
                   src={featuredImage}
@@ -112,14 +105,14 @@ export default function ThingsToDoHoustonPage() {
                   layout="fill"
                   objectFit="cover"
                   priority
-                  className="opacity-30"
+                  className="opacity-25"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-[#000F13] via-[#000F13]/80 to-transparent"></div>
               </div>
               
               {/* Back to Blog Button - Positioned at top */}
               <div className="absolute top-6 left-0 right-0 z-20">
-                <Container>
+                <div className="mx-auto max-w-7xl px-4 sm:px-6">
                   <Link 
                     href="/blog" 
                     className="inline-flex items-center gap-2 bg-gray-900/80 backdrop-blur-sm border border-cyan-500/30 rounded-full px-4 py-2 text-cyan-400 hover:text-white hover:bg-cyan-500/20 hover:border-cyan-400 transition-all duration-300 text-sm font-semibold shadow-lg"
@@ -127,50 +120,50 @@ export default function ThingsToDoHoustonPage() {
                     <ArrowLeft className="h-4 w-4" />
                     Back to Blog
                   </Link>
-                </Container>
+                </div>
               </div>
 
-              <Container>
-                <div className="relative z-10 text-center max-w-4xl mx-auto px-4 py-12 md:py-16">
-                  <h1 className="text-3xl font-poppins text-white font-black sm:text-4xl md:text-5xl lg:text-6xl mb-6">
-                    {title}
-                  </h1>
-                  <div className="flex flex-wrap items-center justify-center gap-4 text-sm text-gray-300">
+              <div className="relative z-10 mx-auto max-w-4xl px-4 py-12 sm:px-6 md:py-16 text-center">
+                <h1 className="text-4xl font-poppins text-white font-black sm:text-5xl md:text-6xl mb-6">
+                  Best Things to Do in <span className="text-stroke-blue">Houston, Texas</span>
+                </h1>
+                <p className="text-lg max-w-3xl mx-auto text-gray-300 leading-relaxed mb-6">
+                  VR Adventures & Ultimate Entertainment Guide
+                </p>
+                <div className="flex flex-wrap items-center justify-center gap-4 text-sm text-gray-300">
+                  <div className="flex items-center gap-2">
+                    <Calendar className="h-4 w-4 text-cyan-400" />
+                    <time dateTime={publishDate}>
+                      {new Date(publishDate).toLocaleDateString('en-US', { 
+                        year: 'numeric', 
+                        month: 'long', 
+                        day: 'numeric' 
+                      })}
+                    </time>
+                  </div>
+                  {readTime && (
                     <div className="flex items-center gap-2">
-                      <Calendar className="h-4 w-4 text-cyan-400" />
-                      <time dateTime={publishDate}>
-                        {new Date(publishDate).toLocaleDateString('en-US', { 
-                          year: 'numeric', 
-                          month: 'long', 
-                          day: 'numeric' 
-                        })}
-                      </time>
+                      <Clock className="h-4 w-4 text-cyan-400" />
+                      <span>{readTime} min read</span>
                     </div>
-                    {readTime && (
-                      <div className="flex items-center gap-2">
-                        <Clock className="h-4 w-4 text-cyan-400" />
-                        <span>{readTime} min read</span>
-                      </div>
-                    )}
-                    <div className="flex items-center gap-2">
-                      <span className="text-cyan-400">By</span>
-                      <span>{author}</span>
-                    </div>
+                  )}
+                  <div className="flex items-center gap-2">
+                    <span className="text-cyan-400">By</span>
+                    <span>{author}</span>
                   </div>
                 </div>
-              </Container>
+              </div>
             </section>
 
             {/* Blog Content */}
-            <section className="py-12 md:py-16">
-              <Container>
-                <div className="max-w-4xl mx-auto px-4 sm:px-6">
+            <section className="py-16 md:py-24">
+              <div className="mx-auto max-w-6xl px-4 sm:px-6">
                   <div className="space-y-8 text-gray-300">
                     {/* Introduction */}
                     <div>
                       <h2 className="text-2xl sm:text-3xl font-poppins font-bold text-white mt-8 sm:mt-12 mb-6 first:mt-0">Discover Houston: Where Adventure Meets Innovation</h2>
                       <p className="text-base sm:text-lg leading-relaxed text-gray-300 mb-6">
-                        Houston, Texas, is a city that never sleeps—a vibrant metropolis where space exploration, world-class museums, and cutting-edge entertainment converge. Whether you&apos;re a local looking for weekend plans or a visitor exploring the Bayou City, Houston offers an incredible array of activities that cater to every interest and age group.
+                        Houston, Texas, is a city that never sleeps, a vibrant metropolis where space exploration, world-class museums, and cutting-edge entertainment converge. Whether you&apos;re a local looking for weekend plans or a visitor exploring the Bayou City, Houston offers an incredible array of activities that cater to every interest and age group.
                       </p>
                       <p className="text-base sm:text-lg leading-relaxed text-gray-300 mb-8">
                         From the historic Space Center Houston to the bustling Museum District, from thrilling sports events to innovative virtual reality experiences, Houston has something special for everyone. In this comprehensive guide, we&apos;ll explore the best things to do in Houston, with a special focus on one of the city&apos;s most exciting new attractions: <strong className="text-white font-semibold">Zero Latency VR Webster</strong>.
@@ -178,7 +171,7 @@ export default function ThingsToDoHoustonPage() {
                     </div>
 
                     {/* Zero Latency VR - Featured Section with Image */}
-                    <div className="bg-gray-900/50 rounded-xl border border-gray-800 p-6 sm:p-8 mb-8">
+                    <div className="bg-gray-800/50 rounded-xl border border-gray-700 p-6 sm:p-8 mb-8">
                       <div className="grid md:grid-cols-2 gap-6 items-center mb-6">
                         <div>
                           <h2 className="text-2xl sm:text-3xl font-poppins font-bold text-white mb-4">
@@ -253,7 +246,7 @@ export default function ThingsToDoHoustonPage() {
                     </div>
                     
                     {/* Space Center Houston - Card with Image */}
-                    <div className="grid md:grid-cols-2 gap-6 items-center bg-gray-900/30 rounded-xl p-6 border border-gray-800">
+                    <div className="grid md:grid-cols-2 gap-6 items-center bg-gray-800/50 rounded-xl p-6 border border-gray-700">
                       <div className="relative h-64 rounded-lg overflow-hidden">
                         <Image
                           src="/Sci-fi.webp"
@@ -289,19 +282,19 @@ export default function ThingsToDoHoustonPage() {
                         Houston&apos;s Museum District is home to 19 museums, galleries, and cultural centers, all within walking distance of each other. Some must-visit destinations include:
                       </p>
                       <div className="grid sm:grid-cols-2 gap-4 mb-6">
-                        <div className="bg-gray-900/50 rounded-lg p-5 border border-gray-800 hover:border-cyan-500/50 transition-colors">
+                        <div className="bg-gray-800/50 rounded-lg p-5 border border-gray-700 hover:border-cyan-500/50 transition-colors">
                           <h3 className="text-lg font-poppins font-bold text-white mb-2">Museum of Fine Arts</h3>
                           <p className="text-sm text-gray-400">One of the largest art museums in the country, featuring collections spanning 6,000 years of history</p>
                         </div>
-                        <div className="bg-gray-900/50 rounded-lg p-5 border border-gray-800 hover:border-cyan-500/50 transition-colors">
+                        <div className="bg-gray-800/50 rounded-lg p-5 border border-gray-700 hover:border-cyan-500/50 transition-colors">
                           <h3 className="text-lg font-poppins font-bold text-white mb-2">Museum of Natural Science</h3>
                           <p className="text-sm text-gray-400">Home to dinosaur skeletons, a planetarium, and fascinating exhibits on everything from ancient Egypt to energy</p>
                         </div>
-                        <div className="bg-gray-900/50 rounded-lg p-5 border border-gray-800 hover:border-cyan-500/50 transition-colors">
+                        <div className="bg-gray-800/50 rounded-lg p-5 border border-gray-700 hover:border-cyan-500/50 transition-colors">
                           <h3 className="text-lg font-poppins font-bold text-white mb-2">Children&apos;s Museum</h3>
                           <p className="text-sm text-gray-400">Perfect for families, with hands-on exhibits that make learning fun</p>
                         </div>
-                        <div className="bg-gray-900/50 rounded-lg p-5 border border-gray-800 hover:border-cyan-500/50 transition-colors">
+                        <div className="bg-gray-800/50 rounded-lg p-5 border border-gray-700 hover:border-cyan-500/50 transition-colors">
                           <h3 className="text-lg font-poppins font-bold text-white mb-2">The Menil Collection</h3>
                           <p className="text-sm text-gray-400">A world-class art museum featuring works by Picasso, Warhol, and other masters</p>
                         </div>
@@ -310,7 +303,7 @@ export default function ThingsToDoHoustonPage() {
 
                     {/* Sports & Entertainment - Side by Side */}
                     <div className="grid md:grid-cols-2 gap-6">
-                      <div className="bg-gray-900/30 rounded-xl p-6 border border-gray-800">
+                      <div className="bg-gray-800/50 rounded-xl p-6 border border-gray-700">
                         <h2 className="text-2xl font-poppins font-bold text-white mb-4">
                           <span className="text-cyan-400">#4</span> Catch a Game or Show
                         </h2>
@@ -321,7 +314,7 @@ export default function ThingsToDoHoustonPage() {
                           For live entertainment, the Theater District offers Broadway shows, concerts, and performances year-round.
                         </p>
                       </div>
-                      <div className="bg-gray-900/30 rounded-xl p-6 border border-gray-800">
+                      <div className="bg-gray-800/50 rounded-xl p-6 border border-gray-700">
                         <h2 className="text-2xl font-poppins font-bold text-white mb-4">
                           <span className="text-cyan-400">#5</span> Explore Hermann Park
                         </h2>
@@ -335,7 +328,7 @@ export default function ThingsToDoHoustonPage() {
                     </div>
 
                     {/* Food Scene - Featured Box */}
-                    <div className="bg-gradient-to-r from-gray-900/50 to-gray-800/50 rounded-xl p-6 sm:p-8 border border-gray-700">
+                    <div className="bg-gray-800/50 rounded-xl p-6 sm:p-8 border border-gray-700">
                       <h2 className="text-2xl sm:text-3xl font-poppins font-bold text-white mb-4">
                         <span className="text-cyan-400">#6</span> Indulge in Houston&apos;s Food Scene
                       </h2>
@@ -346,7 +339,7 @@ export default function ThingsToDoHoustonPage() {
 
                     {/* Arts & Culture + Outdoor - Side by Side */}
                     <div className="grid md:grid-cols-2 gap-6">
-                      <div className="bg-gray-900/30 rounded-xl p-6 border border-gray-800">
+                      <div className="bg-gray-800/50 rounded-xl p-6 border border-gray-700">
                         <h2 className="text-2xl font-poppins font-bold text-white mb-4">
                           <span className="text-cyan-400">#7</span> Arts and Culture
                         </h2>
@@ -354,7 +347,7 @@ export default function ThingsToDoHoustonPage() {
                           Beyond the museums, Houston offers a thriving arts scene. The Montrose area is known for its galleries and street art, while the Theater District hosts world-class performances. The city also hosts numerous festivals throughout the year, celebrating everything from art and music to food and culture.
                         </p>
                       </div>
-                      <div className="bg-gray-900/30 rounded-xl p-6 border border-gray-800">
+                      <div className="bg-gray-800/50 rounded-xl p-6 border border-gray-700">
                         <h2 className="text-2xl font-poppins font-bold text-white mb-4">
                           <span className="text-cyan-400">#8</span> Outdoor Adventures
                         </h2>
@@ -365,7 +358,7 @@ export default function ThingsToDoHoustonPage() {
                     </div>
                     
                     {/* Why Zero Latency Stands Out - Visual Section */}
-                    <div className="bg-gradient-to-br from-cyan-500/10 to-gray-900/50 rounded-xl p-6 sm:p-8 border-2 border-cyan-500/30 mt-8">
+                    <div className="bg-gray-800/50 rounded-xl p-6 sm:p-8 border-2 border-cyan-500/30 mt-8">
                       <h2 className="text-2xl sm:text-3xl font-poppins font-bold text-white mb-6 text-center">
                         Why Zero Latency VR Stands Out Among Houston Activities
                       </h2>
@@ -408,7 +401,7 @@ export default function ThingsToDoHoustonPage() {
                     </div>
 
                     {/* Planning Section - Callout Box */}
-                    <div className="bg-gray-900/50 rounded-xl p-6 sm:p-8 border border-gray-800 mt-8">
+                    <div className="bg-gray-800/50 rounded-xl p-6 sm:p-8 border border-gray-700 mt-8">
                       <h2 className="text-2xl sm:text-3xl font-poppins font-bold text-white mb-4">
                         Planning Your Houston Adventure
                       </h2>
@@ -436,52 +429,15 @@ export default function ThingsToDoHoustonPage() {
                     </div>
                   </div>
                 </div>
-              </Container>
             </section>
 
             {/* Related Games Section */}
-            {gamesData.length > 0 && (
-              <section className="py-12 md:py-16 bg-gray-900/50">
-                <Container>
-                  <div className="max-w-7xl mx-auto px-4 sm:px-6">
-                    <h2 className="text-2xl sm:text-3xl md:text-4xl font-poppins font-bold text-white text-center mb-8 sm:mb-12">
-                      Featured <span className="text-stroke-blue">VR Games</span> at Zero Latency Webster
-                    </h2>
-                    <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4">
-                      {gamesData.map((game) => (
-                        <Link
-                          key={game.slug}
-                          href={`/games/${game.slug}`}
-                          className="group relative flex flex-col overflow-hidden rounded-lg bg-gray-800/50 border border-gray-700 hover:border-cyan-500/50 transition-all duration-300"
-                        >
-                          <div className="relative h-48 w-full overflow-hidden">
-                            <Image
-                              src={game.imageSrc}
-                              alt={game.title}
-                              layout="fill"
-                              objectFit="cover"
-                              className="transition-transform duration-500 group-hover:scale-110"
-                            />
-                          </div>
-                          <div className="p-4">
-                            <h3 className="text-lg font-poppins font-bold text-white group-hover:text-cyan-400 transition-colors">
-                              {game.title}
-                            </h3>
-                            <p className="text-sm text-cyan-400 mt-2">View Game Details →</p>
-                          </div>
-                        </Link>
-                      ))}
-                    </div>
-                  </div>
-                </Container>
-              </section>
-            )}
+            <RelatedGames />
 
             {/* CTA Section */}
-            <section className="py-12 md:py-16">
-              <Container>
-                <div className="max-w-4xl mx-auto px-4 sm:px-6">
-                  <div className="bg-gray-900/50 rounded-2xl border border-gray-800 p-6 sm:p-8 text-center">
+            <section className="py-16 md:py-24">
+              <div className="mx-auto max-w-4xl px-4 sm:px-6">
+                <div className="bg-gray-800/50 rounded-2xl border border-gray-700 p-6 sm:p-8 text-center">
                     <div className="flex justify-center mb-4">
                       <MapPin className="h-12 w-12 text-cyan-400" />
                     </div>
@@ -506,9 +462,8 @@ export default function ThingsToDoHoustonPage() {
                       </div>
                     </div>
                     <BookGameButton label="Book Your VR Adventure" source="blog-houston-cta" />
-                  </div>
                 </div>
-              </Container>
+              </div>
             </section>
           </div>
         </main>
