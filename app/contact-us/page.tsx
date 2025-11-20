@@ -95,7 +95,7 @@ export default function ContactPage() {
                 <section className="relative min-h-[60vh] flex items-center justify-center text-center pb-20">
                     <div className="absolute inset-0 z-0">
                         <Image
-                            src="/contact-hero-bg.webp" // An image of the venue&apos;s interior/lobby
+                            src="/background.webp" // An image of the venue&apos;s interior/lobby
                             alt="The futuristic lobby of the Zero Latency Houston VR arena."
                             layout="fill"
                             objectFit="cover"
