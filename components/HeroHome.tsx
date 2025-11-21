@@ -60,6 +60,7 @@ export default function HeroHome({ faqs }: FaqProps) {
                     alt="4 Players standing in Zero Latency Webster VR arena in Greater Houston"
                     fill
                     priority
+                    fetchPriority="high"
                     className="object-cover hidden md:block"
                 />
 
@@ -69,6 +70,7 @@ export default function HeroHome({ faqs }: FaqProps) {
                     alt="4 Players standing in Zero Latency Webster VR arena in Greater Houston"
                     fill
                     priority
+                    fetchPriority="high"
                     className="object-cover block md:hidden"
                 />
                 <div className="absolute inset-0 bg-black opacity-70"></div> {/* This adds a dark overlay for better text readability */}
