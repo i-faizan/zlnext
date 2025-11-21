@@ -681,6 +681,7 @@ export default function EnhancedTracking() {
             // YouTube player state: -1 = unstarted, 0 = ended, 1 = playing, 2 = paused, 3 = buffering, 5 = cued
             if (data.info === 1 || data.info?.playerState === 1) {
               // Video started playing
+              const iframe = event.source as Window;
               const iframeElement = document.querySelector('iframe[src*="youtube.com"]') as HTMLIFrameElement;
               const videoId = iframeElement?.src.match(/[?&]v=([^&]+)/)?.[1] || 
                             iframeElement?.src.match(/embed\/([^?]+)/)?.[1] || 
@@ -698,10 +699,10 @@ export default function EnhancedTracking() {
                   duration: 0,
                   completion: 0,
                 }),
-              }).catch((_err) => console.error("Failed to track YouTube video:", _err));
+              }).catch((err) => console.error("Failed to track YouTube video:", err));
             }
           }
-        } catch {
+        } catch (e) {
           // Ignore parse errors
         }
       };
@@ -771,7 +772,7 @@ export default function EnhancedTracking() {
               "/api/visits",
               new Blob([statusData], { type: "application/json" })
             );
-          } catch {
+          } catch (e) {
             // sendBeacon failed, fall through to fetch
           }
         }
@@ -785,7 +786,7 @@ export default function EnhancedTracking() {
               body: statusData,
               keepalive: true,
             }).catch(() => {});
-          } catch {
+          } catch (e) {
             // Both methods failed, but we tried
           }
         }
@@ -814,7 +815,7 @@ export default function EnhancedTracking() {
               "/api/visits",
               new Blob([createData], { type: "application/json" })
             );
-          } catch {
+          } catch (e) {
             // sendBeacon failed, fall through to fetch
           }
         }
@@ -828,7 +829,7 @@ export default function EnhancedTracking() {
               body: createData,
               keepalive: true,
             }).catch(() => {});
-          } catch {
+          } catch (e) {
             // Both methods failed, but we tried
           }
         }
@@ -890,7 +891,6 @@ export default function EnhancedTracking() {
       document.removeEventListener("visibilitychange", handleVisibilityChange);
       window.removeEventListener("pagehide", handlePageHide);
       document.removeEventListener("click", handleCTAClick, true);
-      // eslint-disable-next-line react-hooks/exhaustive-deps
       ctaClickTrackingRef.current.clear();
       document.removeEventListener('play', handleVideoPlay, true);
       cleanupLoadListener?.();
@@ -901,7 +901,6 @@ export default function EnhancedTracking() {
           clearInterval(info.progressInterval);
         }
       });
-      // eslint-disable-next-line react-hooks/exhaustive-deps
       videoTrackingRefs.current.clear();
       
       if (youtubeCleanup) {
@@ -912,7 +911,6 @@ export default function EnhancedTracking() {
         clearTimeout(scrollThrottleRef.current);
       }
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname]);
 
   return null; // This component doesn't render anything

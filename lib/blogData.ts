@@ -5,7 +5,6 @@ export interface BlogPost {
   title: string;
   description: string;
   publishDate: string; // ISO date string
-  lastModified?: string; // ISO date string - optional, defaults to publishDate if not provided
   author: string;
   featuredImage: string;
   games: string[]; // Array of game slugs to link to

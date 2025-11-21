@@ -92,7 +92,6 @@ export default function DashboardPage() {
 
   useEffect(() => {
     checkAuth();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -149,7 +148,7 @@ export default function DashboardPage() {
       } else {
         setError("Invalid password");
       }
-    } catch {
+    } catch (err) {
       setError("Login failed. Please try again.");
     } finally {
       setLoading(false);

@@ -6,8 +6,6 @@ import Link from "next/link";
 import { Calendar, Clock, ArrowLeft, MapPin, Users, Gamepad2 } from "lucide-react";
 import Script from "next/script";
 import { generateBreadcrumbSchema } from "@/lib/breadcrumbs";
-import { generateArticleSchema } from "@/lib/blogSchema";
-import { getBlogPost } from "@/lib/blogData";
 import BookGameButton from "@/components/BookBtn";
 import RelatedGames from "@/components/RelatedGames";
 
@@ -26,7 +24,6 @@ export const metadata: Metadata = {
     url: "https://zlwebster.com/blog/vr-houston-zero-latency-virtual-reality-gaming",
     type: "article",
     publishedTime: "2025-10-01",
-    modifiedTime: "2025-10-01",
     authors: ["Zero Latency VR Webster"],
     images: [{
       url: "https://zlwebster.com/OG.jpg",
@@ -49,42 +46,54 @@ export const metadata: Metadata = {
 };
 
 const publishDate = "2025-10-01";
-const lastModified = "2025-10-01";
 const author = "Zero Latency VR Webster";
 const readTime = 8;
 const featuredImage = "/OG.jpg";
 const title = "VR Houston: Zero Latency Virtual Reality Gaming & VR Games";
 
 export default function VRHoustonPage() {
-  const blogPost = getBlogPost("vr-houston-zero-latency-virtual-reality-gaming");
   const breadcrumbSchema = generateBreadcrumbSchema([
     { name: "Home", url: "https://zlwebster.com/" },
     { name: "Blog", url: "https://zlwebster.com/blog" },
     { name: title, url: "https://zlwebster.com/blog/vr-houston-zero-latency-virtual-reality-gaming" },
   ]);
 
-  const articleSchema = blogPost 
-    ? generateArticleSchema({ ...blogPost, lastModified })
-    : generateArticleSchema({
-        slug: "vr-houston-zero-latency-virtual-reality-gaming",
-        title,
-        description: "Discover the best VR Houston has to offer! Zero Latency VR Webster provides virtual reality gaming, VR games, and immersive VR experiences.",
-        publishDate,
-        lastModified,
-        author,
-        featuredImage,
-        games: [],
-        readTime,
-      });
+  const blogPostingSchema = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "@id": "https://zlwebster.com/blog/vr-houston-zero-latency-virtual-reality-gaming#blogpost",
+    "headline": title,
+    "description": "Discover the best VR Houston has to offer! Zero Latency VR Webster provides virtual reality gaming, VR games, and immersive VR experiences.",
+    "url": "https://zlwebster.com/blog/vr-houston-zero-latency-virtual-reality-gaming",
+    "datePublished": publishDate,
+    "author": {
+      "@type": "Organization",
+      "name": author,
+      "@id": "https://zlwebster.com/#organization",
+    },
+    "publisher": {
+      "@type": "Organization",
+      "@id": "https://zlwebster.com/#organization",
+      "name": "Zero Latency VR Houston, Webster",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://zlwebster.com/ZL-W.png",
+      },
+    },
+    "image": `https://zlwebster.com${featuredImage}`,
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https://zlwebster.com/blog/vr-houston-zero-latency-virtual-reality-gaming",
+    },
+  };
 
   return (
     <>
       <Script id="breadcrumb-schema" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
-      <Script id="article-schema" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
-      <article itemScope itemType="https://schema.org/Article">
+      <Script id="blogposting-schema" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(blogPostingSchema) }} />
+      <article itemScope itemType="https://schema.org/BlogPosting">
         <meta itemProp="headline" content={title} />
         <meta itemProp="datePublished" content={publishDate} />
-        <meta itemProp="dateModified" content={lastModified} />
         <main id="main-content">
           <div className="bg-[#000F13] text-gray-200 font-montserrat">
             {/* Hero Section */}

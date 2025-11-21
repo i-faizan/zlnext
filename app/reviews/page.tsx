@@ -6,7 +6,7 @@ import { generateBreadcrumbSchema } from "@/lib/breadcrumbs";
 
 export const metadata: Metadata = {
     title: "Customer Reviews & Testimonials | Zero Latency VR Houston, Webster",
-    description: "Read 271+ 5-star reviews from customers who experienced free-roam VR at Zero Latency Webster. See what players say about our games, staff, and immersive VR adventures.",
+    description: "Read 229+ 5-star reviews from customers who experienced free-roam VR at Zero Latency Webster. See what players say about our games, staff, and immersive VR adventures.",
     authors: [{ name: "Zero Latency VR Houston, Webster" }],
     creator: "Zero Latency VR Houston, Webster",
     publisher: "Zero Latency VR Houston, Webster",
@@ -347,7 +347,7 @@ const reviewSchema = {
     "aggregateRating": {
         "@type": "AggregateRating",
         "ratingValue": "5.0",
-        "reviewCount": "271",
+        "reviewCount": "229",
         "bestRating": "5",
         "worstRating": "1"
     },

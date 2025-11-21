@@ -6,8 +6,6 @@ import Link from "next/link";
 import { Calendar, Clock, ArrowLeft, Users, Gamepad2 } from "lucide-react";
 import Script from "next/script";
 import { generateBreadcrumbSchema } from "@/lib/breadcrumbs";
-import { generateArticleSchema } from "@/lib/blogSchema";
-import { getBlogPost } from "@/lib/blogData";
 import BookGameButton from "@/components/BookBtn";
 import RelatedGames from "@/components/RelatedGames";
 
@@ -26,7 +24,6 @@ export const metadata: Metadata = {
     url: "https://zlwebster.com/blog/outbreak-vr-zombie-survival-game",
     type: "article",
     publishedTime: "2025-10-10",
-    modifiedTime: "2025-10-10",
     authors: ["Zero Latency VR Webster"],
     images: [{
       url: "https://zlwebster.com/OG.jpg",
@@ -49,42 +46,54 @@ export const metadata: Metadata = {
 };
 
 const publishDate = "2025-10-10";
-const lastModified = "2025-10-10";
 const author = "Zero Latency VR Webster";
 const readTime = 7;
 const featuredImage = "/OG.jpg";
 const title = "Outbreak VR: Zombie Survival Game at Zero Latency";
 
 export default function OutbreakVRBlogPage() {
-  const blogPost = getBlogPost("outbreak-vr-zombie-survival-game");
   const breadcrumbSchema = generateBreadcrumbSchema([
     { name: "Home", url: "https://zlwebster.com/" },
     { name: "Blog", url: "https://zlwebster.com/blog" },
     { name: title, url: "https://zlwebster.com/blog/outbreak-vr-zombie-survival-game" },
   ]);
 
-  const articleSchema = blogPost 
-    ? generateArticleSchema({ ...blogPost, lastModified })
-    : generateArticleSchema({
-        slug: "outbreak-vr-zombie-survival-game",
-        title,
-        description: "Experience Outbreak VR, the ultimate zombie survival game at Zero Latency Webster. Fight hordes of infected in this intense cooperative VR experience.",
-        publishDate,
-        lastModified,
-        author,
-        featuredImage,
-        games: [],
-        readTime,
-      });
+  const blogPostingSchema = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "@id": "https://zlwebster.com/blog/outbreak-vr-zombie-survival-game#blogpost",
+    "headline": title,
+    "description": "Experience Outbreak VR, the ultimate zombie survival game at Zero Latency Webster. Fight hordes of infected in this intense cooperative VR experience.",
+    "url": "https://zlwebster.com/blog/outbreak-vr-zombie-survival-game",
+    "datePublished": publishDate,
+    "author": {
+      "@type": "Organization",
+      "name": author,
+      "@id": "https://zlwebster.com/#organization",
+    },
+    "publisher": {
+      "@type": "Organization",
+      "@id": "https://zlwebster.com/#organization",
+      "name": "Zero Latency VR Houston, Webster",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://zlwebster.com/ZL-W.png",
+      },
+    },
+    "image": `https://zlwebster.com${featuredImage}`,
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https://zlwebster.com/blog/outbreak-vr-zombie-survival-game",
+    },
+  };
 
   return (
     <>
       <Script id="breadcrumb-schema" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
-      <Script id="article-schema" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
-      <article itemScope itemType="https://schema.org/Article">
+      <Script id="blogposting-schema" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(blogPostingSchema) }} />
+      <article itemScope itemType="https://schema.org/BlogPosting">
         <meta itemProp="headline" content={title} />
         <meta itemProp="datePublished" content={publishDate} />
-        <meta itemProp="dateModified" content={lastModified} />
         <main id="main-content">
           <div className="bg-[#000F13] text-gray-200 font-montserrat">
             {/* Hero Section */}

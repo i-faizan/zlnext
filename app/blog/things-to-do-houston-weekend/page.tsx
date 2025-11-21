@@ -3,11 +3,9 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { Calendar, Clock, ArrowLeft, Users, Gamepad2, Coffee, Music } from "lucide-react";
+import { Calendar, Clock, ArrowLeft, MapPin, Users, Gamepad2, Coffee, Music, Camera } from "lucide-react";
 import Script from "next/script";
 import { generateBreadcrumbSchema } from "@/lib/breadcrumbs";
-import { generateArticleSchema } from "@/lib/blogSchema";
-import { getBlogPost } from "@/lib/blogData";
 import BookGameButton from "@/components/BookBtn";
 import RelatedGames from "@/components/RelatedGames";
 
@@ -26,7 +24,6 @@ export const metadata: Metadata = {
     url: "https://zlwebster.com/blog/things-to-do-houston-weekend",
     type: "article",
     publishedTime: "2025-01-20",
-    modifiedTime: "2025-01-20",
     authors: ["Zero Latency VR Webster"],
     images: [{
       url: "https://zlwebster.com/OG.jpg",
@@ -49,43 +46,54 @@ export const metadata: Metadata = {
 };
 
 const publishDate = "2025-01-20";
-const lastModified = "2025-01-20"; // Update this when content is modified
 const author = "Zero Latency VR Webster";
 const readTime = 12;
 const featuredImage = "/OG.jpg";
 const title = "Best Things to Do in Houston on Weekend: Your Ultimate Weekend Adventure Guide";
 
 export default function ThingsToDoHoustonWeekendPage() {
-  const blogPost = getBlogPost("things-to-do-houston-weekend");
   const breadcrumbSchema = generateBreadcrumbSchema([
     { name: "Home", url: "https://zlwebster.com/" },
     { name: "Blog", url: "https://zlwebster.com/blog" },
     { name: title, url: "https://zlwebster.com/blog/things-to-do-houston-weekend" },
   ]);
 
-  // Use Article schema (more comprehensive than BlogPosting)
-  const articleSchema = blogPost 
-    ? generateArticleSchema({ ...blogPost, lastModified })
-    : generateArticleSchema({
-        slug: "things-to-do-houston-weekend",
-        title,
-        description: "Discover the best things to do in Houston on weekend! From free-roam VR adventures at Zero Latency Webster to brunch spots, outdoor activities, and nightlife.",
-        publishDate,
-        lastModified,
-        author,
-        featuredImage,
-        games: [],
-        readTime,
-      });
+  const blogPostingSchema = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "@id": "https://zlwebster.com/blog/things-to-do-houston-weekend#blogpost",
+    "headline": title,
+    "description": "Discover the best things to do in Houston on weekend! From free-roam VR adventures at Zero Latency Webster to brunch spots, outdoor activities, and nightlife.",
+    "url": "https://zlwebster.com/blog/things-to-do-houston-weekend",
+    "datePublished": publishDate,
+    "author": {
+      "@type": "Organization",
+      "name": author,
+      "@id": "https://zlwebster.com/#organization",
+    },
+    "publisher": {
+      "@type": "Organization",
+      "@id": "https://zlwebster.com/#organization",
+      "name": "Zero Latency VR Houston, Webster",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://zlwebster.com/ZL-W.png",
+      },
+    },
+    "image": `https://zlwebster.com${featuredImage}`,
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "https://zlwebster.com/blog/things-to-do-houston-weekend",
+    },
+  };
 
   return (
     <>
       <Script id="breadcrumb-schema" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
-      <Script id="article-schema" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
-      <article itemScope itemType="https://schema.org/Article">
+      <Script id="blogposting-schema" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(blogPostingSchema) }} />
+      <article itemScope itemType="https://schema.org/BlogPosting">
         <meta itemProp="headline" content={title} />
         <meta itemProp="datePublished" content={publishDate} />
-        <meta itemProp="dateModified" content={lastModified} />
         <main id="main-content">
           <div className="bg-[#000F13] text-gray-200 font-montserrat">
             {/* Hero Section with Featured Image */}
@@ -93,7 +101,7 @@ export default function ThingsToDoHoustonWeekendPage() {
               <div className="absolute inset-0 z-0">
                 <Image
                   src={featuredImage}
-                  alt="Best Things to Do in Houston on Weekend - Zero Latency VR Webster Guide"
+                  alt={title}
                   layout="fill"
                   objectFit="cover"
                   priority
@@ -179,7 +187,7 @@ export default function ThingsToDoHoustonWeekendPage() {
                         <div className="relative h-64 md:h-80 rounded-lg overflow-hidden border-2 border-cyan-500/30">
                           <Image
                             src="/hero_img.webp"
-                            alt="Players experiencing free-roam VR adventures at Zero Latency VR Webster in Houston on weekend"
+                            alt="Players experiencing Zero Latency VR on weekend in Houston"
                             layout="fill"
                             objectFit="cover"
                             className="transition-transform duration-500 hover:scale-105"
@@ -260,7 +268,7 @@ export default function ThingsToDoHoustonWeekendPage() {
                       <div className="relative h-64 rounded-lg overflow-hidden">
                         <Image
                           src="/hero_img.webp"
-                          alt="Popular brunch spots and restaurants in Houston for weekend dining"
+                          alt="Houston weekend brunch scene"
                           layout="fill"
                           objectFit="cover"
                           className="opacity-80"

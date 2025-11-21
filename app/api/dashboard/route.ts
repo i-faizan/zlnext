@@ -34,8 +34,7 @@ export async function POST(request: Request) {
   }
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export async function GET(_request: Request) {
+export async function GET(request: Request) {
   // Add X-Robots-Tag header to prevent indexing
   const headers = new Headers();
   headers.set('X-Robots-Tag', 'noindex, nofollow, noarchive, nosnippet, noimageindex');
@@ -54,13 +53,12 @@ export async function GET(_request: Request) {
     const { getSessions } = await import("../visits/route");
     const sessions = getSessions();
     return NextResponse.json({ sessions }, { headers });
-  } catch {
+  } catch (error) {
     return NextResponse.json({ error: "Failed to fetch sessions" }, { status: 500, headers });
   }
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export async function DELETE(_request: Request) {
+export async function DELETE(request: Request) {
   // Add X-Robots-Tag header to prevent indexing
   const headers = new Headers();
   headers.set('X-Robots-Tag', 'noindex, nofollow, noarchive, nosnippet, noimageindex');
