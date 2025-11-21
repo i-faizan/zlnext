@@ -201,7 +201,7 @@ async function createNewSession(request: Request) {
   // Check for existing recent session (within last 5 seconds) with same user agent
   // This prevents duplicate sessions from React Strict Mode double-mounting
   if (userAgent) {
-    const recentSessions = Array.from(userSessions.entries()).filter(([_, session]) => {
+    const recentSessions = Array.from(userSessions.entries()).filter(([, session]) => {
       const timeSinceLastSeen = now - session.lastSeen;
       return (
         session.userAgent === userAgent &&
@@ -288,7 +288,7 @@ async function handleUpdate(request: Request) {
             if (userAgent && type === 'page') {
                 // Try to find a very recent session (within last 30 seconds) with same user agent
                 const now = Date.now();
-                const recentSessions = Array.from(userSessions.entries()).filter(([_, session]) => {
+                const recentSessions = Array.from(userSessions.entries()).filter(([, session]) => {
                     const timeSinceLastSeen = now - session.lastSeen;
                     return (
                         session.userAgent === userAgent &&
@@ -438,7 +438,7 @@ async function handleUpdate(request: Request) {
         
         userSessions.set(uuid, session);
         return NextResponse.json({ message: "Session updated" }, { status: 200 });
-    } catch (error) {
+    } catch {
         return NextResponse.json({ error: "Invalid request body" }, { status: 400 });
     }
 }

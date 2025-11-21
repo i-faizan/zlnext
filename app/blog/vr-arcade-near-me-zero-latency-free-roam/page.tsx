@@ -6,6 +6,8 @@ import Link from "next/link";
 import { Calendar, Clock, ArrowLeft, MapPin, Users, Gamepad2 } from "lucide-react";
 import Script from "next/script";
 import { generateBreadcrumbSchema } from "@/lib/breadcrumbs";
+import { generateArticleSchema } from "@/lib/blogSchema";
+import { getBlogPost } from "@/lib/blogData";
 import BookGameButton from "@/components/BookBtn";
 import RelatedGames from "@/components/RelatedGames";
 
@@ -24,6 +26,7 @@ export const metadata: Metadata = {
     url: "https://zlwebster.com/blog/vr-arcade-near-me-zero-latency-free-roam",
     type: "article",
     publishedTime: "2025-11-10",
+    modifiedTime: "2025-11-10",
     authors: ["Zero Latency VR Webster"],
     images: [{
       url: "https://zlwebster.com/OG.jpg",
@@ -46,54 +49,42 @@ export const metadata: Metadata = {
 };
 
 const publishDate = "2025-11-10";
+const lastModified = "2025-11-10";
 const author = "Zero Latency VR Webster";
 const readTime = 8;
 const featuredImage = "/OG.jpg";
 const title = "VR Arcade Near Me: Zero Latency Free-Roam VR vs Traditional Arcades";
 
 export default function VRArcadeNearMePage() {
+  const blogPost = getBlogPost("vr-arcade-near-me-zero-latency-free-roam");
   const breadcrumbSchema = generateBreadcrumbSchema([
     { name: "Home", url: "https://zlwebster.com/" },
     { name: "Blog", url: "https://zlwebster.com/blog" },
     { name: title, url: "https://zlwebster.com/blog/vr-arcade-near-me-zero-latency-free-roam" },
   ]);
 
-  const blogPostingSchema = {
-    "@context": "https://schema.org",
-    "@type": "BlogPosting",
-    "@id": "https://zlwebster.com/blog/vr-arcade-near-me-zero-latency-free-roam#blogpost",
-    "headline": title,
-    "description": "Looking for a VR arcade near me? Zero Latency VR Webster is not your typical VR arcade—it's a free-roam VR experience. Discover the difference between VR arcades and true free-roam VR.",
-    "url": "https://zlwebster.com/blog/vr-arcade-near-me-zero-latency-free-roam",
-    "datePublished": publishDate,
-    "author": {
-      "@type": "Organization",
-      "name": author,
-      "@id": "https://zlwebster.com/#organization",
-    },
-    "publisher": {
-      "@type": "Organization",
-      "@id": "https://zlwebster.com/#organization",
-      "name": "Zero Latency VR Houston, Webster",
-      "logo": {
-        "@type": "ImageObject",
-        "url": "https://zlwebster.com/ZL-W.png",
-      },
-    },
-    "image": `https://zlwebster.com${featuredImage}`,
-    "mainEntityOfPage": {
-      "@type": "WebPage",
-      "@id": "https://zlwebster.com/blog/vr-arcade-near-me-zero-latency-free-roam",
-    },
-  };
+  const articleSchema = blogPost 
+    ? generateArticleSchema({ ...blogPost, lastModified })
+    : generateArticleSchema({
+        slug: "vr-arcade-near-me-zero-latency-free-roam",
+        title,
+        description: "Looking for a VR arcade near me? Zero Latency VR Webster is not your typical VR arcade—it's a free-roam VR experience. Discover the difference between VR arcades and true free-roam VR.",
+        publishDate,
+        lastModified,
+        author,
+        featuredImage,
+        games: [],
+        readTime,
+      });
 
   return (
     <>
       <Script id="breadcrumb-schema" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
-      <Script id="blogposting-schema" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(blogPostingSchema) }} />
-      <article itemScope itemType="https://schema.org/BlogPosting">
+      <Script id="article-schema" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
+      <article itemScope itemType="https://schema.org/Article">
         <meta itemProp="headline" content={title} />
         <meta itemProp="datePublished" content={publishDate} />
+        <meta itemProp="dateModified" content={lastModified} />
         <main id="main-content">
           <div className="bg-[#000F13] text-gray-200 font-montserrat">
             {/* Hero Section */}

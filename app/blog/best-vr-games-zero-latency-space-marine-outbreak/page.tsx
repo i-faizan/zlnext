@@ -6,6 +6,8 @@ import Link from "next/link";
 import { Calendar, Clock, ArrowLeft } from "lucide-react";
 import Script from "next/script";
 import { generateBreadcrumbSchema } from "@/lib/breadcrumbs";
+import { generateArticleSchema } from "@/lib/blogSchema";
+import { getBlogPost } from "@/lib/blogData";
 import BookGameButton from "@/components/BookBtn";
 import RelatedGames from "@/components/RelatedGames";
 
@@ -24,6 +26,7 @@ export const metadata: Metadata = {
     url: "https://zlwebster.com/blog/best-vr-games-zero-latency-space-marine-outbreak",
     type: "article",
     publishedTime: "2025-09-10",
+    modifiedTime: "2025-09-10",
     authors: ["Zero Latency VR Webster"],
     images: [{
       url: "https://zlwebster.com/OG.jpg",
@@ -46,6 +49,7 @@ export const metadata: Metadata = {
 };
 
 const publishDate = "2025-09-10";
+const lastModified = "2025-09-10";
 const author = "Zero Latency VR Webster";
 const readTime = 6;
 const featuredImage = "/OG.jpg";
@@ -53,48 +57,35 @@ const title = "Best VR Games at Zero Latency: Space Marine VR, Outbreak, and Mor
 
 
 export default function BestVRGamesPage() {
+  const blogPost = getBlogPost("best-vr-games-zero-latency-space-marine-outbreak");
   const breadcrumbSchema = generateBreadcrumbSchema([
     { name: "Home", url: "https://zlwebster.com/" },
     { name: "Blog", url: "https://zlwebster.com/blog" },
     { name: title, url: "https://zlwebster.com/blog/best-vr-games-zero-latency-space-marine-outbreak" },
   ]);
 
-  const blogPostingSchema = {
-    "@context": "https://schema.org",
-    "@type": "BlogPosting",
-    "@id": "https://zlwebster.com/blog/best-vr-games-zero-latency-space-marine-outbreak#blogpost",
-    "headline": title,
-    "description": "Explore the best VR games available at Zero Latency VR Webster. From intense zombie survival in Outbreak to epic sci-fi battles in Space Marine VR, discover which games are perfect for your group.",
-    "url": "https://zlwebster.com/blog/best-vr-games-zero-latency-space-marine-outbreak",
-    "datePublished": publishDate,
-    "author": {
-      "@type": "Organization",
-      "name": author,
-      "@id": "https://zlwebster.com/#organization",
-    },
-    "publisher": {
-      "@type": "Organization",
-      "@id": "https://zlwebster.com/#organization",
-      "name": "Zero Latency VR Houston, Webster",
-      "logo": {
-        "@type": "ImageObject",
-        "url": "https://zlwebster.com/ZL-W.png",
-      },
-    },
-    "image": `https://zlwebster.com${featuredImage}`,
-    "mainEntityOfPage": {
-      "@type": "WebPage",
-      "@id": "https://zlwebster.com/blog/best-vr-games-zero-latency-space-marine-outbreak",
-    },
-  };
+  const articleSchema = blogPost 
+    ? generateArticleSchema({ ...blogPost, lastModified })
+    : generateArticleSchema({
+        slug: "best-vr-games-zero-latency-space-marine-outbreak",
+        title,
+        description: "Explore the best VR games available at Zero Latency VR Webster. From intense zombie survival in Outbreak to epic sci-fi battles in Space Marine VR, discover which games are perfect for your group.",
+        publishDate,
+        lastModified,
+        author,
+        featuredImage,
+        games: [],
+        readTime,
+      });
 
   return (
     <>
       <Script id="breadcrumb-schema" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
-      <Script id="blogposting-schema" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(blogPostingSchema) }} />
-      <article itemScope itemType="https://schema.org/BlogPosting">
+      <Script id="article-schema" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
+      <article itemScope itemType="https://schema.org/Article">
         <meta itemProp="headline" content={title} />
         <meta itemProp="datePublished" content={publishDate} />
+        <meta itemProp="dateModified" content={lastModified} />
         <main id="main-content">
           <div className="bg-[#000F13] text-gray-200 font-montserrat">
             {/* Hero Section with Featured Image */}
