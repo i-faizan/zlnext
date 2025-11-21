@@ -203,29 +203,6 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <meta name="msvalidate.01" content="999B6B7BDDC8D9C46D790CCA519C9266" />
-        {/* Inline critical CSS to prevent render blocking */}
-        <style dangerouslySetInnerHTML={{
-          __html: `
-            :root {
-              --background: #ffffff;
-              --foreground: #171717;
-            }
-            html {
-              background: #11252c;
-            }
-            body {
-              background: #000f13;
-              font-family: Arial, Helvetica, sans-serif;
-              margin: 0;
-            }
-            .font-poppins {
-              font-family: var(--font-poppins), sans-serif;
-            }
-            .font-montserrat {
-              font-family: var(--font-montserrat), sans-serif;
-            }
-          `
-        }} />
       </head>
       <body className={`${poppins.variable} ${montserrat.variable} antialiased`}>
         {/* Roundprincemusic - Async and non-blocking */}
@@ -345,59 +322,25 @@ export default function RootLayout({
                   window.trackingPageLoaded = true;
                 }, 2000);
                 
-                // Fire request immediately but non-blocking - use setTimeout(0) to push to next event loop tick
-                // This allows browser to continue parsing/rendering while request fires
-                var requestData = JSON.stringify({ path: path, deviceInfo: deviceInfo });
-                setTimeout(function() {
-                  // Try sendBeacon first (truly non-blocking, fires immediately)
-                  if (navigator.sendBeacon) {
-                    var blob = new Blob([requestData], { type: 'application/json' });
-                    if (navigator.sendBeacon('/api/visits', blob)) {
-                      // sendBeacon succeeded - fire follow-up fetch to get UUID (also non-blocking)
-                      setTimeout(function() {
-                        fetch('/api/visits', {
-                          method: 'POST',
-                          headers: { 'Content-Type': 'application/json' },
-                          body: requestData,
-                          keepalive: true
-                        })
-                        .then(function(res) { return res.json(); })
-                        .then(function(data) {
-                          if (data.uuid) {
-                            window.trackingUUID = data.uuid;
-                            window.trackingInitialized = true;
-                            localStorage.setItem('tracking_session_uuid', data.uuid);
-                            localStorage.setItem('tracking_session_timestamp', Date.now().toString());
-                          }
-                        })
-                        .catch(function(err) {
-                          console.error('Failed to get tracking UUID:', err);
-                        });
-                      }, 0);
-                      return;
-                    }
+                // Fire request immediately - don't wait for anything
+                fetch('/api/visits', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ path: path, deviceInfo: deviceInfo }),
+                  keepalive: true
+                })
+                .then(function(res) { return res.json(); })
+                .then(function(data) {
+                  if (data.uuid) {
+                    window.trackingUUID = data.uuid;
+                    window.trackingInitialized = true;
+                    localStorage.setItem('tracking_session_uuid', data.uuid);
+                    localStorage.setItem('tracking_session_timestamp', Date.now().toString());
                   }
-                  
-                  // Fallback to fetch with keepalive (non-blocking, fires immediately)
-                  fetch('/api/visits', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: requestData,
-                    keepalive: true
-                  })
-                  .then(function(res) { return res.json(); })
-                  .then(function(data) {
-                    if (data.uuid) {
-                      window.trackingUUID = data.uuid;
-                      window.trackingInitialized = true;
-                      localStorage.setItem('tracking_session_uuid', data.uuid);
-                      localStorage.setItem('tracking_session_timestamp', Date.now().toString());
-                    }
-                  })
-                  .catch(function(err) {
-                    console.error('Failed to initialize tracking:', err);
-                  });
-                }, 0); // Push to next event loop tick - non-blocking but fires immediately
+                })
+                .catch(function(err) {
+                  console.error('Failed to initialize tracking:', err);
+                });
                 
                 // Handle early exit - if user leaves before page loads
                 var handleUnload = function() {
