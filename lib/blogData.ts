@@ -178,6 +178,17 @@ export const blogPosts: BlogPost[] = [
     readTime: 7,
     keywords: ["zero latency", "zerolatency", "vr latency", "zero latency vr", "low latency vr", "vr technology"],
   },
+  {
+    slug: "things-to-do-houston-weekend",
+    title: "Best Things to Do in Houston on Weekend: Your Ultimate Weekend Adventure Guide",
+    description: "Discover the best things to do in Houston on weekend! From free-roam VR adventures at Zero Latency Webster to brunch spots, outdoor activities, and nightlife. Your complete Houston weekend guide.",
+    publishDate: "2025-01-20",
+    author: "Zero Latency VR Webster",
+    featuredImage: "/OG.jpg",
+    games: ["space-marine-vr", "outbreak", "far-cry-vr", "engineerium", "sol-raiders"],
+    readTime: 12,
+    keywords: ["things to do houston weekend", "houston weekend activities", "weekend in houston", "houston saturday", "houston sunday", "houston weekend guide", "weekend houston tx"],
+  },
 ];
 
 // Helper function to get a blog post by slug
