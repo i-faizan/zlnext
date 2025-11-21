@@ -1,0 +1,363 @@
+# LLMs.txt for Zero Latency VR Webster
+
+## Site Information
+Site Name: Zero Latency VR Houston, Webster
+URL: https://zlwebster.com
+Description: Free-roam virtual reality arena in Webster, Texas, serving Greater Houston area. Offers immersive VR experiences for 1-8 players with cutting-edge wireless technology.
+
+## Business Details
+
+### Location
+Address: BayWay Village Shopping Center, 20801 Gulf Fwy suite 5, Webster, TX 77598
+City: Webster, Texas
+State: Texas
+Region: Greater Houston Area
+Coordinates: Latitude 29.5377, Longitude -95.1183
+
+### Contact Information
+Phone: +14694049149
+Email: zero@zlwebster.com
+Website: https://zlwebster.com
+Booking URL: https://booking.zerolatencyvr.com/en/book-now/webster
+
+### Operating Hours
+Monday-Tuesday: 4:00 PM - 9:30 PM
+Wednesday-Thursday: 2:00 PM - 9:30 PM
+Friday-Saturday-Sunday: 11:00 AM - 11:00 PM
+
+### Social Media
+Facebook: https://www.facebook.com/zerolatencywebstr
+Instagram: https://www.instagram.com/zerolatencywebstr
+TikTok: https://www.tiktok.com/@zerolatencywebstr
+YouTube: https://www.youtube.com/@ZeroLatencyWebster
+Twitter: https://twitter.com/zlwebster
+
+## VR Games & Experiences
+
+### Action & Adventure Games
+1. Space Marine VR
+   - Warhammer 40,000 themed
+   - Sci-fi action game
+   - Battle Tyranid hordes
+   - Duration: Up to 45 minutes
+   - URL: /games/space-marine-vr
+
+2. Outbreak
+   - Zombie survival game
+   - Cooperative gameplay
+   - Intense action
+   - URL: /games/outbreak
+
+3. Far Cry VR
+   - Tropical adventure
+   - Inspired by Far Cry 3
+   - Escape from pirates
+   - Action-packed
+   - URL: /games/far-cry-vr
+
+4. Undead Arena
+   - Post-apocalyptic zombie game show
+   - Fast-paced action
+   - Competitive elements
+   - URL: /games/undead-arena
+
+5. Haunted
+   - Horror VR experience
+   - Full-body immersive terror
+   - Scary and intense
+   - URL: /games/haunted
+
+### PvP & Competitive Games
+6. Sol Raiders
+   - Team-based PvP shooter
+   - Competitive esports
+   - 15-minute sessions
+   - Minimum 4 players recommended
+   - URL: /games/sol-raiders
+
+### Family-Friendly Games
+7. Engineerium
+   - Family-friendly puzzle adventure
+   - Non-combat experience
+   - Gravity-defying world
+   - Flying whales and puzzles
+   - Perfect for all ages
+   - URL: /games/engineerium
+
+8. Singularity
+   - Non-violent shooter
+   - Sci-fi adventure
+   - Family-friendly option
+   - URL: /games/singularity
+
+## Key Features
+
+### Technology
+- Free-roam VR (no cables, no limits)
+- Wireless technology
+- Large arena space for physical movement
+- Advanced tracking technology
+- Virtually zero latency
+- Up to 8 players simultaneously
+
+### Experience Types
+- Individual sessions
+- Group experiences (1-8 players)
+- Birthday parties
+- Corporate team building
+- Bachelor/bachelorette parties
+- Date nights
+- Family outings
+- Weekend fun
+
+### Age Requirements
+- Minimum age: 13 years old
+- Games suitable for different comfort levels
+- Family-friendly options available
+
+## Main Pages
+
+### Homepage
+URL: /
+Purpose: Main landing page showcasing Zero Latency VR experiences, featured games, and booking information.
+
+### Games
+URL: /games
+Purpose: Overview of all available VR games and experiences.
+
+Individual Game Pages:
+- /games/space-marine-vr
+- /games/outbreak
+- /games/far-cry-vr
+- /games/sol-raiders
+- /games/singularity
+- /games/engineerium
+- /games/undead-arena
+- /games/haunted
+
+### Experiences
+URL: /experiences
+Purpose: Information about different types of VR experiences and game categories.
+
+### What to Expect
+URL: /what-to-expect
+Purpose: Guide for first-time visitors explaining the VR experience, what to wear, how it works, and what to expect during a session.
+
+### Private Events
+URL: /private-events
+Purpose: Information about booking private events, parties, corporate team building, and special occasions.
+
+### Contact Us
+URL: /contact-us
+Purpose: Contact information and ways to reach the venue.
+
+### Blog
+URL: /blog
+Purpose: Educational and informational articles about VR, Houston activities, game guides, and local entertainment.
+
+## Blog Posts
+
+1. Complete Guide to Zero Latency VR in Webster, Houston
+   URL: /blog/complete-guide-zero-latency-vr-webster-houston
+   Published: 2025-09-05
+   Topics: Comprehensive guide to Zero Latency VR, games, experiences
+
+2. Best VR Games at Zero Latency: Space Marine VR, Outbreak, and More
+   URL: /blog/best-vr-games-zero-latency-space-marine-outbreak
+   Published: 2025-09-10
+   Topics: Game reviews, recommendations, which games to choose
+
+3. Best Things to Do in Houston, Texas: VR Adventures & Ultimate Entertainment Guide
+   URL: /blog/things-to-do-houston-texas-vr-adventures
+   Published: 2025-09-15
+   Topics: Houston activities, attractions, VR as entertainment option
+
+4. VR Gaming Near Me: Find the Best Free-Roam VR Experience in Webster, Houston
+   URL: /blog/vr-gaming-near-me-zero-latency-webster-houston
+   Published: 2025-09-20
+   Topics: Local VR options, finding VR near you
+
+5. Things to Do in Webster TX: VR Activities, Fun for Adults & Kids
+   URL: /blog/things-to-do-webster-tx-vr-activities
+   Published: 2025-09-25
+   Topics: Webster activities, local entertainment, family fun
+
+6. VR Houston: Zero Latency Virtual Reality Gaming & VR Games
+   URL: /blog/vr-houston-zero-latency-virtual-reality-gaming
+   Published: 2025-10-01
+   Topics: VR in Houston, virtual reality gaming options
+
+7. Space Marine VR: Warhammer 40,000 Experience at Zero Latency
+   URL: /blog/space-marine-vr-warhammer-40000-experience
+   Published: 2025-10-05
+   Topics: Space Marine VR game, Warhammer 40K, sci-fi VR
+
+8. Outbreak VR: Zombie Survival Game at Zero Latency
+   URL: /blog/outbreak-vr-zombie-survival-game
+   Published: 2025-10-10
+   Topics: Outbreak game, zombie survival VR
+
+9. Far Cry VR: Tropical Adventure Experience at Zero Latency
+   URL: /blog/far-cry-vr-adventure-experience
+   Published: 2025-10-15
+   Topics: Far Cry VR, tropical adventure, action VR
+
+10. Engineerium VR: Family-Friendly Puzzle Adventure at Zero Latency
+    URL: /blog/engineerium-vr-family-friendly-puzzle-adventure
+    Published: 2025-10-20
+    Topics: Family-friendly VR, puzzle games, non-combat VR
+
+11. Undead Arena VR: Zombie Game Show at Zero Latency
+    URL: /blog/undead-arena-vr-zombie-game-show
+    Published: 2025-10-25
+    Topics: Undead Arena, zombie game show, competitive VR
+
+12. Haunted House Near Me: Zero Latency VR Horror Experience
+    URL: /blog/haunted-house-near-me-zero-latency-vr-horror
+    Published: 2025-11-01
+    Topics: Horror VR, haunted house experience, scary VR
+
+13. Fun Dates Near Me: Zero Latency VR Experience for Couples
+    URL: /blog/fun-dates-near-me-zero-latency-vr-experience
+    Published: 2025-11-05
+    Topics: Date ideas, couples VR, unique date experiences
+
+14. VR Arcade Near Me: Zero Latency Free-Roam VR vs Traditional Arcades
+    URL: /blog/vr-arcade-near-me-zero-latency-free-roam
+    Published: 2025-11-10
+    Topics: VR arcades, free-roam VR, VR comparison
+
+15. Zero Latency VR: What is VR Latency & Why It Matters
+    URL: /blog/zero-latency-vr-latency-technology-explained
+    Published: 2025-11-15
+    Topics: VR technology, latency, technical explanations
+
+16. Best Things to Do in Houston on Weekend: Your Ultimate Weekend Adventure Guide
+    URL: /blog/things-to-do-houston-weekend
+    Published: 2025-01-20
+    Topics: Houston weekend activities, weekend guide, weekend entertainment
+
+## Target Audience
+
+### Primary Audiences
+- VR enthusiasts and gamers
+- Families with teens (13+)
+- Friend groups looking for unique experiences
+- Couples seeking date night activities
+- Corporate teams for team building
+- Birthday party organizers
+- Bachelor/bachelorette party planners
+- Houston area residents and visitors
+- People looking for things to do in Houston/Webster
+
+### Use Cases
+- Weekend entertainment
+- Birthday celebrations
+- Corporate events
+- Team building activities
+- Date nights
+- Friend group activities
+- Family outings (with teens)
+- Bachelor/bachelorette parties
+- Unique gift experiences
+
+## Key Differentiators
+
+1. Free-roam technology (no cables, no limits)
+2. Large physical space for real movement
+3. Up to 8 players simultaneously
+4. Diverse game library (action, horror, family-friendly, PvP)
+5. Located in Webster, easily accessible from Houston
+6. Flexible session lengths (15-45 minutes)
+7. Private event capabilities
+8. Family-friendly options available
+
+## Service Area
+
+Primary: Greater Houston Area, Texas
+Cities Served:
+- Webster, TX
+- Houston, TX
+- League City, TX
+- Friendswood, TX
+- Nassau Bay, TX
+- Seabrook, TX
+- Kemah, TX
+- Clear Lake Shores, TX
+- El Lago, TX
+- Taylor Lake Village, TX
+- Shoreacres, TX
+- La Porte, TX
+- Pasadena, TX
+- South Houston, TX
+- Pearland, TX
+- Alvin, TX
+- Dickinson, TX
+- Texas City, TX
+- Santa Fe, TX
+- And surrounding Greater Houston area
+
+## Booking Information
+
+Booking Platform: Zero Latency official booking system
+Booking URL: https://booking.zerolatencyvr.com/en/book-now/webster
+Gift Vouchers: Available
+Walk-ins: Accepted (subject to availability)
+Advance Booking: Recommended, especially for weekends and groups
+
+## Technical Details
+
+- Platform: Next.js 15
+- Framework: React 19
+- Styling: Tailwind CSS 4
+- Fonts: Poppins, Montserrat (Google Fonts)
+- Images: WebP format for optimization
+- SEO: Comprehensive metadata and structured data
+- Analytics: Google Analytics, Meta Pixel
+- Performance: Optimized for Core Web Vitals
+
+## Content Themes
+
+1. VR gaming and technology
+2. Houston area activities and entertainment
+3. Webster, Texas local information
+4. Game guides and reviews
+5. Weekend activities and date ideas
+6. Family-friendly entertainment
+7. Corporate team building
+8. Party planning and events
+9. Virtual reality education
+10. Local business and community
+
+## Frequently Asked Questions
+
+Common topics covered:
+- Motion sickness concerns
+- Age requirements
+- Group size limits
+- What to wear
+- Session duration
+- Booking process
+- Walk-in availability
+- Glasses compatibility
+- Parking availability
+- Game recommendations
+
+## Business Information
+
+Legal Name: Zero Latency VR Houston, Webster
+Business Type: Entertainment/Virtual Reality Arena
+Founded: 2025
+Rating: 5.0/5.0 (229 reviews)
+Price Range: $$
+
+## Additional Notes
+
+- Accepts gift vouchers
+- Private event rooms available
+- Game Masters provide guidance
+- All equipment provided (headsets, controllers, wireless backpacks)
+- Comfortable closed-toe shoes recommended
+- Most prescription glasses compatible
+- Located in shopping center with ample parking
+
