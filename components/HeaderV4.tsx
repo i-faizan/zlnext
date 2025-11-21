@@ -26,6 +26,7 @@ const nav = [
     ],
   },
   { label: 'Private Events', href: '/private-events' },
+  { label: 'Reviews', href: '/reviews' },
   { label: 'Contact Us', href: '/contact-us' },
 ];
 
