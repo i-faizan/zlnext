@@ -17,12 +17,13 @@ const nav = [
       { label: 'Haunted', href: '/games/haunted' },
       { label: 'Space Marine VR', href: '/games/space-marine-vr' },
       { label: 'Outbreak', href: '/games/outbreak' },
+      { label: 'Outbreak 2: Mall Mayhem', href: '/games/outbreak-mall-mayhem' },
       { label: 'Far Cry VR', href: '/games/far-cry-vr' },
       { label: 'Undead Arena', href: '/games/undead-arena' },
       { label: 'Singularity', href: '/games/singularity' },
       { label: 'Sol Raiders', href: '/games/sol-raiders' },
       { label: 'Engineerium', href: '/games/engineerium' },
-      
+
     ],
   },
   { label: 'Private Events', href: '/private-events' },
@@ -42,15 +43,10 @@ export default function HeaderV4() {
 
   return (
     <>
-      {/* --- 1. NEW PROMOTIONAL BANNER --- */}
-      {/* This banner is fixed to the top, full-width, and only visible on mobile (md:hidden) */}
-      <div className="fixed top-0 w-full bg-red-600 text-white text-center text-sm font-medium py-2 px-4 z-50 md:hidden">
-        On Weekdays, use <span className="font-bold">ZEROWEEK15</span> for Flat 15% off
-      </div>
+
 
       {/* --- 2. MODIFIED HEADER --- */}
-      {/* Added `top-9 md:top-0` to push the header down below the banner on mobile */}
-      <header className="fixed w-full bg-[#000f1328] px-4 sm:px-8 backdrop-blur-md z-50 top-9 md:top-0">
+      <header className="fixed w-full bg-[#000f1328] px-4 sm:px-8 backdrop-blur-md z-50 top-0">
         <div className="mx-auto flex h-20 max-w-7xl items-center justify-between">
           <Link href="/" className="flex items-center" onClick={() => setMobileMenuOpen(false)}>
             <Image
@@ -123,12 +119,9 @@ export default function HeaderV4() {
         onClick={toggleMobileMenu}
       ></div>
 
-      {/* --- 3. MODIFIED MOBILE MENU --- */}
-      {/* Changed `top-20` to `top-[7.25rem] md:top-20` */}
-      {/* This adjusts its position to account for both the banner and header height on mobile */}
       <div
         className={`fixed right-0 bottom-0 z-40 w-full max-w-xs bg-[#000f13] text-white transition-transform duration-300 ease-in-out md:hidden ${isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
-          } top-[7.25rem] md:top-20`}
+          } top-20`}
       >
         <nav className="flex h-full flex-col p-8">
           <div className="space-y-4">

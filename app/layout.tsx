@@ -154,6 +154,7 @@ const navSchema = {
           { "@type": "SiteNavigationElement", "name": "Overview", "url": `${siteUrl}/games` },
           { "@type": "SiteNavigationElement", "name": "Space Marine VR", "url": `${siteUrl}/games/space-marine-vr` },
           { "@type": "SiteNavigationElement", "name": "Outbreak", "url": `${siteUrl}/games/outbreak` },
+          { "@type": "SiteNavigationElement", "name": "Outbreak 2: Mall Mayhem", "url": `${siteUrl}/games/outbreak-mall-mayhem` },
           { "@type": "SiteNavigationElement", "name": "Far Cry VR", "url": `${siteUrl}/games/far-cry-vr` },
           { "@type": "SiteNavigationElement", "name": "Undead Arena", "url": `${siteUrl}/games/undead-arena` },
           { "@type": "SiteNavigationElement", "name": "Singularity", "url": `${siteUrl}/games/singularity` },
@@ -224,7 +225,7 @@ export default function RootLayout({
             `,
           }}
         />
-        
+
         {/* Meta Pixel - Async and non-blocking */}
         <Script
           id="meta-pixel"
@@ -263,7 +264,7 @@ export default function RootLayout({
             </Script>
           </>
         )}
-        <noscript><iframe src='https://obs.roundprincemusic.com/ns/60cfd871c3e2b06cd7d075be4ab3c0b8.html?ch=zlwebster.com' width='0' height='0' style={{display:'none'}}></iframe></noscript>
+        <noscript><iframe src='https://obs.roundprincemusic.com/ns/60cfd871c3e2b06cd7d075be4ab3c0b8.html?ch=zlwebster.com' width='0' height='0' style={{ display: 'none' }}></iframe></noscript>
         {/* Create session immediately - before React hydrates */}
         <script
           dangerouslySetInnerHTML={{
@@ -386,7 +387,7 @@ export default function RootLayout({
         <Script id="website-schema-ld-json" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }} />
         <Script id="nav-schema-ld-json" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(navSchema) }} />
         {/* Spacer to push content below fixed header */}
-        <div className="h-20 md:h-20 mt-9 md:mt-0"></div>
+        <div className="h-20 md:h-20"></div>
         <main id="main-content" role="main">{children}</main>
         <Footer />
       </body>
